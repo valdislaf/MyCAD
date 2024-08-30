@@ -1,44 +1,114 @@
 #include "MyCAD.h"
 #include <QMessageBox>
+#include <QTabWidget>
+#include <QWidget>
 
-MyCAD::MyCAD(QWidget *parent)
+MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);   
-
+    ui.setupUi(this);
+    ui.tabWidget->hide();
     // Проверяем, что ui.menuBar действительно инициализирован и доступен
     if (ui.menuBar) {
-        QMenu* FileMenu = ui.menuBar->addMenu(tr("  &Файл  "));
-        FileMenu->addAction(tr("&Создать"));
-        FileMenu->addAction(tr("&Открыть"));
-        FileMenu->addAction(tr("&Закрыть"));
 
-        // Добавляем сепаратор
-        FileMenu->addSeparator();
-        // FileMenu стиль сепаратора
-        FileMenu->setStyleSheet(
-            "QMenu::separator {"
-            "   height: 1px;"
-            "   background-color: lightgray;"
-            "}"
-        );
-        // Вы можете добавить дополнительные действия после сепаратора, если нужно
-        FileMenu->addAction(tr("&Импорт"));
-        FileMenu->addAction(tr("&Вставить"));
-        FileMenu->addSeparator();
-        FileMenu->addAction(tr("&Сохранить"));
-        FileMenu->addAction(tr("&Сохранить как..."));
+        initialTabWidget();
 
-        FileMenu->addSeparator();
-        FileMenu->addAction(tr("&Экспорт"));
-        FileMenu->addSeparator();
-        FileMenu->addAction(tr("&Печать"));
-        FileMenu->addSeparator();
-        FileMenu->addAction(tr("&Свойства"));
-        FileMenu->addSeparator();
-        
-        QAction* exitAction = FileMenu->addAction(tr("&Выход"));
-        connect(exitAction, &QAction::triggered, this, &MyCAD::onExitThis);
+        QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
+        QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
+
+    }
+}
+
+MyCAD::~MyCAD()
+{}
+
+void MyCAD::onDrawLine()
+{
+    // Здесь будет логика, которая выполняется при нажатии на пункт "Отрезок"
+    QMessageBox::information(this, "Отрезок", "Вы выбрали 'Отрезок' из меню!");
+}
+
+void MyCAD::onExitThis()
+{
+    // Создаем диалоговое окно с вопросом о подтверждении выхода
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Подтверждение выхода", "Вы уверены, что хотите выйти?",
+        QMessageBox::Yes | QMessageBox::No);
+
+    // Если пользователь выбрал "Yes", закрываем окно
+    if (reply == QMessageBox::Yes) {
+        close();
+    }
+    // Если пользователь выбрал "No", ничего не делаем (окно остается открытым)
+}
+
+void MyCAD::createNewWindow()
+{
+    // Если QTabWidget был скрыт, показываем его при создании первого чертежа
+    if (!ui.tabWidget->isVisible()) {
+        ui.tabWidget->show();
+        updateMenusBasedOnTabWidgetVisibility();
+    }
+
+    // Создаем новый виджет, который будет представлять собой новый чертеж
+    QWidget* newDrawingWidget = new QWidget();
+
+    // Опционально: настройка виджета для рисования
+
+    // Добавляем новую вкладку с виджетом
+    int tabIndex = ui.tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(ui.tabWidget->count()));
+
+    // Переключаемся на только что созданную вкладку
+    ui.tabWidget->setCurrentIndex(tabIndex);
+
+    // Убедитесь, что QTabWidget занимает все пространство центрального виджета
+    setCentralWidget(ui.tabWidget);
+}
+
+void MyCAD::initialTabWidget() {
+    ui.menuBar->clear();
+    QMenu* FileMenu = ui.menuBar->addMenu(tr("  &Файл  "));
+    QAction* NewWindowAction = FileMenu->addAction(tr("&Создать"));
+    connect(NewWindowAction, &QAction::triggered, this, &MyCAD::createNewWindow);
+
+    FileMenu->addAction(tr("&Открыть"));
+    FileMenu->addAction(tr("&Закрыть"));
+
+    // Добавляем сепаратор
+    FileMenu->addSeparator();
+    // FileMenu стиль сепаратора
+    FileMenu->setStyleSheet(
+        "QMenu::separator {"
+        "   height: 1px;"
+        "   background-color: lightgray;"
+        "}"
+    );
+
+
+    // Вы можете добавить дополнительные действия после сепаратора, если нужно
+    FileMenu->addAction(tr("&Импорт"));
+    FileMenu->addAction(tr("&Вставить"));
+    FileMenu->addSeparator();
+    FileMenu->addAction(tr("&Сохранить"));
+    FileMenu->addAction(tr("&Сохранить как..."));
+
+    FileMenu->addSeparator();
+    FileMenu->addAction(tr("&Экспорт"));
+    FileMenu->addSeparator();
+    FileMenu->addAction(tr("&Печать"));
+    FileMenu->addSeparator();
+    FileMenu->addAction(tr("&Свойства"));
+    FileMenu->addSeparator();
+
+    QAction* exitAction = FileMenu->addAction(tr("&Выход"));
+    connect(exitAction, &QAction::triggered, this, &MyCAD::onExitThis);
+}
+
+void MyCAD::updateMenusBasedOnTabWidgetVisibility()
+{
+    if (ui.tabWidget->isVisible()) {
+
+        initialTabWidget();
 
         QMenu* EditMenu = ui.menuBar->addMenu(tr("  &Правка  "));
         QMenu* ViewMenu = ui.menuBar->addMenu(tr("  &Вид  "));
@@ -68,30 +138,6 @@ MyCAD::MyCAD(QWidget *parent)
         QMenu* ParameterizationMenu = ui.menuBar->addMenu(tr("  &Параметризация  "));
         QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
         QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
-
-        // Можно добавить действия и в это меню
     }
-}
 
-MyCAD::~MyCAD()
-{}
-
-void MyCAD::onDrawLine()
-{
-    // Здесь будет логика, которая выполняется при нажатии на пункт "Отрезок"
-    QMessageBox::information(this, "Отрезок", "Вы выбрали 'Отрезок' из меню!");
-}
-
-void MyCAD::onExitThis()
-{
-    // Создаем диалоговое окно с вопросом о подтверждении выхода
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Подтверждение выхода", "Вы уверены, что хотите выйти?",
-        QMessageBox::Yes | QMessageBox::No);
-
-    // Если пользователь выбрал "Yes", закрываем окно
-    if (reply == QMessageBox::Yes) {
-        close();
-    }
-    // Если пользователь выбрал "No", ничего не делаем (окно остается открытым)
 }

@@ -15,7 +15,9 @@ public:
 private slots:
     void onExitThis();
     void onDrawLine();
-
+    void createNewWindow();
+    void updateMenusBasedOnTabWidgetVisibility();
+    void initialTabWidget();
 private:
     Ui::MyCADClass ui;
 };
