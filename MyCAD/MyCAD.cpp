@@ -2,20 +2,20 @@
 #include <QMessageBox>
 #include <QTabWidget>
 #include <QWidget>
+#include <QCursor>
 
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
     ui.tabWidget->hide();
+
+    // Устанавливаем курсор перекрестия для ui.tabWidget
+    ui.tabWidget->setCursor(QCursor(Qt::CrossCursor));
+
     // Проверяем, что ui.menuBar действительно инициализирован и доступен
     if (ui.menuBar) {
-
-        initialTabWidget();
-
-        QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
-        QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
-
+        updateMenusBasedOnTabWidgetVisibility();
     }
 }
 
@@ -136,6 +136,11 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
         QMenu* DimensionMenu = ui.menuBar->addMenu(tr("  &Размеры  "));
         QMenu* EditMenu2 = ui.menuBar->addMenu(tr("  &Редактировать  "));
         QMenu* ParameterizationMenu = ui.menuBar->addMenu(tr("  &Параметризация  "));
+        QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
+        QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
+    }
+    else {
+        initialTabWidget();
         QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
         QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
     }
