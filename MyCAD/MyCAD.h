@@ -17,6 +17,9 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
 
+private:
+    int delataX = 10;
+    int delataY = -10;
 
 private slots:  // Методы, связанные с сигналами
     void onExitThis();

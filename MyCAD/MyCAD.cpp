@@ -7,6 +7,7 @@
 #include <QTabWidget>
 #include <QWidget>
 
+
 #include "MyCAD.h"
 
 MyCAD::MyCAD(QWidget* parent)
@@ -85,8 +86,8 @@ void MyCAD::drawGrid()
 
 bool MyCAD::eventFilter(QObject* obj, QEvent* event)
 {
-    int delataX = 10;
-    int delataY = -10;
+    /*int delataX = 100;
+    int delataY = -100;*/
 
     if (event->type() == QEvent::Paint) {
         QWidget* widget = dynamic_cast<QWidget*>(obj);
@@ -122,39 +123,66 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
             QColor highlightedGridColor(48, 54, 69);  // Цвет выделенной сетки
             QPen highlightedGridPen(highlightedGridColor, 2, Qt::SolidLine);
 
-            // Рисуем вертикальные линии сетки
-            for (int x = 0; x < widgetWidth; x += gridSize) {
+            // Рисуем вертикальные линии сетки вправо от начала координат
+            for (int x = 0; x < widgetWidth+ std::abs(delataX); x += gridSize) {
                 if ((x / gridSize) % 5 == 0) {
                     painter.setPen(highlightedGridPen);
                 }
                 else {
                     painter.setPen(mainGridPen);
                 }
-                painter.drawLine(x + delataX, 0 + delataY, x + delataX, widgetHeight + delataY);
+                painter.drawLine(x + delataX, 0 , x + delataX, widgetHeight + std::abs(delataY));
                 xmax = x;
             }
 
-            // Рисуем горизонтальные линии сетки
+            // Рисуем вертикальные линии сетки влево от начала координат
+            for (int x = 0; x > -std::abs(delataX) ; x -= gridSize) {
+                if ((x / gridSize) % 5 == 0) {
+                    painter.setPen(highlightedGridPen);
+                }
+                else {
+                    painter.setPen(mainGridPen);
+                }
+                painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
+                xmax = x;
+            }
+
+            // Рисуем горизонтальные линии сетки вверх от начала координат
             int y5 = 0;
-            for (int y = widgetHeight; y > 0; y -= gridSize) {
+            for (int y = widgetHeight; y > -std::abs(delataY); y -= gridSize) {
                 if ((y5 / gridSize) % 5 == 0) {
                     painter.setPen(highlightedGridPen);
                 }
                 else {
                     painter.setPen(mainGridPen);
                 }
-              
-                painter.drawLine(0 + delataX, y + delataY, widgetWidth + delataX, y + delataY);
-                y5+= gridSize;
+
+                painter.drawLine(0 , y + delataY, widgetWidth + std::abs(delataX), y + delataY);
+                y5 += gridSize;
             }
             ymax = widgetHeight;
+            // Рисуем горизонтальные линии сетки вниз от начала координат
+            y5 = 0;
+            for (int y = widgetHeight; y < std::abs(delataY) + widgetHeight; y += gridSize) {
+                if ((y5 / gridSize) % 5 == 0) {
+                    painter.setPen(highlightedGridPen);
+                }
+                else {
+                    painter.setPen(mainGridPen);
+                }
+
+                painter.drawLine(0  , y + delataY, widgetWidth + std::abs(delataX), y + delataY);
+                y5 += gridSize;
+            }
+
+
             // Рисуем оси координат
             QColor XColor(130, 0, 0);
             painter.setPen(QPen(XColor, 1));
-            painter.drawLine(0 + delataX, ymax + delataY, widgetWidth + delataX, ymax + delataY);  // Ось X
+            painter.drawLine(0 + delataX, ymax + delataY, widgetWidth + std::abs(delataX), ymax + delataY);  // Ось X
             QColor YColor(0, 130, 0);
             painter.setPen(QPen(YColor, 1));
-            painter.drawLine(0 + delataX, 0 + delataY, 0 + delataX, ymax + delataY);  // Ось Y
+            painter.drawLine(0 + delataX, 0 , 0 + delataX, ymax +delataY);  // Ось Y
 
             painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
             int cursorSize = 100;
@@ -225,11 +253,17 @@ void MyCAD::mouseMoveEvent(QMouseEvent* event)
 
 void MyCAD::updateGridPosition(const QPoint& delta)
 {
-    // Логика для обновления позиции сетки на основе delta
-    // Например, вы можете изменить начальные координаты сетки и вызвать перерисовку
-    int a = 0;
+    // Обновляем значения смещения сетки на основе переданного delta
+    delataX += delta.x();
+    delataY += delta.y();
 
+    // Перерисовываем текущий активный виджет
+    QWidget* currentTab = ui.tabWidget->currentWidget();
+    if (currentTab) {
+        currentTab->update();  // Вызов перерисовки виджета
+    }
 }
+
 
 void MyCAD::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -299,6 +333,17 @@ void MyCAD::createNewWindow()
 
     // Убедитесь, что QTabWidget занимает все пространство центрального виджета
     setCentralWidget(ui.tabWidget);
+
+    // Обновляем значения смещения сетки на основе переданного delta
+    delataX = 10;
+    delataY = -10;
+
+    // Перерисовываем текущий активный виджет
+    QWidget* currentTab = ui.tabWidget->currentWidget();
+    if (currentTab) {
+        currentTab->update();  // Вызов перерисовки виджета
+    }
+
     // Показ сетки
     drawGrid();
 }
