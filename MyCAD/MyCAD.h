@@ -13,14 +13,20 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
-private slots:
+private slots:  // Методы, связанные с сигналами
     void onExitThis();
     void onCloseThisTab();
     void onDrawLine();
+
+private:  // Обычные методы
     void createNewWindow();
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();
+    QCursor createCustomCrossCursor();
+    void drawGrid();
+    void setupTabWidgetStyle();
 private:
     Ui::MyCADClass ui;
 };
