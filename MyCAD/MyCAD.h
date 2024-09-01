@@ -11,9 +11,12 @@ public:
     MyCAD(QWidget *parent = nullptr);
     ~MyCAD();
 
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
 
 private slots:
     void onExitThis();
+    void onCloseThisTab();
     void onDrawLine();
     void createNewWindow();
     void updateMenusBasedOnTabWidgetVisibility();

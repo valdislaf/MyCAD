@@ -3,10 +3,12 @@
 #include <QTabWidget>
 #include <QWidget>
 #include <QCursor>
+#include <QTabBar>
 
 #include <QBitmap>
 #include <QPainter>
 #include <QCursor>
+#include <QMouseEvent>
 
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
@@ -54,6 +56,33 @@ MyCAD::MyCAD(QWidget* parent)
 MyCAD::~MyCAD()
 {}
 
+void MyCAD::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        // Проверяем, находится ли клик внутри tabWidget
+        if (ui.tabWidget->rect().contains(event->pos()))
+        {           
+            // Определяем индекс вкладки, по которой был клик
+            int currentIndex = ui.tabWidget->currentIndex();
+            if (currentIndex != -1)
+            {   
+                // Преобразуем глобальные координаты события в локальные координаты tabWidget
+                QPoint localPos = ui.tabWidget->mapFromGlobal(event->globalPosition().toPoint());
+                QRect tabBarRect = ui.tabWidget->geometry();
+
+                if (tabBarRect.contains(localPos))
+                {
+                    QMessageBox::information(this, "Tab Click", "Клик по вкладке с индексом: " + QString::number(currentIndex));
+                }
+            }
+        }
+    }
+
+    // Вызываем базовый обработчик события
+    QMainWindow::mousePressEvent(event);
+}
+
 void MyCAD::onDrawLine()
 {
     // Здесь будет логика, которая выполняется при нажатии на пункт "Отрезок"
@@ -72,6 +101,12 @@ void MyCAD::onExitThis()
         close();
     }
     // Если пользователь выбрал "No", ничего не делаем (окно остается открытым)
+}
+
+void MyCAD::onCloseThisTab() 
+{
+    // Здесь будет логика, которая выполняется при нажатии на пункт "Закрыть"
+    QMessageBox::information(this, "Закрыть", "Вы выбрали 'Закрыть' из меню!");
 }
 
 void MyCAD::createNewWindow()
@@ -104,7 +139,8 @@ void MyCAD::initialTabWidget() {
     connect(NewWindowAction, &QAction::triggered, this, &MyCAD::createNewWindow);
 
     FileMenu->addAction(tr("&Открыть"));
-    FileMenu->addAction(tr("&Закрыть"));
+    QAction* CloseWindowAction = FileMenu->addAction(tr("&Закрыть"));
+    connect(CloseWindowAction, &QAction::triggered, this, &MyCAD::onCloseThisTab);
 
     // Добавляем сепаратор
     FileMenu->addSeparator();
@@ -178,3 +214,4 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
     }
 
 }
+
