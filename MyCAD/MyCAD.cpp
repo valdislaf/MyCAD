@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QCursor>
 
+#include <QBitmap>
+#include <QPainter>
+#include <QCursor>
+
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -11,7 +15,35 @@ MyCAD::MyCAD(QWidget* parent)
     ui.tabWidget->hide();
 
     // Устанавливаем курсор перекрестия для ui.tabWidget
-    ui.tabWidget->setCursor(QCursor(Qt::CrossCursor));
+   // ui.tabWidget->setCursor(QCursor(Qt::CrossCursor));
+
+    // Размеры курсора
+    int cursorSize = 97;
+    QPixmap cursorPixmap(cursorSize, cursorSize);
+    cursorPixmap.fill(Qt::transparent);
+
+    QPainter painter(&cursorPixmap);
+    painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
+
+    // Рисуем перекрестие
+    int squareside = 3; // сторона внутреннего квадрата
+    painter.drawLine(cursorSize / 2, 0, cursorSize / 2, cursorSize / 2 - squareside);
+    painter.drawLine(0, cursorSize / 2, cursorSize / 2 - squareside, cursorSize / 2);
+    painter.drawLine(cursorSize / 2, cursorSize / 2 + squareside, cursorSize / 2, cursorSize );
+    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2, cursorSize , cursorSize / 2);
+
+    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 + squareside);
+    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside);
+    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 - squareside);
+    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside);
+    painter.end();
+
+    // Создаем курсор
+    QCursor customCrossCursor(cursorPixmap);
+
+    // Устанавливаем кастомный курсор для виджета
+    ui.tabWidget->setCursor(customCrossCursor);
+
 
     // Проверяем, что ui.menuBar действительно инициализирован и доступен
     if (ui.menuBar) {
