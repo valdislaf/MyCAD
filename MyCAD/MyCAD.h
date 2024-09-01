@@ -14,6 +14,9 @@ public:
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     bool eventFilter(QObject* obj, QEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
 
 private slots:  // Методы, связанные с сигналами
     void onExitThis();
@@ -27,6 +30,15 @@ private:  // Обычные методы
     QCursor createCustomCrossCursor();
     void drawGrid();
     void setupTabWidgetStyle();
+
 private:
-    Ui::MyCADClass ui;
+    Ui::MyCADClass ui; 
+
+private:
+        bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
+        QPoint lastMousePosition; // Последняя позиция мыши
+        QPoint offset;            // Смещение от начальной позиции
+
+        void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
+       
 };

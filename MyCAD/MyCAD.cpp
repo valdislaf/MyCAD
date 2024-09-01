@@ -85,6 +85,9 @@ void MyCAD::drawGrid()
 
 bool MyCAD::eventFilter(QObject* obj, QEvent* event)
 {
+    int delataX = 10;
+    int delataY = -10;
+
     if (event->type() == QEvent::Paint) {
         QWidget* widget = dynamic_cast<QWidget*>(obj);
 
@@ -127,41 +130,43 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
                 else {
                     painter.setPen(mainGridPen);
                 }
-                painter.drawLine(x, 0, x, widgetHeight);
+                painter.drawLine(x + delataX, 0 + delataY, x + delataX, widgetHeight + delataY);
                 xmax = x;
             }
 
             // Рисуем горизонтальные линии сетки
-            for (int y = 0; y < widgetHeight; y += gridSize) {
-                if ((y / gridSize) % 5 == 0) {
+            int y5 = 0;
+            for (int y = widgetHeight; y > 0; y -= gridSize) {
+                if ((y5 / gridSize) % 5 == 0) {
                     painter.setPen(highlightedGridPen);
                 }
                 else {
                     painter.setPen(mainGridPen);
                 }
-                painter.drawLine(0, y, widgetWidth, y);
-                ymax = y;
+              
+                painter.drawLine(0 + delataX, y + delataY, widgetWidth + delataX, y + delataY);
+                y5+= gridSize;
             }
-
+            ymax = widgetHeight;
             // Рисуем оси координат
             QColor XColor(130, 0, 0);
             painter.setPen(QPen(XColor, 1));
-            painter.drawLine(0, ymax, widgetWidth, ymax);  // Ось X
+            painter.drawLine(0 + delataX, ymax + delataY, widgetWidth + delataX, ymax + delataY);  // Ось X
             QColor YColor(0, 130, 0);
             painter.setPen(QPen(YColor, 1));
-            painter.drawLine(0, 0, 0, ymax);  // Ось Y
+            painter.drawLine(0 + delataX, 0 + delataY, 0 + delataX, ymax + delataY);  // Ось Y
 
             painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
             int cursorSize = 100;
             // Рисуем перекрестие
             int squareside = 5; // сторона внутреннего квадрата
-            painter.drawLine(0, ymax, 0, ymax - cursorSize / 2);
-            painter.drawLine(0, ymax, cursorSize / 2, ymax);
+            painter.drawLine(0 + delataX, ymax + delataY, 0 + delataX, ymax - cursorSize / 2 + delataY);
+            painter.drawLine(0 + delataX, ymax + delataY, cursorSize / 2 + delataX, ymax + delataY);
 
-            painter.drawLine(-squareside, ymax - squareside, -squareside, ymax + squareside);
-            painter.drawLine(-squareside, ymax + squareside, squareside, ymax + squareside);
-            painter.drawLine(squareside, ymax + squareside, squareside, ymax - squareside);
-            painter.drawLine(squareside, ymax - squareside, -squareside, ymax - squareside);
+            painter.drawLine(-squareside + delataX, ymax - squareside + delataY, -squareside + delataX, ymax + squareside + delataY);
+            painter.drawLine(-squareside + delataX, ymax + squareside + delataY, squareside + delataX, ymax + squareside + delataY);
+            painter.drawLine(squareside + delataX, ymax + squareside + delataY, squareside + delataX, ymax - squareside + delataY);
+            painter.drawLine(squareside + delataX, ymax - squareside + delataY, -squareside + delataX, ymax - squareside + delataY);
 
             return true;  // Сообщаем, что событие обработано
         }
@@ -195,8 +200,50 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
         }
     }
 
+    if (event->button() == Qt::MiddleButton) // Проверяем, что нажата средняя кнопка мыши
+    {
+        ui.tabWidget->setCursor(QCursor(Qt::PointingHandCursor));
+        isDragging = true;
+        lastMousePosition = event->pos(); // Сохраняем позицию мыши
+    }
+
     // Вызываем базовый обработчик события
     QMainWindow::mousePressEvent(event);
+}
+
+void MyCAD::mouseMoveEvent(QMouseEvent* event)
+{
+    if (isDragging) // Если мышь перетаскивается
+    {
+        QPoint delta = event->pos() - lastMousePosition; // Рассчитываем смещение
+        updateGridPosition(delta); // Обновляем позицию сетки
+        lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши
+        drawGrid(); // Перерисовываем сетку
+    }
+    QMainWindow::mouseMoveEvent(event); // Вызов базового метода
+}
+
+void MyCAD::updateGridPosition(const QPoint& delta)
+{
+    // Логика для обновления позиции сетки на основе delta
+    // Например, вы можете изменить начальные координаты сетки и вызвать перерисовку
+    int a = 0;
+
+}
+
+void MyCAD::mouseReleaseEvent(QMouseEvent* event)
+{
+    // Устанавливаем пользовательский курсор
+    QCursor customCrossCursor = createCustomCrossCursor();
+
+    // Устанавливаем кастомный курсор для виджета
+    ui.tabWidget->setCursor(customCrossCursor);
+
+    if (event->button() == Qt::MiddleButton) // Проверяем, что отпущена средняя кнопка мыши
+    {
+        isDragging = false; // Устанавливаем флаг перетаскивания в false
+    }
+    QMainWindow::mouseReleaseEvent(event); // Вызов базового метода
 }
 
 void MyCAD::onDrawLine()
