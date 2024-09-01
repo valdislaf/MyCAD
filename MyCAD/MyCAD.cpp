@@ -34,11 +34,27 @@ MyCAD::MyCAD(QWidget* parent)
         updateMenusBasedOnTabWidgetVisibility();
     }
 
+    // Подписываемся на сигнал смены вкладок
+    connect(ui.tabWidget, &QTabWidget::currentChanged, this, &MyCAD::onTabChanged);
+    TabData newTabData;
+    newTabData.delataX = 10; // Устанавливаем начальные значения
+    newTabData.delataY = -10;
+    tabDataList.append(newTabData); // Добавляем данные вкладки в список
 
 }
 
 MyCAD::~MyCAD()
 {}
+
+void MyCAD::onTabChanged(int index)
+{
+    // Обработка изменения вкладки, например, загрузка настроек сетки для выбранной вкладки
+    if (index >= 0) {
+        QWidget* currentTab = ui.tabWidget->widget(index);
+        int a = 0;
+    }
+}
+
 
 QCursor MyCAD::createCustomCrossCursor()
 {
@@ -103,7 +119,8 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
         }
 
         QWidget* currentTab = ui.tabWidget->widget(currentIndex);
-
+        int delataX = tabDataList[currentIndex].delataX;
+        int delataY = tabDataList[currentIndex].delataY;
         // Проверяем, что событие происходит на текущей активной вкладке
         if (widget == currentTab) {
             QPainter painter(widget);
@@ -124,19 +141,19 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
             QPen highlightedGridPen(highlightedGridColor, 2, Qt::SolidLine);
 
             // Рисуем вертикальные линии сетки вправо от начала координат
-            for (int x = 0; x < widgetWidth+ std::abs(delataX); x += gridSize) {
+            for (int x = 0; x < widgetWidth + std::abs(delataX); x += gridSize) {
                 if ((x / gridSize) % 5 == 0) {
                     painter.setPen(highlightedGridPen);
                 }
                 else {
                     painter.setPen(mainGridPen);
                 }
-                painter.drawLine(x + delataX, 0 , x + delataX, widgetHeight + std::abs(delataY));
+                painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
                 xmax = x;
             }
 
             // Рисуем вертикальные линии сетки влево от начала координат
-            for (int x = 0; x > -std::abs(delataX) ; x -= gridSize) {
+            for (int x = 0; x > -std::abs(delataX); x -= gridSize) {
                 if ((x / gridSize) % 5 == 0) {
                     painter.setPen(highlightedGridPen);
                 }
@@ -157,7 +174,7 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
                     painter.setPen(mainGridPen);
                 }
 
-                painter.drawLine(0 , y + delataY, widgetWidth + std::abs(delataX), y + delataY);
+                painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
                 y5 += gridSize;
             }
             ymax = widgetHeight;
@@ -171,7 +188,7 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
                     painter.setPen(mainGridPen);
                 }
 
-                painter.drawLine(0  , y + delataY, widgetWidth + std::abs(delataX), y + delataY);
+                painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
                 y5 += gridSize;
             }
 
@@ -182,7 +199,7 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
             painter.drawLine(0 + delataX, ymax + delataY, widgetWidth + std::abs(delataX), ymax + delataY);  // Ось X
             QColor YColor(0, 130, 0);
             painter.setPen(QPen(YColor, 1));
-            painter.drawLine(0 + delataX, 0 , 0 + delataX, ymax +delataY);  // Ось Y
+            painter.drawLine(0 + delataX, 0, 0 + delataX, ymax + delataY);  // Ось Y
 
             painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
             int cursorSize = 100;
@@ -253,14 +270,19 @@ void MyCAD::mouseMoveEvent(QMouseEvent* event)
 
 void MyCAD::updateGridPosition(const QPoint& delta)
 {
-    // Обновляем значения смещения сетки на основе переданного delta
-    delataX += delta.x();
-    delataY += delta.y();
+    int currentIndex = ui.tabWidget->currentIndex();
 
-    // Перерисовываем текущий активный виджет
-    QWidget* currentTab = ui.tabWidget->currentWidget();
-    if (currentTab) {
-        currentTab->update();  // Вызов перерисовки виджета
+    // Проверка, что индекс корректный и вкладки существуют
+    if (currentIndex != -1 && currentIndex < tabDataList.size()) {
+        // Обновляем значения смещения сетки на основе переданного delta
+        tabDataList[currentIndex].delataX += delta.x();
+        tabDataList[currentIndex].delataY += delta.y();
+
+        // Перерисовываем текущий активный виджет
+        QWidget* currentTab = ui.tabWidget->currentWidget();
+        if (currentTab) {
+            currentTab->update();  // Вызов перерисовки виджета
+        }
     }
 }
 
@@ -328,15 +350,17 @@ void MyCAD::createNewWindow()
     // Добавляем новую вкладку с виджетом
     int tabIndex = ui.tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(ui.tabWidget->count()));
 
+    // Инициализируем данные для новой вкладки
+    TabData newTabData;
+    newTabData.delataX = 10; // Устанавливаем начальные значения
+    newTabData.delataY = -10;
+    tabDataList.append(newTabData); // Добавляем данные вкладки в список
+
     // Переключаемся на только что созданную вкладку
     ui.tabWidget->setCurrentIndex(tabIndex);
 
     // Убедитесь, что QTabWidget занимает все пространство центрального виджета
     setCentralWidget(ui.tabWidget);
-
-    // Обновляем значения смещения сетки на основе переданного delta
-    delataX = 10;
-    delataY = -10;
 
     // Перерисовываем текущий активный виджет
     QWidget* currentTab = ui.tabWidget->currentWidget();

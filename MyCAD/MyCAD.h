@@ -3,12 +3,17 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MyCAD.h"
 
+struct TabData {
+    int delataX = 0;
+    int delataY = 0;
+};
+
 class MyCAD : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MyCAD(QWidget *parent = nullptr);
+    MyCAD(QWidget* parent = nullptr);
     ~MyCAD();
 
 protected:
@@ -18,13 +23,13 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
-    int delataX = 10;
-    int delataY = -10;
+    QVector<TabData> tabDataList; // Список данных для каждой вкладки
 
 private slots:  // Методы, связанные с сигналами
     void onExitThis();
     void onCloseThisTab();
     void onDrawLine();
+    void onTabChanged(int index);
 
 private:  // Обычные методы
     void createNewWindow();
@@ -35,13 +40,13 @@ private:  // Обычные методы
     void setupTabWidgetStyle();
 
 private:
-    Ui::MyCADClass ui; 
+    Ui::MyCADClass ui;
 
 private:
-        bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
-        QPoint lastMousePosition; // Последняя позиция мыши
-        QPoint offset;            // Смещение от начальной позиции
+    bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
+    QPoint lastMousePosition; // Последняя позиция мыши
+    QPoint offset;            // Смещение от начальной позиции
 
-        void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
-       
+    void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
+
 };
