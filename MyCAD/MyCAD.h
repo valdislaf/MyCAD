@@ -38,6 +38,7 @@ private:  // Обычные методы
     QCursor createCustomCrossCursor();
     void drawGrid();
     void setupTabWidgetStyle();
+    void CoordinateAxes(QPainter& painter, QWidget* currentTab);
 
 private:
     Ui::MyCADClass ui;

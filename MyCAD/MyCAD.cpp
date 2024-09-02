@@ -48,12 +48,15 @@ MyCAD::~MyCAD()
 
 void MyCAD::onTabChanged(int index)
 {
+   
     // Обработка изменения вкладки, например, загрузка настроек сетки для выбранной вкладки
     if (index >= 0) {
         QWidget* currentTab = ui.tabWidget->widget(index);
         int a = 0;
     }
 }
+
+
 
 
 QCursor MyCAD::createCustomCrossCursor()
@@ -177,7 +180,7 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
                 painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
                 y5 += gridSize;
             }
-            ymax = widgetHeight;
+           // ymax = widgetHeight;
             // Рисуем горизонтальные линии сетки вниз от начала координат
             y5 = 0;
             for (int y = widgetHeight; y < std::abs(delataY) + widgetHeight; y += gridSize) {
@@ -196,22 +199,12 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
             // Рисуем оси координат
             QColor XColor(130, 0, 0);
             painter.setPen(QPen(XColor, 1));
-            painter.drawLine(0 + delataX, ymax + delataY, widgetWidth + std::abs(delataX), ymax + delataY);  // Ось X
+            painter.drawLine(0 + delataX, widgetHeight + delataY, widgetWidth + std::abs(delataX), widgetHeight + delataY);  // Ось X
             QColor YColor(0, 130, 0);
             painter.setPen(QPen(YColor, 1));
-            painter.drawLine(0 + delataX, 0, 0 + delataX, ymax + delataY);  // Ось Y
+            painter.drawLine(0 + delataX, 0, 0 + delataX, widgetHeight + delataY);  // Ось Y
 
-            painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
-            int cursorSize = 100;
-            // Рисуем перекрестие
-            int squareside = 5; // сторона внутреннего квадрата
-            painter.drawLine(0 + delataX, ymax + delataY, 0 + delataX, ymax - cursorSize / 2 + delataY);
-            painter.drawLine(0 + delataX, ymax + delataY, cursorSize / 2 + delataX, ymax + delataY);
-
-            painter.drawLine(-squareside + delataX, ymax - squareside + delataY, -squareside + delataX, ymax + squareside + delataY);
-            painter.drawLine(-squareside + delataX, ymax + squareside + delataY, squareside + delataX, ymax + squareside + delataY);
-            painter.drawLine(squareside + delataX, ymax + squareside + delataY, squareside + delataX, ymax - squareside + delataY);
-            painter.drawLine(squareside + delataX, ymax - squareside + delataY, -squareside + delataX, ymax - squareside + delataY);
+            CoordinateAxes(painter, currentTab);
 
             return true;  // Сообщаем, что событие обработано
         }
@@ -221,6 +214,38 @@ bool MyCAD::eventFilter(QObject* obj, QEvent* event)
     return QMainWindow::eventFilter(obj, event);
 }
 
+void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
+{
+    int currentIndex = ui.tabWidget->currentIndex();
+    int widgetHeight = currentTab->height();
+    int widgetWidth = currentTab->width();
+    painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
+    int cursorSize = 100;
+    // Рисуем перекрестие
+    int squareside = 5; // сторона внутреннего квадрата
+    int delataX  =tabDataList[currentIndex].delataX;
+    int delataY= tabDataList[currentIndex].delataY;
+
+    if (delataX<0 || (widgetHeight + delataY) < 0 || delataX > widgetWidth || delataY>widgetHeight)
+    {
+        delataX = 10;
+        delataY = -10;
+    }
+
+    painter.drawLine( delataX, widgetHeight + delataY, delataX, widgetHeight - cursorSize / 2 + delataY);
+    painter.drawLine( delataX, widgetHeight + delataY, cursorSize / 2 + delataX, widgetHeight + delataY);
+
+    painter.drawLine(-squareside + delataX, widgetHeight - squareside + delataY, -squareside + delataX, widgetHeight + squareside + delataY);
+    painter.drawLine(-squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight + squareside + delataY);
+    painter.drawLine(squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight - squareside + delataY);
+    painter.drawLine(squareside + delataX, widgetHeight - squareside + delataY, -squareside + delataX, widgetHeight - squareside + delataY);
+    // Отладочные сообщения
+    qDebug() << "delataX: " << delataX;
+    qDebug() << "widgetHeight + delataY: " << (widgetHeight + delataY);
+    qDebug() << "widgetHeight: " << widgetHeight;
+    qDebug() << "widgetWidth:  " << widgetWidth;
+
+}
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
 {
@@ -265,6 +290,7 @@ void MyCAD::mouseMoveEvent(QMouseEvent* event)
         lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши
         drawGrid(); // Перерисовываем сетку
     }
+
     QMainWindow::mouseMoveEvent(event); // Вызов базового метода
 }
 
@@ -277,9 +303,12 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         // Обновляем значения смещения сетки на основе переданного delta
         tabDataList[currentIndex].delataX += delta.x();
         tabDataList[currentIndex].delataY += delta.y();
-
+       
         // Перерисовываем текущий активный виджет
         QWidget* currentTab = ui.tabWidget->currentWidget();
+
+
+
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
         }
