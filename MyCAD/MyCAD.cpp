@@ -223,14 +223,24 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
     int cursorSize = 100;
     // Рисуем перекрестие
     int squareside = 5; // сторона внутреннего квадрата
-    int delataX  =tabDataList[currentIndex].delataX;
-    int delataY= tabDataList[currentIndex].delataY;
+    int delataX = tabDataList[currentIndex].delataX;
+    int delataY = tabDataList[currentIndex].delataY;
 
     if (delataX<0 || (widgetHeight + delataY) < 0 || delataX > widgetWidth || (widgetHeight + delataY)>widgetHeight)
     {
         delataX = 10;
         delataY = -10;
     }
+
+    // Y    
+    painter.drawLine(delataX + 8, widgetHeight + delataY - 61, delataX + 4, widgetHeight + delataY - 66);
+    painter.drawLine(delataX + 8, widgetHeight + delataY - 61, delataX + 12, widgetHeight + delataY - 66);
+    painter.drawLine(delataX + 8, widgetHeight + delataY - 61, delataX + 8, widgetHeight + delataY - 54);
+
+    // X  
+    painter.drawLine(delataX + 54, widgetHeight + delataY - 12, delataX + 63, widgetHeight + delataY - 3);
+    painter.drawLine(delataX + 63, widgetHeight + delataY - 12, delataX + 54, widgetHeight + delataY - 3);
+
 
     painter.drawLine( delataX, widgetHeight + delataY, delataX, widgetHeight - cursorSize / 2 + delataY);
     painter.drawLine( delataX, widgetHeight + delataY, cursorSize / 2 + delataX, widgetHeight + delataY);
@@ -240,10 +250,10 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
     painter.drawLine(squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight - squareside + delataY);
     painter.drawLine(squareside + delataX, widgetHeight - squareside + delataY, -squareside + delataX, widgetHeight - squareside + delataY);
     // Отладочные сообщения
-    qDebug() << "delataX: " << delataX;
+   /* qDebug() << "delataX: " << delataX;
     qDebug() << "widgetHeight + delataY: " << (widgetHeight + delataY);
     qDebug() << "widgetHeight: " << widgetHeight;
-    qDebug() << "widgetWidth:  " << widgetWidth;
+    qDebug() << "widgetWidth:  " << widgetWidth;*/
 
 }
 
