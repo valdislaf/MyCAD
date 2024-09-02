@@ -226,7 +226,7 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
     int delataX  =tabDataList[currentIndex].delataX;
     int delataY= tabDataList[currentIndex].delataY;
 
-    if (delataX<0 || (widgetHeight + delataY) < 0 || delataX > widgetWidth || delataY>widgetHeight)
+    if (delataX<0 || (widgetHeight + delataY) < 0 || delataX > widgetWidth || (widgetHeight + delataY)>widgetHeight)
     {
         delataX = 10;
         delataY = -10;
