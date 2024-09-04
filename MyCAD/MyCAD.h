@@ -1,11 +1,18 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <QtWidgets/QMainWindow>
+
+#include "Shape.h"
 #include "ui_MyCAD.h"
+#include "DrawingWidget.h"
 
 struct TabData {
     int delataX = 0;
     int delataY = 0;
+    std::vector<std::shared_ptr<Shape>> shapes;  // Список фигур для этой вкладки
 };
 
 class MyCAD : public QMainWindow
@@ -18,10 +25,9 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
-    bool eventFilter(QObject* obj, QEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-
+    bool event(QEvent* e)override;
 private:
     QVector<TabData> tabDataList; // Список данных для каждой вкладки
 
@@ -35,10 +41,11 @@ private:  // Обычные методы
     void createNewWindow();
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();
-    QCursor createCustomCrossCursor();
-    void drawGrid();
     void setupTabWidgetStyle();
     void CoordinateAxes(QPainter& painter, QWidget* currentTab);
+    void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
+    void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
+
 
 private:
     Ui::MyCADClass ui;
@@ -48,6 +55,8 @@ private:
     QPoint lastMousePosition; // Последняя позиция мыши
     QPoint offset;            // Смещение от начальной позиции
 
-    void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
-
+public:
+    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур
+    void drawGrid(QPainter& painter);
+    QCursor createCustomCrossCursor();
 };

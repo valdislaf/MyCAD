@@ -23,11 +23,6 @@
       <height>281</height>
      </rect>
     </property>
-    <widget class="QWidget" name="tabWidgetPage1" native="true">
-     <attribute name="title">
-      <string/>
-     </attribute>
-    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
