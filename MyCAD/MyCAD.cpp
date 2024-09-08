@@ -29,7 +29,7 @@ MyCAD::MyCAD(QWidget* parent)
 
     // Подписываемся на сигнал смены вкладок
     connect(ui.tabWidget, &QTabWidget::currentChanged, this, &MyCAD::onTabChanged);
-
+    setFocus();
 }
 
 MyCAD::~MyCAD()
@@ -595,6 +595,7 @@ void MyCAD::keyPressEvent(QKeyEvent* event) {
         else {
             // Передаем событие базовому классу
             QMainWindow::keyPressEvent(event);
+
         }
     }
 }
