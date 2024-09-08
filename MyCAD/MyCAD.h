@@ -14,7 +14,9 @@ struct TabData {
     int delataY = 0;
     std::vector<std::shared_ptr<Shape>> shapes;  // Список фигур для этой вкладки
 };
-
+extern bool isdraw;
+extern bool ondrawline;
+extern QPoint clickpoint;
 class MyCAD : public QMainWindow
 {
     Q_OBJECT
@@ -28,13 +30,14 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool event(QEvent* e)override;
+    void keyPressEvent(QKeyEvent* event);
 private:
     QVector<TabData> tabDataList; // Список данных для каждой вкладки
 
 private slots:  // Методы, связанные с сигналами
     void onExitThis();
     void onCloseThisTab();
-    void onDrawLine();
+    void onDrawLine();    
     void onTabChanged(int index);
 
 private:  // Обычные методы
@@ -46,7 +49,6 @@ private:  // Обычные методы
     void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
     void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
 
-
 private:
     Ui::MyCADClass ui;
 
@@ -57,6 +59,9 @@ private:
 
 public:
     void drawShapes(QPainter& painter);          // Метод для рисования всех фигур
+    
     void drawGrid(QPainter& painter);
+    void DrawLine(QPainter& painter, QPoint localPos);
     QCursor createCustomCrossCursor();
+    QCursor createCustomCrossCursorIn();
 };

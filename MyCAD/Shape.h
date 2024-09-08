@@ -1,10 +1,13 @@
 #pragma once
-
+#include <QWidget>
 #include <QPainter>
 #include <QPoint>
 
 // Абстрактный базовый класс для всех геометрических объектов
-class Shape {
+class Shape : public QWidget {
+
+    Q_OBJECT
+
 public:
     virtual ~Shape() = default;
 
@@ -16,6 +19,9 @@ public:
 
 // Класс отрезка, наследник Shape
 class Line : public Shape {
+
+    Q_OBJECT
+
 public:
     Line(const QPoint& startPoint, const QPoint& endPoint);
 

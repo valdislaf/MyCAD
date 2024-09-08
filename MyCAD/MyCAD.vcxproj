@@ -102,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DrawingWidget.h" />
-    <ClInclude Include="Shape.h" />
+    <QtMoc Include="Shape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

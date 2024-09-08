@@ -7,8 +7,11 @@
 #include <QTabWidget>
 #include <QWidget>
 
-
 #include "MyCAD.h"
+
+bool isdraw = false;
+bool ondrawline = false;
+QPoint clickpoint = QPoint(0, 0);
 
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
@@ -34,11 +37,11 @@ MyCAD::~MyCAD()
 
 void MyCAD::onTabChanged(int index)
 {
-
+    clickpoint = QPoint(0, 0);
+    isdraw = false; ondrawline = false;
     // Обработка изменения вкладки, например, загрузка настроек сетки для выбранной вкладки
     if (index >= 0) {
-        QWidget* currentTab = ui.tabWidget->widget(index);
-        int a = 0;
+        QWidget* currentTab = ui.tabWidget->widget(index);        
     }
 }
 
@@ -54,6 +57,34 @@ QCursor MyCAD::createCustomCrossCursor()
 
     // Рисуем перекрестие
     int squareside = 3; // сторона внутреннего квадрата
+    painter.drawLine(cursorSize / 2, 0, cursorSize / 2, cursorSize / 2 - squareside);
+    painter.drawLine(0, cursorSize / 2, cursorSize / 2 - squareside, cursorSize / 2);
+    painter.drawLine(cursorSize / 2, cursorSize / 2 + squareside, cursorSize / 2, cursorSize);
+    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2, cursorSize, cursorSize / 2);
+
+    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 + squareside);
+    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside);
+    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 - squareside);
+    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside);
+    painter.end();
+
+    // Создаем курсор
+    return QCursor(cursorPixmap);
+}
+
+QCursor MyCAD::createCustomCrossCursorIn()
+{
+
+    // Размеры курсора
+    int cursorSize = 97;
+    QPixmap cursorPixmap(cursorSize, cursorSize);
+    cursorPixmap.fill(Qt::transparent);
+
+    QPainter painter(&cursorPixmap);
+    painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
+
+    // Рисуем перекрестие
+    int squareside = 0; // сторона внутреннего квадрата
     painter.drawLine(cursorSize / 2, 0, cursorSize / 2, cursorSize / 2 - squareside);
     painter.drawLine(0, cursorSize / 2, cursorSize / 2 - squareside, cursorSize / 2);
     painter.drawLine(cursorSize / 2, cursorSize / 2 + squareside, cursorSize / 2, cursorSize);
@@ -114,27 +145,44 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        // Проверяем, находится ли клик внутри tabWidget
-        if (ui.tabWidget->rect().contains(event->pos()))
+    if (ondrawline) { isdraw = true; }
+    if (isdraw) {
+        if (event->button() == Qt::LeftButton)
         {
-            // Определяем индекс вкладки, по которой был клик
-            int currentIndex = ui.tabWidget->currentIndex();
-            if (currentIndex != -1)
+            // Проверяем, находится ли клик внутри tabWidget
+            if (ui.tabWidget->rect().contains(event->pos()))
             {
-                // Преобразуем глобальные координаты события в локальные координаты tabWidget
-                QPoint localPos = ui.tabWidget->mapFromGlobal(event->globalPosition().toPoint());
-                QRect tabBarRect = ui.tabWidget->geometry();
-
-                if (tabBarRect.contains(localPos))
+                // Определяем индекс вкладки, по которой был клик
+                int currentIndex = ui.tabWidget->currentIndex();
+                if (currentIndex != -1)
                 {
-                    QMessageBox::information(this, "Tab Click", "Клик по вкладке с индексом: " + QString::number(currentIndex));
+                    // Преобразуем глобальные координаты события в локальные координаты tabWidget
+                    QPoint localPos = ui.tabWidget->mapFromGlobal(event->globalPosition().toPoint());
+                    QRect tabBarRect = ui.tabWidget->geometry();
+
+                    if (tabBarRect.contains(localPos))
+                    {
+                        QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+
+                        // Предположим, что у вас есть указатель на текущую вкладку:
+                        QWidget* currentTab = ui.tabWidget->currentWidget();
+
+                        QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                        if (clickpoint != QPoint(0, 0))
+                        {                           
+                              auto line = std::make_unique<Line>(clickpoint, newpoint);
+                              addShape(std::move(line));  // Обратите внимание на вызов addShape
+                        }
+                        // Преобразуем глобальные координаты в локальные относительно текущей вкладки
+                        clickpoint = newpoint;
+
+
+                        // QMessageBox::information(this, "Tab Click", "Клик по вкладке с индексом: " + QString::number(currentIndex));
+                    }
                 }
             }
         }
     }
-
     if (event->button() == Qt::MiddleButton) // Проверяем, что нажата средняя кнопка мыши
     {
         // ui.tabWidget->setCursor(QCursor(Qt::PointingHandCursor));
@@ -148,6 +196,8 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
 void MyCAD::mouseMoveEvent(QMouseEvent* event)
 {
+
+    update();
     if (isDragging) // Если мышь перетаскивается
     {
         QPoint delta = event->pos() - lastMousePosition; // Рассчитываем смещение
@@ -168,12 +218,20 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         // Обновляем значения смещения сетки на основе переданного delta
         tabDataList[currentIndex].delataX += delta.x();
         tabDataList[currentIndex].delataY += delta.y();
-
+        if (isdraw) {
+            clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
+        }
         // Перерисовываем текущий активный виджет
         QWidget* currentTab = ui.tabWidget->currentWidget();
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
-        }
+        }        
+
+            // Рисуем фигуры только для активной вкладки
+            for (const auto& shape : tabDataList[currentIndex].shapes) {
+                shape->move(delta);
+            }
+        
     }
 }
 
@@ -183,7 +241,6 @@ void MyCAD::mouseReleaseEvent(QMouseEvent* event)
     if (event->button() == Qt::MiddleButton) // Проверяем, что отпущена средняя кнопка мыши
     {
         isDragging = false; // Устанавливаем флаг перетаскивания в false
-
     }
 
     QMainWindow::mouseReleaseEvent(event); // Вызов базового метода
@@ -230,11 +287,15 @@ void MyCAD::createNewWindow()
         updateMenusBasedOnTabWidgetVisibility();
     }
 
-    DrawingWidget* newDrawingWidget = new DrawingWidget(this);   
-    int tabIndex = ui.tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(ui.tabWidget->count() + 1));
+    // Создаем unique_ptr на DrawingWidget с указанием родителя
+    DrawingWidget* newDrawingWidget = new DrawingWidget(this);
 
-    // Устанавливаем текущую вкладку
-    ui.tabWidget->setCurrentWidget(newDrawingWidget);    
+    // Получаем сырый указатель из unique_ptr и передаем его в QTabWidget
+    int tabIndex = ui.tabWidget->addTab(std::move(newDrawingWidget), tr("Чертеж %1").arg(ui.tabWidget->count() + 1));
+    //int tabIndex = ui.tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(ui.tabWidget->count() + 1));
+
+    // Переключаемся на только что созданную вкладку
+    ui.tabWidget->setCurrentIndex(tabIndex);
 
     // Инициализируем данные для новой вкладки
     TabData newTabData;
@@ -260,6 +321,11 @@ void MyCAD::createNewWindow()
 }
 
 bool MyCAD::event(QEvent* e) {
+    if (e->type() == QEvent::HoverMove) {
+        update();
+    }
+
+
     qDebug() << "MyCAD Event type:" << e->type();
     return QWidget::event(e);  // Не забывайте передавать событие дальше
 }
@@ -351,10 +417,11 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
 
 void MyCAD::onDrawLine() {
     int currentIndex = ui.tabWidget->currentIndex();
+    ondrawline = true;
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        auto line = std::make_unique<Line>(QPoint(0, 0), QPoint(400, 600));
-        addShape(std::move(line));  // Обратите внимание на вызов addShape
+        // auto line = std::make_unique<Line>(QPoint(0, 0), QPoint(400, 600));
+       //  addShape(std::move(line));  // Обратите внимание на вызов addShape
     }
 }
 
@@ -455,6 +522,38 @@ void MyCAD::drawGrid(QPainter& painter)
     }
 }
 
+void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
+{
+    if (isdraw) {
+        if (!ui.tabWidget) {
+            return;
+        }
+
+        // Получаем текущий активный виджет во вкладке
+        int currentIndex = ui.tabWidget->currentIndex();
+        if (currentIndex == -1) {
+            return;
+        }
+
+        QWidget* currentTab = ui.tabWidget->widget(currentIndex);
+        // Проверяем, что событие происходит на текущей активной вкладке
+        if (currentTab) {
+            QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+
+            // Предположим, что у вас есть указатель на текущую вкладку:
+            QWidget* currentTab = ui.tabWidget->currentWidget();
+
+            // Преобразуем глобальные координаты в локальные относительно текущей вкладки
+            QPoint localPos = currentTab->mapFromGlobal(globalPos);
+
+            QColor Color(255, 255, 255);  // Цвет основной сетки
+            QPen Pen(Color, 1, Qt::SolidLine);
+            painter.setPen(Pen);
+            painter.drawLine(localPos0.x(), localPos0.y(), localPos.x(), localPos.y());
+        }
+    }
+}
+
 void MyCAD::addShape(std::unique_ptr<Shape>&& shape) {
     // Получаем индекс активной вкладки
     int currentIndex = ui.tabWidget->currentIndex();
@@ -485,3 +584,17 @@ void MyCAD::drawShapes(QPainter& painter) {
     }
 }
 
+void MyCAD::keyPressEvent(QKeyEvent* event) {
+    // Проверяем, что нажата клавиша ESC
+    if (isdraw) {
+        if (event->key() == Qt::Key_Escape) {
+            setCursor(createCustomCrossCursor());
+            clickpoint = QPoint(0, 0);
+            isdraw = false; ondrawline = false;
+        }
+        else {
+            // Передаем событие базовому классу
+            QMainWindow::keyPressEvent(event);
+        }
+    }
+}
