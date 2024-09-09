@@ -13,8 +13,15 @@ bool isdraw = false;
 bool ondrawline = false;
 QPoint clickpoint = QPoint(0, 0);
 std::shared_ptr<Shape> selectedShape = nullptr;
+std::shared_ptr<Shape> selectedShapeStart = nullptr;
+std::shared_ptr<Shape> selectedShapeEnd = nullptr;
+std::shared_ptr<Shape> tempShape = nullptr;
+std::shared_ptr<Shape> tempShapeStart = nullptr;
+std::shared_ptr<Shape> tempShapeEnd = nullptr;
 bool movingWholeLine = false;
-bool ismovingWholeLine = false;
+bool movingStart = false;
+bool movingEnd = false;
+
 
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
@@ -162,11 +169,7 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
 
-
-    }
     if (ondrawline) { isdraw = true; }
     if (isdraw) {
         if (event->button() == Qt::LeftButton)
@@ -239,8 +242,60 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::LeftButton) {
 
-        if (ismovingWholeLine) {
-            ismovingWholeLine = false; movingWholeLine = false;
+        if (movingWholeLine) {
+            int currentIndex = ui.tabWidget->currentIndex();
+            // Проверяем, что currentIndex находится в допустимых пределах
+            if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+                // Проверяем, что список фигур не пуст
+                if (!tabDataList[currentIndex].shapes.empty()) {
+                    // Снимаем выделение со всех фигур
+                    for (const auto& shape : tabDataList[currentIndex].shapes) {
+                        shape->resetColor();
+                    }
+                }
+            }
+            tempShape->setCoords(selectedShape->getstartPoint(), selectedShape->getendPoint(), tempShape->getisSelected());
+            selectedShape.reset();
+            movingWholeLine = false;
+            update();
+        }
+        else  if (movingStart) {
+            int currentIndex = ui.tabWidget->currentIndex();
+            // Проверяем, что currentIndex находится в допустимых пределах
+            if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+                // Проверяем, что список фигур не пуст
+                if (!tabDataList[currentIndex].shapes.empty()) {
+                    // Снимаем выделение со всех фигур
+                    for (const auto& shape : tabDataList[currentIndex].shapes) {
+                        shape->resetColor();
+                    }
+                }
+            }
+
+            tempShapeStart->setCoords(selectedShapeStart->getstartPoint(), tempShapeStart->getendPoint(), tempShapeStart->getisSelected());
+            selectedShapeStart.reset();
+            movingStart = false;
+
+            update();
+        }
+        else   if (movingEnd) {
+            int currentIndex = ui.tabWidget->currentIndex();
+            // Проверяем, что currentIndex находится в допустимых пределах
+            if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+                // Проверяем, что список фигур не пуст
+                if (!tabDataList[currentIndex].shapes.empty()) {
+                    // Снимаем выделение со всех фигур
+                    for (const auto& shape : tabDataList[currentIndex].shapes) {
+                        shape->resetColor();
+                    }
+                }
+            }
+
+            tempShapeEnd->setCoords(tempShapeEnd->getstartPoint(), selectedShapeEnd->getendPoint(), tempShapeEnd->getisSelected());
+            selectedShapeEnd.reset();
+            movingEnd = false;
+
+            update();
         }
         else if (ui.tabWidget->rect().contains(event->pos()))
         {
@@ -261,28 +316,28 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
                     if (handle == HandleType::StartHandle) {
                         // Логика для перемещения начальной точки линии
-                        selectedShape = std::move(shape);  // Устанавливаем выделенную фигуру
-                        //  movingStart = true;
+                        selectedShapeStart = shape->clone();
+                        tempShapeStart = std::move(shape);
+                        movingStart = true;
                     }
-                    else if (handle == HandleType::EndHandle) {
+                     if (handle == HandleType::EndHandle) {
                         // Логика для перемещения конечной точки линии
-                        selectedShape = std::move(shape);  // Устанавливаем выделенную фигуру
-                        // movingEnd = true;
+                        selectedShapeEnd = shape->clone();
+                        tempShapeEnd = std::move(shape);
+                        movingEnd = true;
                     }
-                    else if (handle == HandleType::MiddleHandle) {
-                        // Логика для перемещения всей линии
-                        selectedShape = std::move(shape); // Устанавливаем выделенную фигуру
+                     if (handle == HandleType::MiddleHandle) {
+
+                        selectedShape = shape->clone();
+                        tempShape = std::move(shape);
                         movingWholeLine = true;
                     }
                 }
 
 
-                if (movingWholeLine) {
-                    ismovingWholeLine = true;
-                    /*  QPoint delta = event->pos() - lastMousePosition;
-                      selectedShape->move(delta);
-                      lastMousePosition = event->pos();*/
-                }
+                //if (movingWholeLine) {
+                //    ismovingWholeLine = true;                   
+                //}
             }
 
         }
@@ -351,12 +406,14 @@ void MyCAD::updateGridPosition(const QPoint& delta)
 void MyCAD::mouseReleaseEvent(QMouseEvent* event)
 {
 
+
+
     if (event->button() == Qt::MiddleButton) // Проверяем, что отпущена средняя кнопка мыши
     {
         isDragging = false; // Устанавливаем флаг перетаскивания в false
     }
 
-    QMainWindow::mouseReleaseEvent(event); // Вызов базового метода
+
 
     // Перерисовываем активную вкладку
     QWidget* currentTab = ui.tabWidget->currentWidget();
@@ -364,6 +421,7 @@ void MyCAD::mouseReleaseEvent(QMouseEvent* event)
         currentTab->update();  // Вызов перерисовки активного виджета
 
     }
+    QMainWindow::mouseReleaseEvent(event); // Вызов базового метода
 }
 
 void MyCAD::onExitThis()
@@ -436,18 +494,42 @@ void MyCAD::createNewWindow()
 bool MyCAD::event(QEvent* e) {
     if (e->type() == QEvent::HoverMove) {
         update();
-        if (ismovingWholeLine) {
-            QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+        if (!ondrawline) {
+            // перемещение всей линии
+            if (movingWholeLine) {
+                setCursor(createCustomCrossCursorIn());
+                QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+                // Предположим, что у вас есть указатель на текущую вкладку:
+                QWidget* currentTab = ui.tabWidget->currentWidget();
+                QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                QPoint delta = newpoint - lastMousePosition;
+                selectedShape->move(delta);
+                lastMousePosition = newpoint;
+            }
 
-            // Предположим, что у вас есть указатель на текущую вкладку:
-            QWidget* currentTab = ui.tabWidget->currentWidget();
+            // перемещение начала линии
+             if (movingStart) {
+                setCursor(createCustomCrossCursorIn());
+                QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+                // Предположим, что у вас есть указатель на текущую вкладку:
+                QWidget* currentTab = ui.tabWidget->currentWidget();
+                QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                QPoint delta = newpoint - lastMousePosition;
+                selectedShapeStart->moveStart(delta);
+                lastMousePosition = newpoint;
+            }
 
-            QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-
-
-            QPoint delta = newpoint - lastMousePosition;
-            selectedShape->move(delta);
-            lastMousePosition = newpoint;
+            // перемещение конца линии
+             if (movingEnd) {
+                setCursor(createCustomCrossCursorIn());
+                QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+                // Предположим, что у вас есть указатель на текущую вкладку:
+                QWidget* currentTab = ui.tabWidget->currentWidget();
+                QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                QPoint delta = newpoint - lastMousePosition;
+                selectedShapeEnd->moveEnd(delta);
+                lastMousePosition = newpoint;
+            }
         }
     }
 
@@ -710,6 +792,9 @@ void MyCAD::drawShapes(QPainter& painter) {
     int currentIndex = ui.tabWidget->currentIndex();
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+        if (selectedShape != nullptr) { selectedShape->draw(painter); }
+        else  if (selectedShapeStart != nullptr) { selectedShapeStart->draw(painter); }
+        else if (selectedShapeEnd != nullptr) { selectedShapeEnd->draw(painter); }
         // Рисуем фигуры только для активной вкладки
         for (const auto& shape : tabDataList[currentIndex].shapes) {
             shape->draw(painter);  // Вызов метода отрисовки фигуры
@@ -724,6 +809,8 @@ void MyCAD::keyPressEvent(QKeyEvent* event) {
             setCursor(createCustomCrossCursor());
             clickpoint = QPoint(0, 0);
             isdraw = false; ondrawline = false;
+
+            update();
         }
         else {
             // Передаем событие базовому классу
@@ -731,16 +818,34 @@ void MyCAD::keyPressEvent(QKeyEvent* event) {
 
         }
     }
-
-    int currentIndex = ui.tabWidget->currentIndex();
-    // Проверяем, что currentIndex находится в допустимых пределах
-    if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        // Проверяем, что список фигур не пуст
-        if (!tabDataList[currentIndex].shapes.empty()) {
-            // Снимаем выделение со всех фигур
-            for (const auto& shape : tabDataList[currentIndex].shapes) {
-                shape->setSelected(false);
+    else if (event->key() == Qt::Key_Escape) {
+        int currentIndex = ui.tabWidget->currentIndex();
+        // Проверяем, что currentIndex находится в допустимых пределах
+        if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+            // Проверяем, что список фигур не пуст
+            if (!tabDataList[currentIndex].shapes.empty()) {
+                // Снимаем выделение со всех фигур
+                for (const auto& shape : tabDataList[currentIndex].shapes) {
+                    shape->setSelected(false);
+                    // if (selectedShape == nullptr) { shape->setSelected(false); }
+                }
             }
         }
+        if (movingWholeLine) {
+            selectedShape.reset();
+            movingWholeLine = false;
+            setCursor(createCustomCrossCursor());
+        }
+         if (movingStart) {
+            selectedShapeStart.reset();
+            movingStart = false;
+            setCursor(createCustomCrossCursor());
+        }
+          if (movingEnd) {
+            selectedShapeEnd.reset();
+            movingEnd = false;
+            setCursor(createCustomCrossCursor());
+        }/**/
+        update();
     }
 }

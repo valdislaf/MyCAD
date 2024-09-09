@@ -19,7 +19,10 @@ extern bool ondrawline;
 extern QPoint clickpoint;
 extern std::shared_ptr<Shape> selectedShape;
 extern bool movingWholeLine;
-extern bool ismovingWholeLine;
+//extern bool ismovingWholeLine;
+extern bool movingEnd;
+extern bool movingStart;
+
 class MyCAD : public QMainWindow
 {
     Q_OBJECT

@@ -5,6 +5,43 @@
 Line::Line(const QPoint& startPoint, const QPoint& endPoint)
     : startPoint(startPoint), endPoint(endPoint) {}
 
+Line::Line(const Line& other)
+    : startPoint(other.startPoint), endPoint(other.endPoint) {}
+
+
+// Реализация метода  клонирования
+std::shared_ptr<Shape> Line::clone() const  {
+    return std::make_shared<Line>(*this);
+}
+
+void Line::setCoords(const QPoint& startPoint_, const QPoint& endPoint_, bool isSelected_) 
+{
+    startPoint = startPoint_; endPoint = endPoint_; isSelected = isSelected_;
+}
+
+QPoint Line::getstartPoint() const
+{
+    return startPoint;
+}
+
+QPoint Line::getendPoint() const
+{
+    return endPoint;
+}
+
+bool Line::getisSelected() const
+{
+    return isSelected;
+}
+
+void Line::resetColor()
+{
+    ColorStartPoint = QColor(0, 127, 255);
+    ColorEndPoint = QColor(0, 127, 255);
+    ColorMiddlePoint = QColor(0, 127, 255);
+}
+
+
 // Реализация метода рисования отрезка
 void Line::draw(QPainter& painter) const {
     QPen pen = painter.pen();
@@ -23,10 +60,12 @@ void Line::draw(QPainter& painter) const {
     painter.drawLine(startPoint, endPoint);
 
     // Рисуем квадраты на концах и в середине, если линия выделена
-    if (isSelected) {
-        painter.setBrush(Qt::blue);  // Голубая заливка для квадратов
+    if (isSelected) {        
+        painter.setBrush(ColorStartPoint); 
         painter.drawRect(getStartHandle());
+        painter.setBrush(ColorEndPoint);
         painter.drawRect(getEndHandle());
+        painter.setBrush(ColorMiddlePoint);
         painter.drawRect(getMiddleHandle());
     }
 }
@@ -34,6 +73,16 @@ void Line::draw(QPainter& painter) const {
 // Реализация метода перемещения отрезка
 void Line::move(const QPoint& delta) {
     startPoint += delta;
+    endPoint += delta;
+}
+
+void Line::moveStart(const QPoint& delta)
+{
+    startPoint += delta;
+}
+
+void Line::moveEnd(const QPoint& delta)
+{
     endPoint += delta;
 }
 
@@ -83,23 +132,30 @@ QRect Line::getMiddleHandle() const {
     return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
 }
 
-HandleType Line::getHandleAt(const QPoint& point) const {
+HandleType Line::getHandleAt(const QPoint& point)  {
 
     QRect start = getStartHandle();
     QRect end = getEndHandle();
     QRect middle = getMiddleHandle();
 
+    ColorStartPoint = QColor(0, 127, 255);
+    ColorEndPoint = QColor(0, 127, 255);
+    ColorMiddlePoint = QColor(0, 127, 255);
+
     if (getStartHandle().contains(point)) {
-        
+         ColorStartPoint = QColor(165, 0, 0);
         return HandleType::StartHandle;
     }
+
     if (getEndHandle().contains(point)) {
-       
+         ColorEndPoint = QColor(165, 0, 0);
         return HandleType::EndHandle;
     }
+
     if (getMiddleHandle().contains(point)) {
-        
+         ColorMiddlePoint = QColor(165, 0, 0);
         return HandleType::MiddleHandle;
     }
+
     return HandleType::None;
 }
