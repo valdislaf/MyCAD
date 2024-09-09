@@ -17,6 +17,9 @@ struct TabData {
 extern bool isdraw;
 extern bool ondrawline;
 extern QPoint clickpoint;
+extern std::shared_ptr<Shape> selectedShape;
+extern bool movingWholeLine;
+extern bool ismovingWholeLine;
 class MyCAD : public QMainWindow
 {
     Q_OBJECT
