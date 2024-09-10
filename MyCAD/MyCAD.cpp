@@ -44,8 +44,13 @@ MyCAD::~MyCAD()
 void MyCAD::onTabChanged(int index)
 {
     clickpoint = QPoint(0, 0);
-    isdraw = false; ondrawline = false;
-
+    isdraw = false;
+    ondrawline = false;
+    movingStart = false;
+    movingEnd = false;
+    movingWholeLine = false;
+    selShape.reset();
+   
     int currentIndex = ui.tabWidget->currentIndex();
 
     // Проверяем, что currentIndex находится в допустимых пределах
@@ -814,16 +819,12 @@ void MyCAD::keyPressEvent(QKeyEvent* event) {
         if (event->key() == Qt::Key_Escape) {
             setCursor(createCustomCrossCursor());
             clickpoint = QPoint(0, 0);
-            isdraw = false; ondrawline = false;
-            if (movingStart) {
-                movingStart = false; selShape.reset();
-            }
-            if (movingEnd) {
-                movingEnd = false; selShape.reset();
-            }
-            if (movingWholeLine) {
-                movingWholeLine = false; selShape.reset();
-            }
+            isdraw = false; 
+            ondrawline = false;
+            movingStart = false;
+            movingEnd = false;
+            movingWholeLine = false;
+            selShape.reset();
             update();
         }
         else {
