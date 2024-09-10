@@ -6,12 +6,12 @@ DrawingWidget::DrawingWidget(MyCAD* parent)
     : QWidget(parent), myCad(parent)
 {
     myCad->setCursor(myCad->createCustomCrossCursor());
-    qDebug() << "DrawingWidget created:" << this;
-    qDebug() << "DrawingWidget size:" << size();
+    //qDebug() << "DrawingWidget created:" << this;
+    //qDebug() << "DrawingWidget size:" << size();
 }
 
 void DrawingWidget::MyMethod() {
-    qDebug() << "DrawingWidget Mymethod";
+    //qDebug() << "DrawingWidget Mymethod";
 }
 void DrawingWidget::leaveEvent(QEvent* event)
 {
@@ -58,10 +58,10 @@ void DrawingWidget::mouseMoveEvent(QMouseEvent* event)
 void DrawingWidget::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     if (!painter.isActive()) {
-        qDebug() << "DrawingWidget::paintEvent QPainter is not active!";
+       // qDebug() << "DrawingWidget::paintEvent QPainter is not active!";
         return;
     }
-    qDebug() << "DrawingWidget::paintEvent called for:" << this;
+    //qDebug() << "DrawingWidget::paintEvent called for:" << this;
 
     // Ваш код отрисовки
     if (myCad) {
@@ -76,6 +76,6 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
 }
 
 bool DrawingWidget::event(QEvent* e) {
-    qDebug() << "DrawingWidget Event type:" << e->type();
+    //qDebug() << "DrawingWidget Event type:" << e->type();
     return QWidget::event(e);  // Не забывайте передавать событие дальше
 }

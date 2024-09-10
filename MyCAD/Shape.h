@@ -33,6 +33,10 @@ public:
     virtual QPoint getendPoint()const = 0;
     virtual bool getisSelected()const = 0;
     virtual void resetColor() = 0;
+
+    virtual bool getisStart() = 0;
+    virtual bool getisEnd() = 0;
+    virtual bool getisMiddle() = 0;
 };
 
 // Класс отрезка, наследник Shape
@@ -59,7 +63,9 @@ public:
     QPoint getendPoint()const override;
     bool getisSelected()const override;
     void resetColor() override;
-
+     bool getisStart()override;
+     bool getisEnd() override;
+     bool getisMiddle()override;
 private:
     QPoint startPoint;
     QPoint endPoint;
@@ -73,7 +79,9 @@ private:
     QRect getStartHandle() const;  // Возвращает область квадрата в начале линии
     QRect getEndHandle() const;    // Возвращает область квадрата в конце линии
     QRect getMiddleHandle() const; // Возвращает область квадрата в середине линии
-
+    bool isStart = false;  // Флаг выделения
+    bool isEnd = false;  // Флаг выделения
+    bool isMiddle = false;  // Флаг выделения
 };
 
 // В дальнейшем можно добавлять другие классы (Circle, Rectangle и т.д.)

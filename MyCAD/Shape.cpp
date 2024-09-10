@@ -39,6 +39,24 @@ void Line::resetColor()
     ColorStartPoint = QColor(0, 127, 255);
     ColorEndPoint = QColor(0, 127, 255);
     ColorMiddlePoint = QColor(0, 127, 255);
+     isStart = false;  // Флаг выделения
+     isEnd = false;  // Флаг выделения
+     isMiddle = false;  // Флаг выделения
+}
+
+bool Line::getisStart()
+{
+    return isStart;
+}
+
+bool Line::getisEnd()
+{
+    return isEnd;
+}
+
+bool Line::getisMiddle()
+{
+    return isMiddle;
 }
 
 
@@ -144,16 +162,19 @@ HandleType Line::getHandleAt(const QPoint& point)  {
 
     if (getStartHandle().contains(point)) {
          ColorStartPoint = QColor(165, 0, 0);
+         isStart = true;
         return HandleType::StartHandle;
     }
 
     if (getEndHandle().contains(point)) {
          ColorEndPoint = QColor(165, 0, 0);
+         isEnd = true;
         return HandleType::EndHandle;
     }
 
     if (getMiddleHandle().contains(point)) {
          ColorMiddlePoint = QColor(165, 0, 0);
+         isMiddle = true;
         return HandleType::MiddleHandle;
     }
 
