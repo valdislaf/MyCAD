@@ -161,7 +161,7 @@ HandleType Line::getHandleAt(const QPoint& point)  {
     ColorMiddlePoint = QColor(0, 127, 255);
 
     if (getStartHandle().contains(point)) {
-         ColorStartPoint = QColor(165, 0, 0);
+         ColorStartPoint = QColor(0, 0, 0);
          isStart = true;
         return HandleType::StartHandle;
     }
