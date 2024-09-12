@@ -329,18 +329,24 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         // Логика для перемещения начальной точки линии
                         selShape = shape->clone();
                         tmpShape = shape;
-                        movingStart = true;
+                        if (shape->getisStart()) {
+                            movingStart = true;  movingEnd = false; movingWholeLine = false;
+                        }
                     }
-                    if (handle == HandleType::EndHandle && !movingEnd && shape->getisEnd()) {
+                    else  if (handle == HandleType::EndHandle && !movingEnd && shape->getisEnd()) {
                         // Логика для перемещения конечной точки линии
                         selShape = shape->clone();
                         tmpShape = shape;
-                        movingEnd = true;
+                        if (shape->getisEnd()) {
+                            movingEnd = true; movingStart = false; movingWholeLine = false;
+                        }
                     }
-                    if (handle == HandleType::MiddleHandle && !movingWholeLine && shape->getisMiddle()) {
+                    else if (handle == HandleType::MiddleHandle && !movingWholeLine && shape->getisMiddle()) {
                         selShape = shape->clone();
                         tmpShape = shape;
-                        movingWholeLine = true;
+                        if (shape->getisMiddle()) {
+                            movingWholeLine = true;  movingStart = false; movingEnd = false;
+                        }
                     }
                 }
 
@@ -541,6 +547,8 @@ bool MyCAD::event(QEvent* e) {
                 selShape->moveEnd(delta);
                 lastMousePosition = newpoint;
             }
+
+            qDebug() << "mid "<< movingWholeLine <<",Start "<< movingStart <<",End " << movingEnd;
         }
     }
 
@@ -772,7 +780,7 @@ void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
             QPoint localPos = currentTab->mapFromGlobal(globalPos);
 
-            QColor Color(255, 255, 255);  // Цвет основной сетки
+            QColor Color(255, 155, 155); 
             QPen Pen(Color, 1, Qt::SolidLine);
             painter.setPen(Pen);
             painter.drawLine(localPos0.x(), localPos0.y(), localPos.x(), localPos.y());
