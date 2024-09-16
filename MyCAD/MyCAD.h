@@ -18,16 +18,12 @@ extern bool isdraw;
 extern bool ondrawline;
 extern QPoint clickpoint;
 
-extern bool movingWholeLine;
+
 extern std::vector<bool> movingWholeLines;
-extern bool movingEnd;
 extern std::vector<bool>  movingEnds;
-extern bool movingStart;
 extern std::vector<bool>  movingStarts;
 
-extern std::shared_ptr<Shape> selShape;
 extern std::vector<std::shared_ptr<Shape>>selShapes;
-extern std::shared_ptr<Shape> tmpShape;
 extern std::vector<std::shared_ptr<Shape>>tmpShapes;
 
 class MyCAD : public QMainWindow

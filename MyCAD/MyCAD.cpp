@@ -12,13 +12,8 @@
 bool isdraw = false;
 bool ondrawline = false;
 QPoint clickpoint = QPoint(0, 0);
-std::shared_ptr<Shape> selShape = nullptr;
 std::vector<std::shared_ptr<Shape>>selShapes;
-std::shared_ptr<Shape> tmpShape = nullptr;
 std::vector<std::shared_ptr<Shape>>tmpShapes;
-bool movingWholeLine = false;
-bool movingStart = false;
-bool movingEnd = false;
 std::vector<bool> movingWholeLines;
 std::vector<bool> movingEnds;
 std::vector<bool> movingStarts;
@@ -50,13 +45,9 @@ void MyCAD::onTabChanged(int index)
     clickpoint = QPoint(0, 0);
     isdraw = false;
     ondrawline = false;
-    movingStart = false;
-    movingEnd = false;
-    movingWholeLine = false;
     movingStarts.clear();
     movingEnds.clear();
     movingWholeLines.clear();
-    selShape.reset();
     selShapes.clear();
     int currentIndex = ui.tabWidget->currentIndex();
 
@@ -244,15 +235,6 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
 
     if (event->button() == Qt::LeftButton) {
-
-        /*  if (movingStart) { movingStart = false; }
-          if (movingEnd) { movingEnd = false; }
-          if (movingWholeLine) { movingWholeLine = false; }*/
-
-          /* if (selectedShapeStart != nullptr) {
-               movingStart = false;
-           }*/
-
         if (!selShapes.empty()&&!isdraw) {
             for (int i = 0; i < selShapes.size(); i++) {
                 if (movingWholeLines[i]) {
@@ -284,75 +266,13 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
        
             tmpShapes.clear();
             tmpShapes.resize(0);
-           // selShape.reset();
             selShapes.clear();
             movingWholeLines.clear();
             movingStarts.clear();
             movingEnds.clear();
             update();
         }
-
-        //if (movingWholeLine) {
-        //    movingWholeLine = false; movingStart = false; movingEnd = false;
-        //    int currentIndex = ui.tabWidget->currentIndex();
-        //    // Проверяем, что currentIndex находится в допустимых пределах
-        //    if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        //        // Проверяем, что список фигур не пуст
-        //        if (!tabDataList[currentIndex].shapes.empty()) {
-        //            // Снимаем выделение со всех фигур
-        //            for (const auto& shape : tabDataList[currentIndex].shapes) {
-        //                shape->resetColor();
-        //            }
-        //        }
-        //    }
-        //    tmpShape->setCoords(selShape->getstartPoint(), selShape->getendPoint(), tmpShape->getisSelected());
-        //    selShape.reset();
-        //    selShapes.clear();
-        //    update();
-
-        //}
-        //else if (movingStart) {
-        //    movingWholeLine = false; movingStart = false; movingEnd = false;
-        //    int currentIndex = ui.tabWidget->currentIndex();
-        //    // Проверяем, что currentIndex находится в допустимых пределах
-        //    if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        //        // Проверяем, что список фигур не пуст
-        //        if (!tabDataList[currentIndex].shapes.empty()) {
-        //            // Снимаем выделение со всех фигур
-        //            for (const auto& shape : tabDataList[currentIndex].shapes) {
-        //                shape->resetColor();
-        //            }
-        //        }
-        //    }
-
-        //    tmpShape->setCoords(selShape->getstartPoint(), tmpShape->getendPoint(), tmpShape->getisSelected());
-        //    selShape.reset();
-        //    selShapes.clear();
-
-
-        //    update();
-        //}
-        //else if (movingEnd) {
-        //    movingWholeLine = false; movingStart = false; movingEnd = false;
-        //    int currentIndex = ui.tabWidget->currentIndex();
-        //    // Проверяем, что currentIndex находится в допустимых пределах
-        //    if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        //        // Проверяем, что список фигур не пуст
-        //        if (!tabDataList[currentIndex].shapes.empty()) {
-        //            // Снимаем выделение со всех фигур
-        //            for (const auto& shape : tabDataList[currentIndex].shapes) {
-        //                shape->resetColor();
-        //            }
-        //        }
-        //    }
-
-        //    tmpShape->setCoords(tmpShape->getstartPoint(), selShape->getendPoint(), tmpShape->getisSelected());
-        //    selShape.reset();
-        //    selShapes.clear();
-
-
-        //    update();
-        //}
+        
         else  if (ui.tabWidget->rect().contains(event->pos()))
         {
             // Определяем индекс вкладки, по которой был клик
@@ -370,35 +290,27 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                     // Проверяем, попали ли мы на одну из ручек линии
                     HandleType handle = shape->getHandleAt(newpoint);
 
-                    if (handle == HandleType::StartHandle && !movingStart && shape->getisStart()) {
-                        // Логика для перемещения начальной точки линии
-                       // selShape = shape->clone();
+                    if (handle == HandleType::StartHandle && shape->getisStart()) {
+                        // Логика для перемещения начальной точки линии                      
                         selShapes.push_back(shape->clone());
-                        //tmpShape = shape;
                         tmpShapes.push_back(std::move(shape));
                         if (shape->getisStart()) {
-                           // movingStart = true;  movingEnd = false; movingWholeLine = false;
                             movingStarts.push_back(true);  movingEnds.push_back(false); movingWholeLines.push_back(false);
                         }
                     }
-                    else if (handle == HandleType::EndHandle && !movingEnd && shape->getisEnd()) {
-                        // Логика для перемещения конечной точки линии
-                      //  selShape = shape->clone();
+                    else if (handle == HandleType::EndHandle  && shape->getisEnd()) {
+                        // Логика для перемещения конечной точки линии                    
                         selShapes.push_back(shape->clone());
-                       // tmpShape = shape;
+                      
                         tmpShapes.push_back(std::move(shape));
-                        if (shape->getisEnd()) {
-                           // movingEnd = true; movingStart = false; movingWholeLine = false;
+                        if (shape->getisEnd()) {                          
                             movingEnds.push_back(true); movingStarts.push_back(false); movingWholeLines.push_back(false);
                         }
                     }
-                    else if (handle == HandleType::MiddleHandle && !movingWholeLine && shape->getisMiddle()) {
-                       // selShape = shape->clone();
+                    else if (handle == HandleType::MiddleHandle  && shape->getisMiddle()) {                       
                         selShapes.push_back(shape->clone());
-                       // tmpShape = shape;
                         tmpShapes.push_back(std::move(shape));
                         if (shape->getisMiddle()) {
-                           // movingWholeLine = true;  movingStart = false; movingEnd = false;
                             movingWholeLines.push_back(true);  movingStarts.push_back(false); movingEnds.push_back(false);
                         }
                     }
@@ -462,7 +374,7 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
         }
-        if (selShape != nullptr) { selShape->move(delta); }
+        //if (selShape != nullptr) { selShape->move(delta); }
         if (!selShapes.empty()) {
             for (auto& shape : selShapes)
             {
@@ -584,83 +496,23 @@ bool MyCAD::event(QEvent* e) {
                 QPoint newpoint = currentTab->mapFromGlobal(globalPos);
                 QPoint delta = newpoint - lastMousePosition;
                 for (int i = 0; i < selShapes.size(); i++) {
-                    if (movingWholeLines[i]) {                        
-                        //selShape->move(delta);
+                    if (movingWholeLines[i]) { 
                         selShapes[i]->move(delta);                        
                     }
-                    if (movingStarts[i]) {                       
-                       // selShape->moveStart(delta);
+                    if (movingStarts[i]) {
                         selShapes[i]->moveStart(delta);                       
                     }
                     // перемещение конца линии
-                    if (movingEnds[i]) {                       
-                        //selShape->moveEnd(delta);
+                    if (movingEnds[i]) { 
                         selShapes[i]->moveEnd(delta);
                     }
                 }
                 lastMousePosition = newpoint;
             }
            
-           // // перемещение всей линии
-           // if (movingWholeLine) {
-           //     setCursor(createCustomCrossCursorIn());
-           //     QPoint globalPos = QCursor::pos();
-           //     QWidget* currentTab = ui.tabWidget->currentWidget();
-           //     QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-           //     QPoint delta = newpoint - lastMousePosition;
-           //     selShape->move(delta);
-           //     //if (selShape != nullptr) { selShape->move(delta); }
-           //     if (!selShapes.empty()) {
-           //         for (auto& shape : selShapes)
-           //         {
-           //             shape->move(delta);
-           //         }
-           //     }
-           //     lastMousePosition = newpoint;
-           // }
-
-           // // перемещение начала линии
-           // if (movingStart) {
-           //     setCursor(createCustomCrossCursorIn());
-           //     QPoint globalPos = QCursor::pos();
-           //     QWidget* currentTab = ui.tabWidget->currentWidget();
-           //     QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-           //     QPoint delta = newpoint - lastMousePosition;
-           //     selShape->moveStart(delta);
-           //  //   if (selShape != nullptr) { selShape->move(delta); }
-           //     if (!selShapes.empty()) {
-           //         for (auto& shape : selShapes)
-           //         {
-           //             shape->moveStart(delta);
-           //         }
-           //     }
-           //     lastMousePosition = newpoint;
-           // }
-
-           // // перемещение конца линии
-           // if (movingEnd) {
-           //     setCursor(createCustomCrossCursorIn());
-           //     QPoint globalPos = QCursor::pos();
-           //     QWidget* currentTab = ui.tabWidget->currentWidget();
-           //     QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-           //     QPoint delta = newpoint - lastMousePosition;
-           //     selShape->moveEnd(delta);
-           ////     if (selShape != nullptr) { selShape->move(delta); }
-           //     if (!selShapes.empty()) {
-           //         for (auto& shape : selShapes)
-           //         {
-           //             shape->moveEnd(delta);
-           //         }
-           //     }
-           //     lastMousePosition = newpoint;
-           // }
-
-           // qDebug() << "mid "<< movingWholeLine <<",Start "<< movingStart <<",End " << movingEnd;
         }
     }
 
-
-    // qDebug() << "MyCAD Event type:" << e->type();
     return QWidget::event(e);  // Не забывайте передавать событие дальше
 }
 
@@ -918,8 +770,7 @@ void MyCAD::drawShapes(QPainter& painter) {
     int currentIndex = ui.tabWidget->currentIndex();
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        if (!isDragging) {
-            if (selShape != nullptr) { selShape->draw(painter); }
+        if (!isDragging) {          
             if (!selShapes.empty()) {
                 for (auto& shape : selShapes)
                 {
@@ -942,13 +793,8 @@ void MyCAD::keyPressEvent(QKeyEvent* event) {
             clickpoint = QPoint(0, 0);
             isdraw = false; 
             ondrawline = false;
-            movingStart = false;
-            movingEnd = false;
-            movingWholeLine = false;
-            movingStarts.clear();
             movingEnds.clear();
             movingWholeLines.clear();
-            selShape.reset();
             selShapes.clear();
             tmpShapes.clear();
             update();
@@ -967,36 +813,17 @@ void MyCAD::keyPressEvent(QKeyEvent* event) {
             if (!tabDataList[currentIndex].shapes.empty()) {
                 // Снимаем выделение со всех фигур
                 for (const auto& shape : tabDataList[currentIndex].shapes) {
-                    shape->setSelected(false);
-                    // if (selectedShape == nullptr) { shape->setSelected(false); }
+                    shape->setSelected(false);                   
                 }
             }
         }
-        if (movingWholeLine) {
-            selShape.reset();
-            selShapes.clear();
-            movingWholeLine = false;
-            movingWholeLines.clear();
-            tmpShapes.clear();
-            setCursor(createCustomCrossCursor());
-
-        }
-        if (movingStart) {
-            selShape.reset();
-            selShapes.clear();
-            movingStart = false;
-            movingStarts.clear();
-            tmpShapes.clear();
-            setCursor(createCustomCrossCursor());
-        }
-        if (movingEnd) {
-            selShape.reset();
-            selShapes.clear();
-            movingEnd = false;
-            movingEnds.clear();
-            tmpShapes.clear();
-            setCursor(createCustomCrossCursor());
-        }/**/
+      
+        movingStarts.clear();
+        movingEnds.clear();
+        movingWholeLines.clear();
+        selShapes.clear();
+        tmpShapes.clear();
+        setCursor(createCustomCrossCursor());        
         update();
     }
 }
