@@ -175,7 +175,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                             QPoint newpoint = currentTab->mapFromGlobal(globalPos);
                             if (clickpoint != QPoint(0, 0))
                             {
-                                if (ondrawline)
+                                if (ondrawline) // если рисуем линию
                                 {
                                     auto line = std::make_unique<Line>(clickpoint, newpoint);
                                     addShape(std::move(line));  // Обратите внимание на вызов addShape
