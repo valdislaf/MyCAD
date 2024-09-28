@@ -590,6 +590,7 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
         QMenu* modecircleSubMenu = DrawMenu->addMenu(tr("&Круг"));
         QAction* circleAction = modecircleSubMenu->addAction(tr("&Центр, радиус"));
         connect(circleAction, &QAction::triggered, this, &MyCAD::onDrawCircle);
+        QAction* circleAction2 = modecircleSubMenu->addAction(tr("&Центр, диаметр"));
 
         QMenu* DimensionMenu = ui.menuBar->addMenu(tr("  &Размеры  "));
         QMenu* EditMenu2 = ui.menuBar->addMenu(tr("  &Редактировать  "));
