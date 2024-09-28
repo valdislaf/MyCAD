@@ -177,8 +177,8 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                             {
                                 if (ondrawline)
                                 {
-                                auto line = std::make_unique<Line>(clickpoint, newpoint);
-                                addShape(std::move(line));  // Обратите внимание на вызов addShape
+                                    auto line = std::make_unique<Line>(clickpoint, newpoint);
+                                    addShape(std::move(line));  // Обратите внимание на вызов addShape
                                 }
                             }
                             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
