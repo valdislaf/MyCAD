@@ -586,6 +586,11 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
         DrawMenu->addAction(tr("&Прямая"));
         DrawMenu->addAction(tr("&Мультилиния"));
 
+        DrawMenu->addSeparator();
+        QMenu* modecircleSubMenu = DrawMenu->addMenu(tr("&Круг"));
+        QAction* circleAction = modecircleSubMenu->addAction(tr("&Центр, радиус"));
+        connect(circleAction, &QAction::triggered, this, &MyCAD::onDrawCircle);
+
         QMenu* DimensionMenu = ui.menuBar->addMenu(tr("  &Размеры  "));
         QMenu* EditMenu2 = ui.menuBar->addMenu(tr("  &Редактировать  "));
         QMenu* ParameterizationMenu = ui.menuBar->addMenu(tr("  &Параметризация  "));
@@ -616,6 +621,10 @@ void MyCAD::onDrawLine() {
             }
         }
     }
+}
+
+void MyCAD::onDrawCircle()
+{
 }
 
 void MyCAD::drawGrid(QPainter& painter)

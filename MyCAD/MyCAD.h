@@ -46,7 +46,8 @@ private:
 private slots:  // Методы, связанные с сигналами
     void onExitThis();
     void onCloseThisTab();
-    void onDrawLine();    
+    void onDrawLine();
+    void onDrawCircle();
     void onTabChanged(int index);
 
 private:  // Обычные методы
