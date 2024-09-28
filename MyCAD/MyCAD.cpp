@@ -11,6 +11,7 @@
 
 bool isdraw = false;
 bool ondrawline = false;
+bool ondrawcircle = false;
 QPoint clickpoint = QPoint(0, 0);
 std::vector<std::shared_ptr<Shape>>selShapes;
 std::vector<std::shared_ptr<Shape>>tmpShapes;
@@ -590,6 +591,7 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
         QMenu* modecircleSubMenu = DrawMenu->addMenu(tr("&Круг"));
         QAction* circleAction = modecircleSubMenu->addAction(tr("&Центр, радиус"));
         connect(circleAction, &QAction::triggered, this, &MyCAD::onDrawCircle);
+        QAction* circleAction2 = modecircleSubMenu->addAction(tr("&Центр, диаметр"));
 
         QMenu* DimensionMenu = ui.menuBar->addMenu(tr("  &Размеры  "));
         QMenu* EditMenu2 = ui.menuBar->addMenu(tr("  &Редактировать  "));
@@ -607,9 +609,19 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
 
 
 void MyCAD::onDrawLine() {
+    setCursor(createCustomCrossCursor());
+    clickpoint = QPoint(0, 0);
+    isdraw = false;
+    ondrawline = false;
+    ondrawcircle = false;
+    movingEnds.clear();
+    movingWholeLines.clear();
+    selShapes.clear();
+    tmpShapes.clear();
+    update();
 
     ondrawline = true;
-
+    
     int currentIndex = ui.tabWidget->currentIndex();
     // Проверяем, что currentIndex находится в допустимых пределах
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
@@ -625,6 +637,30 @@ void MyCAD::onDrawLine() {
 
 void MyCAD::onDrawCircle()
 {
+    setCursor(createCustomCrossCursor());
+    clickpoint = QPoint(0, 0);
+    isdraw = false;
+    ondrawline = false;
+    ondrawcircle = false;
+    movingEnds.clear();
+    movingWholeLines.clear();
+    selShapes.clear();
+    tmpShapes.clear();
+    update();
+
+    ondrawcircle = true;
+   
+    int currentIndex = ui.tabWidget->currentIndex();
+    // Проверяем, что currentIndex находится в допустимых пределах
+    if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+        // Проверяем, что список фигур не пуст
+        if (!tabDataList[currentIndex].shapes.empty()) {
+            // Снимаем выделение со всех фигур
+            for (const auto& shape : tabDataList[currentIndex].shapes) {
+                shape->setSelected(false);
+            }
+        }
+    }
 }
 
 void MyCAD::drawGrid(QPainter& painter)
