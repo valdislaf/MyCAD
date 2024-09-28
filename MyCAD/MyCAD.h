@@ -16,6 +16,7 @@ struct TabData {
 };
 extern bool isdraw;
 extern bool ondrawline;
+extern bool ondrawcircle;
 extern QPoint clickpoint;
 
 
