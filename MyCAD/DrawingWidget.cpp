@@ -32,15 +32,13 @@ void DrawingWidget::enterEvent(QEnterEvent* event)
 {
     
     if (ondrawline) { myCad->setCursor(myCad->createCustomCrossCursorIn()); }
-    else if (ondrawcircle) { myCad->setCursor(myCad->createCustomCrossCursorIn()); }
     else { myCad->setCursor(myCad->createCustomCrossCursor()); }
     QWidget::enterEvent(event);  // Вызов базового метода
 }
 
 void DrawingWidget::mouseReleaseEvent(QMouseEvent* event)
-{   
+{
     if (ondrawline) { myCad->setCursor(myCad->createCustomCrossCursorIn()); }
-    else if (ondrawcircle) { myCad->setCursor(myCad->createCustomCrossCursorIn()); }
     else { myCad->setCursor(myCad->createCustomCrossCursor()); }
     QWidget::mouseReleaseEvent(event);  // Вызов базового метода
 }
@@ -70,8 +68,7 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
         myCad->drawGrid(painter);
         myCad->drawShapes(painter);
         if (isdraw) {
-            if (ondrawline) { myCad->DrawLine(painter, clickpoint); }
-            else  if (ondrawcircle) { myCad->DrawCircle(painter, clickpoint); }
+            myCad->DrawLine(painter, clickpoint);
         }
     }
 
