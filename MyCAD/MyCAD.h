@@ -59,7 +59,7 @@ private:  // Обычные методы
     void CoordinateAxes(QPainter& painter, QWidget* currentTab);
     void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
     void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
-
+    void clearSelection();
 private:
     Ui::MyCADClass ui;
 
@@ -73,6 +73,7 @@ public:
     
     void drawGrid(QPainter& painter);
     void DrawLine(QPainter& painter, QPoint localPos);
+    void DrawCircle(QPainter& painter, QPoint localPos);
     QCursor createCustomCrossCursor();
     QCursor createCustomCrossCursorIn();
 };
