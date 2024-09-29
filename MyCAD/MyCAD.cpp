@@ -12,6 +12,8 @@
 bool isdraw = false;
 bool ondrawline = false;
 bool ondrawcircle = false;
+bool updrawcircle = false;
+
 QPoint clickpoint = QPoint(0, 0);
 std::vector<std::shared_ptr<Shape>>selShapes;
 std::vector<std::shared_ptr<Shape>>tmpShapes;
@@ -145,13 +147,23 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
 }
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
-{
-    if (isdraw) { ondrawcircle = false; }
+{  
     if (ondrawcircle) { isdraw = true; }
     else  if (ondrawline) { isdraw = true; }
     if (isdraw) {
         if (event->button() == Qt::LeftButton)
         {
+            if (updrawcircle) 
+            {
+                ondrawcircle = false;
+                updrawcircle = false;
+            }
+
+            if (ondrawcircle)
+            {
+                updrawcircle = true;
+            }
+
             // Проверяем, находится ли клик внутри tabWidget
             if (ui.tabWidget->rect().contains(event->pos()))
             {
@@ -721,7 +733,7 @@ void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
 
         QWidget* currentTab = ui.tabWidget->widget(currentIndex);
         // Проверяем, что событие происходит на текущей активной вкладке
-        if (currentTab) {
+        if (currentTab && !isDragging) {
             QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
             // Предположим, что у вас есть указатель на текущую вкладку:
@@ -752,7 +764,7 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
 
         QWidget* currentTab = ui.tabWidget->widget(currentIndex);
         // Проверяем, что событие происходит на текущей активной вкладке
-        if (currentTab) {
+        if (currentTab && !isDragging) {
             QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
