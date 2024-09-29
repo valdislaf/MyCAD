@@ -147,8 +147,7 @@ void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
 }
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
-{
-   /* if (isdraw) { ondrawcircle = false; }*/
+{  
     if (ondrawcircle) { isdraw = true; }
     else  if (ondrawline) { isdraw = true; }
     if (isdraw) {
@@ -159,6 +158,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 ondrawcircle = false;
                 updrawcircle = false;
             }
+
             if (ondrawcircle)
             {
                 updrawcircle = true;
