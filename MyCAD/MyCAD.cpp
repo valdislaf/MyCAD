@@ -764,9 +764,24 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
             QColor Color(255, 155, 155);
             QPen Pen(Color, 1, Qt::SolidLine);
             painter.setPen(Pen);
-
+           
             // Рисуем круг, используя радиус
             painter.drawEllipse(localPos0, radius, radius);  // Рисуем круг с одинаковым радиусом по X и Y
+
+            QColor Color2(212, 161, 32);
+            QPen Pen2(Color2, 1);
+
+            // Увеличьте шаг, изменяя длину и расстояние между штрихами
+            qreal dashLength = 10; // Длина штриха
+            qreal gapLength = 5;   // Расстояние между штрихами
+
+            QVector<qreal> dashPattern;
+            dashPattern << dashLength << gapLength; // Определите паттерн
+
+            Pen2.setDashPattern(dashPattern); // Установите паттерн в перо
+
+            painter.setPen(Pen2);
+            painter.drawLine(localPos0.x(), localPos0.y(), localPos.x(), localPos.y());
         }
     }
 }
