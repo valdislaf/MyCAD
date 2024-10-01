@@ -8,6 +8,10 @@ Line::Line(const QPoint& startPoint, const QPoint& endPoint)
 Line::Line(const Line& other)
     : startPoint(other.startPoint), endPoint(other.endPoint) {}
 
+Line::~Line()
+{
+}
+
 
 // Реализация метода  клонирования
 std::shared_ptr<Shape> Line::clone() const  {
@@ -179,4 +183,104 @@ HandleType Line::getHandleAt(const QPoint& point)  {
     }
 
     return HandleType::None;
+}
+
+Circle::Circle(const QPoint& startPoint, const QPoint& endPoint)
+{
+}
+
+Circle::Circle(const Circle& other)
+{
+}
+
+Circle::~Circle()
+{
+}
+
+void Circle::draw(QPainter& painter) const
+{
+}
+
+void Circle::move(const QPoint& delta)
+{
+}
+
+void Circle::moveStart(const QPoint& delta)
+{
+}
+
+void Circle::moveEnd(const QPoint& delta)
+{
+}
+
+bool Circle::contains(const QPoint& point) const
+{
+    return false;
+}
+
+void Circle::setSelected(bool selected)
+{
+}
+
+HandleType Circle::getHandleAt(const QPoint& point)
+{
+    return HandleType();
+}
+
+std::shared_ptr<Shape> Circle::clone() const
+{
+    return std::shared_ptr<Shape>();
+}
+
+void Circle::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
+{
+}
+
+QPoint Circle::getstartPoint() const
+{
+    return QPoint();
+}
+
+QPoint Circle::getendPoint() const
+{
+    return QPoint();
+}
+
+bool Circle::getisSelected() const
+{
+    return false;
+}
+
+void Circle::resetColor()
+{
+}
+
+bool Circle::getisStart()
+{
+    return false;
+}
+
+bool Circle::getisEnd()
+{
+    return false;
+}
+
+bool Circle::getisMiddle()
+{
+    return false;
+}
+
+QRect Circle::getStartHandle() const
+{
+    return QRect();
+}
+
+QRect Circle::getEndHandle() const
+{
+    return QRect();
+}
+
+QRect Circle::getMiddleHandle() const
+{
+    return QRect();
 }
