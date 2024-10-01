@@ -185,12 +185,11 @@ HandleType Line::getHandleAt(const QPoint& point)  {
     return HandleType::None;
 }
 
-Circle::Circle(const QPoint& startPoint, const QPoint& endPoint)
-{
-}
+Circle::Circle(const QPoint& startPoint, const QPoint& endPoint) 
+    : startPoint(startPoint), endPoint(endPoint) {}
 
 Circle::Circle(const Circle& other)
-{
+    : startPoint(other.startPoint), endPoint(other.endPoint) {
 }
 
 Circle::~Circle()
