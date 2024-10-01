@@ -23,6 +23,10 @@ void Line::setCoords(const QPoint& startPoint_, const QPoint& endPoint_, bool is
     startPoint = startPoint_; endPoint = endPoint_; isSelected = isSelected_;
 }
 
+void Line::setCentre(const QPoint& startPoint, const int radius, bool isSelected)
+{
+}
+
 QPoint Line::getstartPoint() const
 {
     return startPoint;
@@ -74,8 +78,8 @@ void Line::draw(QPainter& painter) const {
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawLine(startPoint, endPoint);
-        painter.setPen(painter.pen());
-        painter.drawLine(startPoint, endPoint);
+       /* painter.setPen(painter.pen());
+        painter.drawLine(startPoint, endPoint);*/
     }
 
     painter.setPen(pen);
@@ -185,11 +189,11 @@ HandleType Line::getHandleAt(const QPoint& point)  {
     return HandleType::None;
 }
 
-Circle::Circle(const QPoint& startPoint, const QPoint& endPoint) 
-    : startPoint(startPoint), endPoint(endPoint) {}
+Circle::Circle(const QPoint& startPoint, const int radius)
+    : startPoint(startPoint), radius(radius) {}
 
 Circle::Circle(const Circle& other)
-    : startPoint(other.startPoint), endPoint(other.endPoint) {
+    : startPoint(other.startPoint), radius(other.radius) {
 }
 
 Circle::~Circle()
@@ -198,10 +202,33 @@ Circle::~Circle()
 
 void Circle::draw(QPainter& painter) const
 {
+    QPen pen = painter.pen();
+    // Если линия выделена, изменяем цвет
+    if (isSelected) {
+        QColor highlightedColor(90, 150, 255, 169);
+        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
+        painter.setPen(highlightedPen);
+        painter.drawEllipse(startPoint, radius, radius);
+        
+    }
+
+    painter.setPen(pen);
+    painter.drawEllipse(startPoint, radius, radius);
+
+    // Рисуем квадраты на сверху снизу спарва и слева, если линия выделена
+    if (isSelected) {
+        painter.setBrush(ColorStartPoint);
+        painter.drawRect(getStartHandle());
+        painter.setBrush(ColorEndPoint);
+        painter.drawRect(getEndHandle());
+        painter.setBrush(ColorMiddlePoint);
+        painter.drawRect(getMiddleHandle());
+    }
 }
 
 void Circle::move(const QPoint& delta)
 {
+    startPoint += delta;
 }
 
 void Circle::moveStart(const QPoint& delta)
@@ -227,11 +254,15 @@ HandleType Circle::getHandleAt(const QPoint& point)
 }
 
 std::shared_ptr<Shape> Circle::clone() const
-{
-    return std::shared_ptr<Shape>();
+{    
+    return std::make_shared<Circle>(*this);
 }
 
 void Circle::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
+{
+}
+
+void Circle::setCentre(const QPoint& startPoint, const int radius, bool isSelected)
 {
 }
 

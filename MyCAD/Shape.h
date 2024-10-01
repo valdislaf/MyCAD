@@ -29,6 +29,7 @@ public:
     // Метод клонирования
     virtual std::shared_ptr<Shape> clone() const = 0;
     virtual void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) = 0;
+    virtual void setCentre(const QPoint& startPoint, const int radius, bool isSelected) = 0;
     virtual QPoint getstartPoint()const = 0;
     virtual QPoint getendPoint()const = 0;
     virtual bool getisSelected()const = 0;
@@ -60,6 +61,7 @@ public:
     // Метод клонирования
     std::shared_ptr<Shape> clone() const override;
     void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) override;
+    void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
     bool getisSelected()const override;
@@ -92,7 +94,7 @@ class Circle : public Shape {
     Q_OBJECT
 
 public:
-    Circle(const QPoint& startPoint, const QPoint& endPoint);
+    Circle(const QPoint& startPoint, const int radius);
 
     Circle(const Circle& other);
     ~Circle();
@@ -107,6 +109,7 @@ public:
     // Метод клонирования
     std::shared_ptr<Shape> clone() const override;
     void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) override;
+    void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
     bool getisSelected()const override;
@@ -116,7 +119,7 @@ public:
     bool getisMiddle()override;
 private:
     QPoint startPoint;
-    QPoint endPoint;
+    int radius;
     bool isSelected = false;  // Флаг выделения
     QColor ColorStartPoint = QColor(0, 127, 255);
     QColor ColorEndPoint = QColor(0, 127, 255);
