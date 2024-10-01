@@ -215,7 +215,7 @@ void Circle::draw(QPainter& painter) const
     painter.setPen(pen);
     painter.drawEllipse(startPoint, radius, radius);
 
-    // Рисуем квадраты на концах и в середине, если линия выделена
+    // Рисуем квадраты на сверху снизу спарва и слева
     if (isSelected) {
         painter.setBrush(ColorStartPoint);
         painter.drawRect(getStartHandle());
