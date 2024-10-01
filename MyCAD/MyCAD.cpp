@@ -153,11 +153,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
     if (isdraw) {
         if (event->button() == Qt::LeftButton)
         {
-            if (updrawcircle) 
-            {
-                ondrawcircle = false;
-                updrawcircle = false;
-            }
+            
 
             if (ondrawcircle)
             {
@@ -191,6 +187,15 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                                 {
                                     auto line = std::make_unique<Line>(clickpoint, newpoint);
                                     addShape(std::move(line));  // Обратите внимание на вызов addShape
+                                }
+                                if (updrawcircle) // если рисуем круг
+                                {
+                                    int radius = std::hypot(newpoint.x() - clickpoint.x(), newpoint.y() - clickpoint.y());
+                                    auto circle = std::make_unique<Circle>(clickpoint, radius);
+                                    addShape(std::move(circle));  // Обратите внимание на вызов addShape                                   
+                                    ondrawcircle = false;
+                                    updrawcircle = false;
+
                                 }
                             }
                             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
@@ -414,6 +419,10 @@ void MyCAD::mouseReleaseEvent(QMouseEvent* event)
             currentTab->update();  // Вызов перерисовки активного виджета
 
         }
+    }
+    if (event->button() == Qt::LeftButton) // Проверяем, что отпущена средняя кнопка мыши
+    {
+       
     }
     QMainWindow::mouseReleaseEvent(event); // Вызов базового метода
 }
