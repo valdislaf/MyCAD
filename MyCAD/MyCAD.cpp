@@ -48,7 +48,10 @@ MyCAD::MyCAD(QWidget* parent)
 }
 
 MyCAD::~MyCAD()
-{}
+{
+    delete tabWidget;
+    delete menuBar;
+}
 
 void MyCAD::onTabChanged(int index)
 {
@@ -493,7 +496,6 @@ void MyCAD::createNewWindow()
     DrawingWidget* widget = dynamic_cast<DrawingWidget*>(tabWidget->widget(tabIndex));
     if (widget) {
         widget->MyMethod();  // Вызываем метод
-
     }
     else {
         // qDebug() << "Ошибка приведения типа!";
@@ -554,6 +556,10 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
         connect(menuInit->GetexitAction(), &QAction::triggered, this, &MyCAD::onExitThis);
     }
 
+}
+
+void MyCAD::initialTabWidget()
+{
 }
 
 void MyCAD::onDrawLine() 
