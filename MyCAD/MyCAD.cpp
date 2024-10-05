@@ -9,6 +9,8 @@
 #include <QMenuBar>
 
 #include "MyCAD.h"
+#include <MenuInit.h>
+#include <MenuMain.h>
 
 bool isdraw = false;
 bool ondrawline = false;
@@ -533,92 +535,23 @@ bool MyCAD::event(QEvent* e) {
     return QWidget::event(e);  // Не забывайте передавать событие дальше
 }
 
-void MyCAD::initialTabWidget() {
-    menuBar->clear();
-    QMenu* FileMenu = menuBar->addMenu(tr("  &Файл  "));
-    QAction* NewWindowAction = FileMenu->addAction(tr("&Создать"));
-    connect(NewWindowAction, &QAction::triggered, this, &MyCAD::createNewWindow);
-
-    FileMenu->addAction(tr("&Открыть"));
-    QAction* CloseWindowAction = FileMenu->addAction(tr("&Закрыть"));
-    connect(CloseWindowAction, &QAction::triggered, this, &MyCAD::onCloseThisTab);
-
-    // Добавляем сепаратор
-    FileMenu->addSeparator();
-    // FileMenu стиль сепаратора
-    FileMenu->setStyleSheet(
-        "QMenu::separator {"
-        "   height: 1px;"
-        "   background-color: lightgray;"
-        "}"
-    );
-
-
-    // Вы можете добавить дополнительные действия после сепаратора, если нужно
-    FileMenu->addAction(tr("&Импорт"));
-    FileMenu->addAction(tr("&Вставить"));
-    FileMenu->addSeparator();
-    FileMenu->addAction(tr("&Сохранить"));
-    FileMenu->addAction(tr("&Сохранить как..."));
-
-    FileMenu->addSeparator();
-    FileMenu->addAction(tr("&Экспорт"));
-    FileMenu->addSeparator();
-    FileMenu->addAction(tr("&Печать"));
-    FileMenu->addSeparator();
-    FileMenu->addAction(tr("&Свойства"));
-    FileMenu->addSeparator();
-
-    QAction* exitAction = FileMenu->addAction(tr("&Выход"));
-    connect(exitAction, &QAction::triggered, this, &MyCAD::onExitThis);
-
-}
 
 void MyCAD::updateMenusBasedOnTabWidgetVisibility()
 {
     if (tabWidget->isVisible()) {
 
-        initialTabWidget();
-
-        QMenu* EditMenu = menuBar->addMenu(tr("  &Правка  "));
-        QMenu* ViewMenu = menuBar->addMenu(tr("  &Вид  "));
-        QMenu* InsertMenu = menuBar->addMenu(tr("  &Вставка  "));
-        QMenu* FormatMenu = menuBar->addMenu(tr("  &Формат  "));
-        QMenu* ServiceMenu = menuBar->addMenu(tr("  &Сервис  "));
-        QMenu* DrawMenu = menuBar->addMenu(tr("  &Рисование  "));
-        // Создаем подменю для "Моделирования"
-        QMenu* modelingSubMenu = DrawMenu->addMenu(tr("&Моделирование"));
-
-        // Добавляем действия в подменю "Моделирование"
-        modelingSubMenu->addAction(tr("&Политело"));
-        modelingSubMenu->addAction(tr("&Ящик"));
-        modelingSubMenu->addAction(tr("&Клин"));
-        modelingSubMenu->addAction(tr("&Сфера"));
-        modelingSubMenu->addAction(tr("&Цилиндр"));
-
-        DrawMenu->addSeparator();
-        QAction* lineAction = DrawMenu->addAction(tr("&Отрезок"));
-        connect(lineAction, &QAction::triggered, this, &MyCAD::onDrawLine);
-        DrawMenu->addAction(tr("&Луч"));
-        DrawMenu->addAction(tr("&Прямая"));
-        DrawMenu->addAction(tr("&Мультилиния"));
-
-        DrawMenu->addSeparator();
-        QMenu* modecircleSubMenu = DrawMenu->addMenu(tr("&Круг"));
-        QAction* circleAction = modecircleSubMenu->addAction(tr("&Центр, радиус"));
-        connect(circleAction, &QAction::triggered, this, &MyCAD::onDrawCircle);
-        QAction* circleAction2 = modecircleSubMenu->addAction(tr("&Центр, диаметр"));
-
-        QMenu* DimensionMenu = menuBar->addMenu(tr("  &Размеры  "));
-        QMenu* EditMenu2 = menuBar->addMenu(tr("  &Редактировать  "));
-        QMenu* ParameterizationMenu = menuBar->addMenu(tr("  &Параметризация  "));
-        QMenu* WindowMenu = menuBar->addMenu(tr("  &Окно  "));
-        QMenu* HelpMenu = menuBar->addMenu(tr("  &Справка  "));
+        std::unique_ptr<MenuMain> menuMain = std::make_unique<MenuMain>(menuBar);
+        connect(menuMain->GetNewWindowAction(), &QAction::triggered, this, &MyCAD::createNewWindow);
+        connect(menuMain->GetCloseWindowAction(), &QAction::triggered, this, &MyCAD::onCloseThisTab);
+        connect(menuMain->GetexitAction(), &QAction::triggered, this, &MyCAD::onExitThis);
+        connect(menuMain->GetlineAction(), &QAction::triggered, this, &MyCAD::onDrawLine);
+        connect(menuMain->GetcircleAction(), &QAction::triggered, this, &MyCAD::onDrawCircle);
     }
     else {
-        initialTabWidget();
-        QMenu* WindowMenu = menuBar->addMenu(tr("  &Окно  "));
-        QMenu* HelpMenu = menuBar->addMenu(tr("  &Справка  "));
+        std::unique_ptr<MenuInit> menuInit = std::make_unique<MenuInit>(menuBar);
+        connect(menuInit->GetNewWindowAction(), &QAction::triggered, this, &MyCAD::createNewWindow);
+        connect(menuInit->GetCloseWindowAction(), &QAction::triggered, this, &MyCAD::onCloseThisTab);
+        connect(menuInit->GetexitAction(), &QAction::triggered, this, &MyCAD::onExitThis);
     }
 
 }
