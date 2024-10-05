@@ -93,6 +93,8 @@ void Line::draw(QPainter& painter) const {
         painter.drawRect(getEndHandle());
         painter.setBrush(ColorMiddlePoint);
         painter.drawRect(getMiddleHandle());
+        // Отключаем заливку
+        painter.setBrush(Qt::NoBrush);
     }
 }
 
@@ -219,10 +221,12 @@ void Circle::draw(QPainter& painter) const
     if (isSelected) {
         painter.setBrush(ColorStartPoint);
         painter.drawRect(getStartHandle());
-        painter.setBrush(ColorEndPoint);
+       /* painter.setBrush(ColorEndPoint);
         painter.drawRect(getEndHandle());
         painter.setBrush(ColorMiddlePoint);
-        painter.drawRect(getMiddleHandle());
+        painter.drawRect(getMiddleHandle());*/
+        // Отключаем заливку
+        painter.setBrush(Qt::NoBrush);
     }
 }
 
@@ -241,11 +245,17 @@ void Circle::moveEnd(const QPoint& delta)
 
 bool Circle::contains(const QPoint& point) const
 {
-    return false;
+    // Вычисляем расстояние от точки до центра
+    double distanceSquared = pow(point.x() - startPoint.x(), 2) + pow(point.y() - startPoint.y(), 2);
+    double radiusSquared = radius * radius;
+    //float  result = fabs(distanceSquared - radiusSquared) ;
+    // Проверяем условие на нахождение точки на окружности с учетом погрешности
+    return fabs(distanceSquared - radiusSquared) < 1000;
 }
 
 void Circle::setSelected(bool selected)
 {
+    isSelected = selected;
 }
 
 HandleType Circle::getHandleAt(const QPoint& point)
@@ -302,7 +312,7 @@ bool Circle::getisMiddle()
 
 QRect Circle::getStartHandle() const
 {
-    return QRect();
+    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
 }
 
 QRect Circle::getEndHandle() const
