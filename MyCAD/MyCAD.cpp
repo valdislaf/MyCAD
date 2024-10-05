@@ -6,6 +6,7 @@
 #include <QTabBar>
 #include <QTabWidget>
 #include <QWidget>
+#include <QMenuBar>
 
 #include "MyCAD.h"
 
@@ -24,19 +25,23 @@ std::vector<bool> movingStarts;
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
-    ui.tabWidget->hide();
+    //setupUi(this);
+    tabWidget = new QTabWidget(this);  // Инициализация tabWidget
+    menuBar = new QMenuBar(this);  // Создаем QMenuBar
+    setMenuBar(menuBar);
 
-    // Настройка стиля для ui.tabWidget
+    tabWidget->hide();
+
+    // Настройка стиля для tabWidget
     setupTabWidgetStyle();
 
-    // Проверяем, что ui.menuBar действительно инициализирован и доступен
-    if (ui.menuBar) {
+    // Проверяем, что menuBar действительно инициализирован и доступен
+    if (menuBar) {
         updateMenusBasedOnTabWidgetVisibility();
     }
 
     // Подписываемся на сигнал смены вкладок
-    connect(ui.tabWidget, &QTabWidget::currentChanged, this, &MyCAD::onTabChanged);
+    connect(tabWidget, &QTabWidget::currentChanged, this, &MyCAD::onTabChanged);
     setFocus();
 }
 
@@ -49,7 +54,7 @@ void MyCAD::onTabChanged(int index)
 
     // Обработка изменения вкладки, например, загрузка настроек сетки для выбранной вкладки
     if (index >= 0) {
-        QWidget* currentTab = ui.tabWidget->widget(index);
+        QWidget* currentTab = tabWidget->widget(index);
     }
 }
 
@@ -110,7 +115,7 @@ QCursor MyCAD::createCustomCrossCursorIn()
 
 void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
 {
-    int currentIndex = ui.tabWidget->currentIndex();
+    int currentIndex = tabWidget->currentIndex();
     int widgetHeight = currentTab->height();
     int widgetWidth = currentTab->width();
     painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
@@ -161,23 +166,23 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
             }
 
             // Проверяем, находится ли клик внутри tabWidget
-            if (ui.tabWidget->rect().contains(event->pos()))
+            if (tabWidget->rect().contains(event->pos()))
             {
                 // Определяем индекс вкладки, по которой был клик
-                int currentIndex = ui.tabWidget->currentIndex();
+                int currentIndex = tabWidget->currentIndex();
                 if (currentIndex != -1)
                 {
                     
                     // Преобразуем глобальные координаты события в локальные координаты tabWidget
-                    QPoint localPos = ui.tabWidget->mapFromGlobal(event->globalPosition().toPoint());
-                    QRect tabBarRect = ui.tabWidget->geometry();
+                    QPoint localPos = tabWidget->mapFromGlobal(event->globalPosition().toPoint());
+                    QRect tabBarRect = tabWidget->geometry();
 
                     if (tabBarRect.contains(localPos))
                     {
                         QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
                         // Предположим, что у вас есть указатель на текущую вкладку:
-                        QWidget* currentTab = ui.tabWidget->currentWidget();
+                        QWidget* currentTab = tabWidget->currentWidget();
 
                        
                             QPoint newpoint = currentTab->mapFromGlobal(globalPos);
@@ -209,13 +214,13 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
         }
     }
     else {
-        int currentIndex = ui.tabWidget->currentIndex();
+        int currentIndex = tabWidget->currentIndex();
 
         if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
             QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
             // Предположим, что у вас есть указатель на текущую вкладку:
-            QWidget* currentTab = ui.tabWidget->currentWidget();
+            QWidget* currentTab = tabWidget->currentWidget();
             QPoint newpoint = currentTab->mapFromGlobal(globalPos);
 
             for (const auto& shape : tabDataList[currentIndex].shapes) {
@@ -231,7 +236,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::MiddleButton) // Проверяем, что нажата средняя кнопка мыши
     {
-        // ui.tabWidget->setCursor(QCursor(Qt::PointingHandCursor));
+        // tabWidget->setCursor(QCursor(Qt::PointingHandCursor));
         isDragging = true;
         lastMousePosition = event->pos(); // Сохраняем позицию мыши
     }
@@ -258,7 +263,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 }
               //  selShapes[i].reset();
             }
-            int currentIndex = ui.tabWidget->currentIndex();
+            int currentIndex = tabWidget->currentIndex();
             // Проверяем, что currentIndex находится в допустимых пределах
             if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
                 // Проверяем, что список фигур не пуст
@@ -279,27 +284,27 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
             update();
         }
         
-        else  if (ui.tabWidget->rect().contains(event->pos()))
+        else  if (tabWidget->rect().contains(event->pos()))
         {
             // Определяем индекс вкладки, по которой был клик
-            int currentIndex = ui.tabWidget->currentIndex();
+            int currentIndex = tabWidget->currentIndex();
             if (currentIndex != -1)
             {
                 QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
                 // Предположим, что у вас есть указатель на текущую вкладку:
-                QWidget* currentTab = ui.tabWidget->currentWidget();
+                QWidget* currentTab = tabWidget->currentWidget();
 
                 QPoint newpoint = currentTab->mapFromGlobal(globalPos);
 
-                for (const auto& shape : tabDataList[ui.tabWidget->currentIndex()].shapes) {
+                for (const auto& shape : tabDataList[tabWidget->currentIndex()].shapes) {
                     // Проверяем, попали ли мы на одну из ручек линии
                     HandleType handle = shape->getHandleAt(newpoint);
 
                     if (handle == HandleType::StartHandle && shape->getisStart()) {
                         // Логика для перемещения начальной точки линии                      
                         selShapes.push_back(shape->clone());
-                        tmpShapes.push_back(std::move(shape));
+                        tmpShapes.push_back(shape);
                         if (shape->getisStart()) {
                             movingStarts.push_back(true);  movingEnds.push_back(false); movingWholeLines.push_back(false);
                         }
@@ -308,14 +313,14 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         // Логика для перемещения конечной точки линии                    
                         selShapes.push_back(shape->clone());
                       
-                        tmpShapes.push_back(std::move(shape));
+                        tmpShapes.push_back(shape);
                         if (shape->getisEnd()) {                          
                             movingEnds.push_back(true); movingStarts.push_back(false); movingWholeLines.push_back(false);
                         }
                     }
                     else if (handle == HandleType::MiddleHandle  && shape->getisMiddle()) {                       
                         selShapes.push_back(shape->clone());
-                        tmpShapes.push_back(std::move(shape));
+                        tmpShapes.push_back(shape);
                         if (shape->getisMiddle()) {
                             movingWholeLines.push_back(true);  movingStarts.push_back(false); movingEnds.push_back(false);
                         }
@@ -330,11 +335,11 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (ui.tabWidget != nullptr) {
-            int currentIndex = ui.tabWidget->currentIndex();
+        if (tabWidget != nullptr) {
+            int currentIndex = tabWidget->currentIndex();
             if (currentIndex != -1)
             {
-                lastMousePosition = ui.tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+                lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
             }
         }
 
@@ -367,7 +372,7 @@ void MyCAD::mouseMoveEvent(QMouseEvent* event)
 
 void MyCAD::updateGridPosition(const QPoint& delta)
 {
-    int currentIndex = ui.tabWidget->currentIndex();
+    int currentIndex = tabWidget->currentIndex();
 
     // Проверка, что индекс корректный и вкладки существуют
     if (currentIndex != -1 && currentIndex < tabDataList.size()) {
@@ -378,7 +383,7 @@ void MyCAD::updateGridPosition(const QPoint& delta)
             clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
         }
         // Перерисовываем текущий активный виджет
-        QWidget* currentTab = ui.tabWidget->currentWidget();
+        QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
         }
@@ -403,18 +408,18 @@ void MyCAD::mouseReleaseEvent(QMouseEvent* event)
 
     if (event->button() == Qt::MiddleButton) // Проверяем, что отпущена средняя кнопка мыши
     {
-        if (ui.tabWidget != nullptr) {
-            int currentIndex = ui.tabWidget->currentIndex();
+        if (tabWidget != nullptr) {
+            int currentIndex = tabWidget->currentIndex();
             if (currentIndex != -1)
             {
-                lastMousePosition = ui.tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+                lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
             }
         }
         isDragging = false; // Устанавливаем флаг перетаскивания в false
     }
-    if (ui.tabWidget != nullptr) {
+    if (tabWidget != nullptr) {
         // Перерисовываем активную вкладку
-        QWidget* currentTab = ui.tabWidget->currentWidget();
+        QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки активного виджета
 
@@ -449,15 +454,15 @@ void MyCAD::onCloseThisTab()
 
 void MyCAD::setupTabWidgetStyle()
 {
-    // Применяем стиль к ui.tabWidget
-    ui.tabWidget->setStyleSheet("QTabWidget { background-color: rgb(33, 40, 48); }");
+    // Применяем стиль к tabWidget
+    tabWidget->setStyleSheet("QTabWidget { background-color: rgb(33, 40, 48); }");
 }
 
 void MyCAD::createNewWindow()
 {
     // Если QTabWidget был скрыт, показываем его при создании первого чертежа
-    if (!ui.tabWidget->isVisible()) {
-        ui.tabWidget->show();
+    if (!tabWidget->isVisible()) {
+        tabWidget->show();
         updateMenusBasedOnTabWidgetVisibility();
     }
 
@@ -465,11 +470,11 @@ void MyCAD::createNewWindow()
     DrawingWidget* newDrawingWidget = new DrawingWidget(this);
 
     
-    int tabIndex = ui.tabWidget->addTab(std::move(newDrawingWidget), tr("Чертеж %1").arg(ui.tabWidget->count() + 1));
-    //int tabIndex = ui.tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(ui.tabWidget->count() + 1));
+    int tabIndex = tabWidget->addTab(std::move(newDrawingWidget), tr("Чертеж %1").arg(tabWidget->count() + 1));
+    //int tabIndex = tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(tabWidget->count() + 1));
 
     // Переключаемся на только что созданную вкладку
-    ui.tabWidget->setCurrentIndex(tabIndex);
+    tabWidget->setCurrentIndex(tabIndex);
 
     // Инициализируем данные для новой вкладки
     TabData newTabData;
@@ -478,12 +483,12 @@ void MyCAD::createNewWindow()
     tabDataList.push_back(newTabData); // Добавляем данные вкладки в список
 
     // Переключаемся на только что созданную вкладку
-    ui.tabWidget->setCurrentIndex(tabIndex);
+    tabWidget->setCurrentIndex(tabIndex);
 
     // Убедитесь, что QTabWidget занимает все пространство центрального виджета
-    setCentralWidget(ui.tabWidget);
+    setCentralWidget(tabWidget);
 
-    DrawingWidget* widget = dynamic_cast<DrawingWidget*>(ui.tabWidget->widget(tabIndex));
+    DrawingWidget* widget = dynamic_cast<DrawingWidget*>(tabWidget->widget(tabIndex));
     if (widget) {
         widget->MyMethod();  // Вызываем метод
 
@@ -504,7 +509,7 @@ bool MyCAD::event(QEvent* e) {
             if (!selShapes.empty()) {
                 setCursor(createCustomCrossCursorIn());
                 QPoint globalPos = QCursor::pos();
-                QWidget* currentTab = ui.tabWidget->currentWidget();
+                QWidget* currentTab = tabWidget->currentWidget();
                 QPoint newpoint = currentTab->mapFromGlobal(globalPos);
                 QPoint delta = newpoint - lastMousePosition;
                 for (int i = 0; i < selShapes.size(); i++) {
@@ -529,8 +534,8 @@ bool MyCAD::event(QEvent* e) {
 }
 
 void MyCAD::initialTabWidget() {
-    ui.menuBar->clear();
-    QMenu* FileMenu = ui.menuBar->addMenu(tr("  &Файл  "));
+    menuBar->clear();
+    QMenu* FileMenu = menuBar->addMenu(tr("  &Файл  "));
     QAction* NewWindowAction = FileMenu->addAction(tr("&Создать"));
     connect(NewWindowAction, &QAction::triggered, this, &MyCAD::createNewWindow);
 
@@ -571,16 +576,16 @@ void MyCAD::initialTabWidget() {
 
 void MyCAD::updateMenusBasedOnTabWidgetVisibility()
 {
-    if (ui.tabWidget->isVisible()) {
+    if (tabWidget->isVisible()) {
 
         initialTabWidget();
 
-        QMenu* EditMenu = ui.menuBar->addMenu(tr("  &Правка  "));
-        QMenu* ViewMenu = ui.menuBar->addMenu(tr("  &Вид  "));
-        QMenu* InsertMenu = ui.menuBar->addMenu(tr("  &Вставка  "));
-        QMenu* FormatMenu = ui.menuBar->addMenu(tr("  &Формат  "));
-        QMenu* ServiceMenu = ui.menuBar->addMenu(tr("  &Сервис  "));
-        QMenu* DrawMenu = ui.menuBar->addMenu(tr("  &Рисование  "));
+        QMenu* EditMenu = menuBar->addMenu(tr("  &Правка  "));
+        QMenu* ViewMenu = menuBar->addMenu(tr("  &Вид  "));
+        QMenu* InsertMenu = menuBar->addMenu(tr("  &Вставка  "));
+        QMenu* FormatMenu = menuBar->addMenu(tr("  &Формат  "));
+        QMenu* ServiceMenu = menuBar->addMenu(tr("  &Сервис  "));
+        QMenu* DrawMenu = menuBar->addMenu(tr("  &Рисование  "));
         // Создаем подменю для "Моделирования"
         QMenu* modelingSubMenu = DrawMenu->addMenu(tr("&Моделирование"));
 
@@ -604,16 +609,16 @@ void MyCAD::updateMenusBasedOnTabWidgetVisibility()
         connect(circleAction, &QAction::triggered, this, &MyCAD::onDrawCircle);
         QAction* circleAction2 = modecircleSubMenu->addAction(tr("&Центр, диаметр"));
 
-        QMenu* DimensionMenu = ui.menuBar->addMenu(tr("  &Размеры  "));
-        QMenu* EditMenu2 = ui.menuBar->addMenu(tr("  &Редактировать  "));
-        QMenu* ParameterizationMenu = ui.menuBar->addMenu(tr("  &Параметризация  "));
-        QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
-        QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
+        QMenu* DimensionMenu = menuBar->addMenu(tr("  &Размеры  "));
+        QMenu* EditMenu2 = menuBar->addMenu(tr("  &Редактировать  "));
+        QMenu* ParameterizationMenu = menuBar->addMenu(tr("  &Параметризация  "));
+        QMenu* WindowMenu = menuBar->addMenu(tr("  &Окно  "));
+        QMenu* HelpMenu = menuBar->addMenu(tr("  &Справка  "));
     }
     else {
         initialTabWidget();
-        QMenu* WindowMenu = ui.menuBar->addMenu(tr("  &Окно  "));
-        QMenu* HelpMenu = ui.menuBar->addMenu(tr("  &Справка  "));
+        QMenu* WindowMenu = menuBar->addMenu(tr("  &Окно  "));
+        QMenu* HelpMenu = menuBar->addMenu(tr("  &Справка  "));
     }
 
 }
@@ -633,17 +638,17 @@ void MyCAD::onDrawCircle()
 void MyCAD::drawGrid(QPainter& painter)
 {
 
-    if (!ui.tabWidget) {
+    if (!tabWidget) {
         return;
     }
 
     // Получаем текущий активный виджет во вкладке
-    int currentIndex = ui.tabWidget->currentIndex();
+    int currentIndex = tabWidget->currentIndex();
     if (currentIndex == -1) {
         return;
     }
 
-    QWidget* currentTab = ui.tabWidget->widget(currentIndex);
+    QWidget* currentTab = tabWidget->widget(currentIndex);
     int delataX = tabDataList[currentIndex].delataX;
     int delataY = tabDataList[currentIndex].delataY;
     // Проверяем, что событие происходит на текущей активной вкладке
@@ -730,23 +735,23 @@ void MyCAD::drawGrid(QPainter& painter)
 void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
 {
     if (isdraw) {
-        if (!ui.tabWidget) {
+        if (!tabWidget) {
             return;
         }
 
         // Получаем текущий активный виджет во вкладке
-        int currentIndex = ui.tabWidget->currentIndex();
+        int currentIndex = tabWidget->currentIndex();
         if (currentIndex == -1) {
             return;
         }
 
-        QWidget* currentTab = ui.tabWidget->widget(currentIndex);
+        QWidget* currentTab = tabWidget->widget(currentIndex);
         // Проверяем, что событие происходит на текущей активной вкладке
         if (currentTab && !isDragging) {
             QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
             // Предположим, что у вас есть указатель на текущую вкладку:
-            QWidget* currentTab = ui.tabWidget->currentWidget();
+            QWidget* currentTab = tabWidget->currentWidget();
 
             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
             QPoint localPos = currentTab->mapFromGlobal(globalPos);
@@ -761,17 +766,17 @@ void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
 void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
 {
     if (isdraw) {
-        if (!ui.tabWidget) {
+        if (!tabWidget) {
             return;
         }
 
         // Получаем текущий активный виджет во вкладке
-        int currentIndex = ui.tabWidget->currentIndex();
+        int currentIndex = tabWidget->currentIndex();
         if (currentIndex == -1) {
             return;
         }
 
-        QWidget* currentTab = ui.tabWidget->widget(currentIndex);
+        QWidget* currentTab = tabWidget->widget(currentIndex);
         // Проверяем, что событие происходит на текущей активной вкладке
         if (currentTab && !isDragging) {
             QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
@@ -810,14 +815,14 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
 
 void MyCAD::addShape(std::unique_ptr<Shape>&& shape) {
     // Получаем индекс активной вкладки
-    int currentIndex = ui.tabWidget->currentIndex();
+    int currentIndex = tabWidget->currentIndex();
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
         // Добавляем фигуру в список фигур активной вкладки
         tabDataList[currentIndex].shapes.push_back(std::move(shape));
 
         // Перерисовываем активную вкладку
-        QWidget* currentTab = ui.tabWidget->widget(ui.tabWidget->currentIndex());
+        QWidget* currentTab = tabWidget->widget(tabWidget->currentIndex());
         if (currentTab) {
             // qDebug() << "Calling repaint on:" << currentTab;
             currentTab->setEnabled(true);
@@ -841,7 +846,7 @@ void MyCAD::clearSelection()
     update();
    
 
-    int currentIndex = ui.tabWidget->currentIndex();
+    int currentIndex = tabWidget->currentIndex();
     // Проверяем, что currentIndex находится в допустимых пределах
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
         // Проверяем, что список фигур не пуст
@@ -856,7 +861,7 @@ void MyCAD::clearSelection()
 
 void MyCAD::drawShapes(QPainter& painter) {
     // Получаем индекс активной вкладки
-    int currentIndex = ui.tabWidget->currentIndex();
+    int currentIndex = tabWidget->currentIndex();
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
         if (!isDragging) {          
