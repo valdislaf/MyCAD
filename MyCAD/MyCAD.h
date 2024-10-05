@@ -6,7 +6,7 @@
 #include <QtWidgets/QMainWindow>
 
 #include "Shape.h"
-#include "ui_MyCAD.h"
+//#include "ui_MyCAD.h"
 #include "DrawingWidget.h"
 
 struct TabData {
@@ -62,12 +62,14 @@ private:  // Обычные методы
     void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
     void clearSelection();
 private:
-    Ui::MyCADClass ui;
+    //Ui::MyCADClass ui;
 
 private:
     bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
     QPoint lastMousePosition; // Последняя позиция мыши
     QPoint offset;            // Смещение от начальной позиции
+    QTabWidget* tabWidget;
+    QMenuBar* menuBar;
 
 public:
     void drawShapes(QPainter& painter);          // Метод для рисования всех фигур
