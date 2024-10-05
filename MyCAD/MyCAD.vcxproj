@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DrawingWidget.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Shape.cpp" />
     <QtRcc Include="MyCAD.qrc" />
     <QtUic Include="MyCAD.ui" />
@@ -103,6 +104,9 @@
   <ItemGroup>
     <QtMoc Include="DrawingWidget.h" />
     <QtMoc Include="Shape.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
