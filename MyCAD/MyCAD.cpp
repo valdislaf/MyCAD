@@ -205,7 +205,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                                     addShape(std::move(circle));  // Обратите внимание на вызов addShape                                   
                                     ondrawcircle = false;
                                     updrawcircle = false;
-
+                                    clearSelection();
                                 }
                             }
                             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
