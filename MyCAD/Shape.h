@@ -122,15 +122,20 @@ private:
     int radius;
     bool isSelected = false;  // Флаг выделения
     QColor ColorStartPoint = QColor(0, 127, 255);
-    QColor ColorEndPoint = QColor(0, 127, 255);
-    QColor ColorMiddlePoint = QColor(0, 127, 255);
+    QColor ColorLeftPoint = QColor(0, 127, 255);
+    QColor ColorTopPoint = QColor(0, 127, 255);
+    QColor ColorRightPoint = QColor(0, 127, 255);
+    QColor ColorBottomPoint = QColor(0, 127, 255);
+
     // Размеры квадратов на концах и в середине линии
     static constexpr int handleSize = 10;
 
     QRect getStartHandle() const;  // Возвращает область квадрата в начале линии
-    QRect getEndHandle() const;    // Возвращает область квадрата в конце линии
-    QRect getMiddleHandle() const; // Возвращает область квадрата в середине линии
+    QRect getLeftHandle() const;
+    QRect getToptHandle() const;
+    QRect getRighttHandle() const;
+    QRect getBottomtHandle() const;
     bool isStart = false;  // Флаг выделения
     bool isEnd = false;  // Флаг выделения
     bool isMiddle = false;  // Флаг выделения
-};
+};      

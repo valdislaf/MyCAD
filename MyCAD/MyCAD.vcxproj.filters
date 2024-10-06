@@ -46,12 +46,24 @@
     <ClCompile Include="DrawingWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MenuInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DrawingWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Shape.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MenuInit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MenuMain.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
