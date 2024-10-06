@@ -219,12 +219,22 @@ void Circle::draw(QPainter& painter) const
 
     // Рисуем квадраты на сверху снизу спарва и слева, если линия выделена
     if (isSelected) {
+
         painter.setBrush(ColorStartPoint);
-        painter.drawRect(getStartHandle());
-       /* painter.setBrush(ColorEndPoint);
-        painter.drawRect(getEndHandle());
-        painter.setBrush(ColorMiddlePoint);
-        painter.drawRect(getMiddleHandle());*/
+        painter.drawRect(getStartHandle());       
+
+        painter.setBrush(ColorLeftPoint);
+        painter.drawRect(getLeftHandle());
+
+        painter.setBrush(ColorTopPoint);
+        painter.drawRect(getToptHandle());
+
+        painter.setBrush(ColorRightPoint);
+        painter.drawRect(getRighttHandle());
+
+        painter.setBrush(ColorBottomPoint);
+        painter.drawRect(getBottomtHandle());
+
         // Отключаем заливку
         painter.setBrush(Qt::NoBrush);
     }
@@ -315,12 +325,21 @@ QRect Circle::getStartHandle() const
     return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
 }
 
-QRect Circle::getEndHandle() const
-{
-    return QRect();
+QRect Circle::getLeftHandle() const {
+    // Центр окружности: centerPoint, радиус: radius
+    return QRect(startPoint.x() - radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
 }
 
-QRect Circle::getMiddleHandle() const
-{
-    return QRect();
+QRect Circle::getRighttHandle() const {
+    return QRect(startPoint.x() + radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
 }
+
+QRect Circle::getToptHandle() const {
+    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - radius - handleSize / 2, handleSize, handleSize);
+}
+
+QRect Circle::getBottomtHandle() const {
+    return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
+}
+
+
