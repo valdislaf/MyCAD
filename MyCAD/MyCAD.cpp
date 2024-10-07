@@ -24,6 +24,12 @@ std::vector<bool> movingWholeLines;
 std::vector<bool> movingEnds;
 std::vector<bool> movingStarts;
 
+
+std::vector<bool> movingLefts;
+std::vector<bool> movingTops;
+std::vector<bool> movingRights;
+std::vector<bool> movingBottoms;
+
 MyCAD::MyCAD(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -61,6 +67,17 @@ void MyCAD::onTabChanged(int index)
     if (index >= 0) {
         QWidget* currentTab = tabWidget->widget(index);
     }
+}
+
+void MyCAD::movingPush(HandleType handle)
+{
+    movingEnds.push_back(handle== HandleType::EndHandle);
+    movingStarts.push_back(handle == HandleType::StartHandle);
+    movingWholeLines.push_back(handle == HandleType::MiddleHandle);
+    movingLefts.push_back(handle == HandleType::LeftHandle);
+    movingTops.push_back(handle == HandleType::TopHandle);
+    movingRights.push_back(handle == HandleType::RightHandle);
+    movingBottoms.push_back(handle == HandleType::BottomHandle);
 }
 
 QCursor MyCAD::createCustomCrossCursor()
@@ -258,14 +275,28 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                    
                 }
                    if (movingStarts[i]) {
+
+                    //auto pt = tmpShapes[i].get();
                     tmpShapes[i]->setCoords(selShapes[i]->getstartPoint(), tmpShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
-                    
+                    tmpShapes[i]->setCentre(selShapes[i]->getstartPoint(), tmpShapes[i]->getradius(), tmpShapes[i]->getisSelected());
                 }
                    if (movingEnds[i]) {
                     tmpShapes[i]->setCoords(tmpShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
-                    
-                   
+                                       
                 }
+                   if (movingLefts[i]) {
+                      // int currentIndex = tabWidget->currentIndex();
+                      // if (currentIndex == -1) {
+                      //     return;
+                      // }
+                      // QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+                      // // Преобразуем глобальные координаты в локальные относительно текущей вкладки
+                      // QPoint localPos = tabWidget->widget(currentIndex)->mapFromGlobal(globalPos);
+                      // // Вычисляем радиус как максимальное расстояние по X или Y от центра до текущей позиции
+                      // int radius = std::hypot(localPos.x() - tmpShapes[i]->getstartPoint().x(), localPos.y() - tmpShapes[i]->getstartPoint().y());
+                      //tmpShapes[i]->setCentre(tmpShapes[i]->getstartPoint(), radius, tmpShapes[i]->getisSelected());
+
+                   }
               //  selShapes[i].reset();
             }
             int currentIndex = tabWidget->currentIndex();
@@ -311,7 +342,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         selShapes.push_back(shape->clone());
                         tmpShapes.push_back(shape);
                         if (shape->getisStart()) {
-                            movingStarts.push_back(true);  movingEnds.push_back(false); movingWholeLines.push_back(false);
+                            movingPush(handle);
                         }
                     }
                     else if (handle == HandleType::EndHandle  && shape->getisEnd()) {
@@ -320,14 +351,42 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                       
                         tmpShapes.push_back(shape);
                         if (shape->getisEnd()) {                          
-                            movingEnds.push_back(true); movingStarts.push_back(false); movingWholeLines.push_back(false);
+                            movingPush(handle);
                         }
                     }
                     else if (handle == HandleType::MiddleHandle  && shape->getisMiddle()) {                       
                         selShapes.push_back(shape->clone());
                         tmpShapes.push_back(shape);
                         if (shape->getisMiddle()) {
-                            movingWholeLines.push_back(true);  movingStarts.push_back(false); movingEnds.push_back(false);
+                            movingPush(handle);
+                        }
+                    }
+                    else if (handle == HandleType::LeftHandle && shape->getisLeft()) {
+                        selShapes.push_back(shape->clone());
+                        tmpShapes.push_back(shape);
+                        if (shape->getisLeft()) {
+                            movingPush(handle);
+                        }
+                    }
+                    else if (handle == HandleType::TopHandle && shape->getisTop()) {
+                        selShapes.push_back(shape->clone());
+                        tmpShapes.push_back(shape);
+                        if (shape->getisTop()) {
+                            movingPush(handle);
+                        }
+                    }
+                    else if (handle == HandleType::RightHandle && shape->getisRight()) {
+                        selShapes.push_back(shape->clone());
+                        tmpShapes.push_back(shape);
+                        if (shape->getisRight()) {
+                            movingPush(handle);
+                        }
+                    }
+                    else if (handle == HandleType::BottomHandle && shape->getisBottom()) {
+                        selShapes.push_back(shape->clone());
+                        tmpShapes.push_back(shape);
+                        if (shape->getisBottom()) {
+                            movingPush(handle);
                         }
                     }
                 }
@@ -336,6 +395,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
         }
     }
+  
 
 
     if (event->button() == Qt::LeftButton)

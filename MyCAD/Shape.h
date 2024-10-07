@@ -7,7 +7,11 @@ enum HandleType {
     None,
     StartHandle,
     EndHandle,
-    MiddleHandle
+    MiddleHandle,
+    LeftHandle,
+    TopHandle,
+    RightHandle,
+    BottomHandle
 };
 
 // Абстрактный базовый класс для всех геометрических объектов
@@ -32,12 +36,22 @@ public:
     virtual void setCentre(const QPoint& startPoint, const int radius, bool isSelected) = 0;
     virtual QPoint getstartPoint()const = 0;
     virtual QPoint getendPoint()const = 0;
+    virtual QPoint getleftPoint()const = 0;
+    virtual QPoint gettopPoint()const = 0;
+    virtual QPoint getrightPoint()const = 0;
+    virtual QPoint getbottomPoint()const = 0;
+    virtual int getradius()const = 0;
+
     virtual bool getisSelected()const = 0;
     virtual void resetColor() = 0;
 
     virtual bool getisStart() = 0;
     virtual bool getisEnd() = 0;
     virtual bool getisMiddle() = 0;
+    virtual bool getisLeft() = 0;
+    virtual bool getisRight() = 0;
+    virtual bool getisTop() = 0;
+    virtual bool getisBottom() = 0;
 };
 
 // Класс отрезка, наследник Shape
@@ -64,11 +78,20 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
+     QPoint getleftPoint()const override;
+     QPoint gettopPoint()const override;
+     QPoint getrightPoint()const override;
+     QPoint getbottomPoint()const override;
+     int getradius()const override;
     bool getisSelected()const override;
     void resetColor() override;
      bool getisStart()override;
      bool getisEnd() override;
      bool getisMiddle()override;
+      bool getisLeft()override;
+      bool getisRight()override;
+      bool getisTop()override;
+      bool getisBottom()override;
 private:
     QPoint startPoint;
     QPoint endPoint;
@@ -85,6 +108,7 @@ private:
     bool isStart = false;  // Флаг выделения
     bool isEnd = false;  // Флаг выделения
     bool isMiddle = false;  // Флаг выделения
+
 };
 
 // В дальнейшем можно добавлять другие классы (Circle, Rectangle и т.д.)
@@ -112,13 +136,27 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
+    QPoint getleftPoint()const override;
+    QPoint gettopPoint()const override;
+    QPoint getrightPoint()const override;
+    QPoint getbottomPoint()const override;
+    int getradius()const override;
+
     bool getisSelected()const override;
     void resetColor() override;
     bool getisStart()override;
     bool getisEnd() override;
     bool getisMiddle()override;
+    bool getisLeft()override;
+    bool getisRight()override;
+    bool getisTop()override;
+    bool getisBottom()override;
 private:
     QPoint startPoint;
+    QPoint leftPoint;
+    QPoint topPoint;
+    QPoint rightPoint;
+    QPoint bottomPoint;
     int radius;
     bool isSelected = false;  // Флаг выделения
     QColor ColorStartPoint = QColor(0, 127, 255);
@@ -136,6 +174,8 @@ private:
     QRect getRighttHandle() const;
     QRect getBottomtHandle() const;
     bool isStart = false;  // Флаг выделения
-    bool isEnd = false;  // Флаг выделения
-    bool isMiddle = false;  // Флаг выделения
+    bool isLeft = false;  // Флаг выделения
+    bool isTop = false;  // Флаг выделения
+    bool isRight = false;  // Флаг выделения
+    bool isBottom = false;  // Флаг выделения
 };      
