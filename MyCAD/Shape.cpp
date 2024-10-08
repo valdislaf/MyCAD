@@ -37,6 +37,31 @@ QPoint Line::getendPoint() const
     return endPoint;
 }
 
+QPoint Line::getleftPoint() const
+{
+    return QPoint();
+}
+
+QPoint Line::gettopPoint() const
+{
+    return QPoint();
+}
+
+QPoint Line::getrightPoint() const
+{
+    return QPoint();
+}
+
+QPoint Line::getbottomPoint() const
+{
+    return QPoint();
+}
+
+int Line::getradius() const
+{
+    return 0;
+}
+
 bool Line::getisSelected() const
 {
     return isSelected;
@@ -52,19 +77,44 @@ void Line::resetColor()
      isMiddle = false;  // Флаг выделения
 }
 
-bool Line::getisStart()
+bool Line::getisStart() const
 {
     return isStart;
 }
 
-bool Line::getisEnd()
+bool Line::getisEnd() const
 {
     return isEnd;
 }
 
-bool Line::getisMiddle()
+bool Line::getisMiddle() const
 {
     return isMiddle;
+}
+
+bool Line::getisLeft() const
+{
+    return false;
+}
+
+bool Line::getisRight() const
+{
+    return false;
+}
+
+bool Line::getisTop() const
+{
+    return false;
+}
+
+bool Line::getisBottom() const
+{
+    return false;
+}
+
+Type Line::name() const
+{
+    return Type::line;
 }
 
 
@@ -112,6 +162,10 @@ void Line::moveStart(const QPoint& delta)
 void Line::moveEnd(const QPoint& delta)
 {
     endPoint += delta;
+}
+
+void Line::moveRadius(const int radius)
+{
 }
 
 // Метод установки состояния выделения
@@ -247,10 +301,17 @@ void Circle::move(const QPoint& delta)
 
 void Circle::moveStart(const QPoint& delta)
 {
+    startPoint += delta;
 }
 
 void Circle::moveEnd(const QPoint& delta)
 {
+
+}
+
+void Circle::moveRadius(const int radius_)
+{
+    radius = radius_;
 }
 
 bool Circle::contains(const QPoint& point) const
@@ -270,7 +331,44 @@ void Circle::setSelected(bool selected)
 
 HandleType Circle::getHandleAt(const QPoint& point)
 {
-    return HandleType();
+    
+    ColorStartPoint = QColor(0, 127, 255);
+    ColorLeftPoint = QColor(0, 127, 255);
+     ColorTopPoint = QColor(0, 127, 255);
+     ColorRightPoint = QColor(0, 127, 255);
+     ColorBottomPoint = QColor(0, 127, 255);
+
+    if (getStartHandle().contains(point)) {
+        ColorStartPoint = QColor(0, 0, 0);
+        isStart = true;
+        return HandleType::StartHandle;
+    }
+
+    if (getLeftHandle().contains(point)) {
+        ColorLeftPoint = QColor(165, 0, 0);
+        isLeft = true;
+        return HandleType::LeftHandle;
+    }
+
+    if (getToptHandle().contains(point)) {
+        ColorTopPoint = QColor(165, 0, 0);
+        isTop = true;
+        return HandleType::TopHandle;
+    }
+
+    if (getRighttHandle().contains(point)) {
+        ColorRightPoint = QColor(165, 0, 0);
+        isRight = true;
+        return HandleType::RightHandle;
+    }
+
+    if (getBottomtHandle().contains(point)) {
+        ColorBottomPoint = QColor(165, 0, 0);
+        isBottom = true;
+        return HandleType::BottomHandle;
+    }
+
+    return HandleType::None;
 }
 
 std::shared_ptr<Shape> Circle::clone() const
@@ -280,15 +378,17 @@ std::shared_ptr<Shape> Circle::clone() const
 
 void Circle::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
 {
+    
 }
 
-void Circle::setCentre(const QPoint& startPoint, const int radius, bool isSelected)
+void Circle::setCentre(const QPoint& startPoint_, const int radius_, bool isSelected_)
 {
+    startPoint = startPoint_;  radius = radius_; isSelected = isSelected_;
 }
 
 QPoint Circle::getstartPoint() const
 {
-    return QPoint();
+    return startPoint;
 }
 
 QPoint Circle::getendPoint() const
@@ -296,28 +396,88 @@ QPoint Circle::getendPoint() const
     return QPoint();
 }
 
+QPoint Circle::getleftPoint() const
+{
+    return leftPoint;
+}
+
+QPoint Circle::gettopPoint() const
+{
+    return topPoint;
+}
+
+QPoint Circle::getrightPoint() const
+{
+    return rightPoint;
+}
+
+QPoint Circle::getbottomPoint() const
+{
+    return bottomPoint;
+}
+
+int Circle::getradius() const
+{
+    return radius;
+}
+
 bool Circle::getisSelected() const
 {
-    return false;
+    return isSelected;
 }
 
 void Circle::resetColor()
 {
+     ColorStartPoint = QColor(0, 127, 255);
+     ColorLeftPoint = QColor(0, 127, 255);
+     ColorTopPoint = QColor(0, 127, 255);
+     ColorRightPoint = QColor(0, 127, 255);
+     ColorBottomPoint = QColor(0, 127, 255);
+     isStart = false;  // Флаг выделения
+     isLeft = false;  // Флаг выделения
+     isTop = false;  // Флаг выделения
+     isRight = false;  // Флаг выделения
+     isBottom = false;  // Флаг выделения
 }
 
-bool Circle::getisStart()
+bool Circle::getisStart()const
+{
+    return isStart;
+}
+
+bool Circle::getisEnd()const
 {
     return false;
 }
 
-bool Circle::getisEnd()
+bool Circle::getisMiddle()const
 {
     return false;
 }
 
-bool Circle::getisMiddle()
+bool Circle::getisLeft()const
 {
-    return false;
+    return isLeft;
+}
+
+bool Circle::getisRight()const
+{
+    return isRight;
+}
+
+bool Circle::getisTop() const
+{
+    return isTop;
+}
+
+bool Circle::getisBottom() const
+{
+    return isBottom;
+}
+
+Type Circle::name() const
+{
+    return Type::circle;
 }
 
 QRect Circle::getStartHandle() const
