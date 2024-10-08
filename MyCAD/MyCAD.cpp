@@ -271,20 +271,28 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
         if (!selShapes.empty()&&!isdraw) {
             for (int i = 0; i < selShapes.size(); i++) {
                 if (movingWholeLines[i]) {
-                    tmpShapes[i]->setCoords(selShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
-                   
+                    if (tmpShapes[i]->name() == Type::line) {
+                        tmpShapes[i]->setCoords(selShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
+                    }
                 }
-                   if (movingStarts[i]) {
+                if (movingStarts[i]) {
 
-                    //auto pt = tmpShapes[i].get();
-                    tmpShapes[i]->setCoords(selShapes[i]->getstartPoint(), tmpShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
-                    tmpShapes[i]->setCentre(selShapes[i]->getstartPoint(), tmpShapes[i]->getradius(), tmpShapes[i]->getisSelected());
+                    if (tmpShapes[i]->name() == Type::line) {
+                        tmpShapes[i]->setCoords(selShapes[i]->getstartPoint(), tmpShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
+                    }
+                    if (tmpShapes[i]->name() == Type::circle) {
+                        tmpShapes[i]->setCentre(selShapes[i]->getstartPoint(), tmpShapes[i]->getradius(), tmpShapes[i]->getisSelected());
+                    }
                 }
                    if (movingEnds[i]) {
-                    tmpShapes[i]->setCoords(tmpShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
-                                       
+                       if (tmpShapes[i]->name() == Type::line) {
+                           tmpShapes[i]->setCoords(tmpShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
+                       }
                 }
-                   if (movingLefts[i]) {
+                   if (movingLefts[i] || movingTops[i] || movingRights[i] || movingBottoms[i]) {
+                       if (tmpShapes[i]->name() == Type::circle) {
+                           tmpShapes[i]->setCentre(tmpShapes[i]->getstartPoint(), selShapes[i]->getradius(), tmpShapes[i]->getisSelected());
+                       }
                       // int currentIndex = tabWidget->currentIndex();
                       // if (currentIndex == -1) {
                       //     return;
@@ -317,6 +325,11 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
             movingWholeLines.clear();
             movingStarts.clear();
             movingEnds.clear();
+            movingLefts.clear();
+            movingTops.clear();
+            movingRights.clear();
+            movingBottoms.clear();
+
             update();
         }
         
@@ -454,7 +467,7 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         }
         //if (selShape != nullptr) { selShape->move(delta); }
         if (!selShapes.empty()) {
-            for (auto& shape : selShapes)
+            for (const auto& shape : selShapes)
             {
                 shape->move(delta);
             }
@@ -587,6 +600,14 @@ bool MyCAD::event(QEvent* e) {
                     if (movingEnds[i]) { 
                         selShapes[i]->moveEnd(delta);
                     }
+                    if (movingLefts[i] || movingTops[i] || movingRights[i] || movingBottoms[i]) {
+                        int radius = std::hypot(newpoint.x() - selShapes[i]->getstartPoint().x(), newpoint.y() - selShapes[i]->getstartPoint().y());
+                        selShapes[i]->moveRadius(radius);
+                    }
+                   /* qDebug() << "movingLefts[i]"<< movingLefts[i];
+                    qDebug() << "movingTops[i]" << movingTops[i];
+                    qDebug() << "movingRights[i]" << movingRights[i];
+                    qDebug() << "movingBottoms[i]" << movingBottoms[i];*/
                 }
                 lastMousePosition = newpoint;
             }
