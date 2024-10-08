@@ -579,6 +579,30 @@ void MyCAD::createNewWindow()
 bool MyCAD::event(QEvent* e) {
     if (e->type() == QEvent::HoverMove) {
 
+        int currentIndex = tabWidget->currentIndex();
+
+        if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+            QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+
+            // Предположим, что у вас есть указатель на текущую вкладку:
+            QWidget* currentTab = tabWidget->currentWidget();
+            QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+
+            for (const auto& shape : tabDataList[currentIndex].shapes) {
+                if (shape->contains(newpoint)) {
+                    // Действие, если точка попала в фигуру, например, выделение
+                   // shape->setSelected(true);
+
+                    // если навели то true 
+                    shape->setisover(true); //должно быть свойство shape
+                }else{ shape->setisover(false); }
+            }
+
+        }
+
+
+
+
         update();
         if (!ondrawline && !isDragging) {
            

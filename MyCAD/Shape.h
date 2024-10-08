@@ -58,6 +58,7 @@ public:
     virtual bool getisTop()const = 0;
     virtual bool getisBottom()const = 0;
     virtual Type name() const = 0;
+    virtual void setisover(bool iscursorhovershape) = 0; //курсор над 
 };
 
 // Класс отрезка, наследник Shape
@@ -100,6 +101,7 @@ public:
       bool getisTop()const override;
       bool getisBottom()const override;
       Type name() const override;
+      void setisover(bool iscursorhovershape) override;
 private:
    
     QPoint startPoint;
@@ -117,7 +119,7 @@ private:
     bool isStart = false;  // Флаг выделения
     bool isEnd = false;  // Флаг выделения
     bool isMiddle = false;  // Флаг выделения
-
+    bool iscursorhovershape = false; //курсор над 
 };
 
 // В дальнейшем можно добавлять другие классы (Circle, Rectangle и т.д.)
@@ -162,6 +164,7 @@ public:
     bool getisTop()const override;
     bool getisBottom()const override;
     Type name() const override;
+    void setisover(bool iscursorhovershape) override;
 
 private:
     QPoint startPoint;
@@ -190,4 +193,5 @@ private:
     bool isTop = false;  // Флаг выделения
     bool isRight = false;  // Флаг выделения
     bool isBottom = false;  // Флаг выделения
+    bool iscursorhovershape = false; //курсор над 
 };      

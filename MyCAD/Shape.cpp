@@ -117,6 +117,11 @@ Type Line::name() const
     return Type::line;
 }
 
+void Line::setisover(bool iscursorhovershape_) 
+{
+     iscursorhovershape = iscursorhovershape_;
+}
+
 
 // Реализация метода рисования отрезка
 void Line::draw(QPainter& painter) const {
@@ -128,16 +133,10 @@ void Line::draw(QPainter& painter) const {
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawLine(startPoint, endPoint);
-       /* painter.setPen(painter.pen());
-        painter.drawLine(startPoint, endPoint);*/
-    }
-
-    painter.setPen(pen);
-    painter.drawLine(startPoint, endPoint);
-
-    // Рисуем квадраты на концах и в середине, если линия выделена
-    if (isSelected) {        
-        painter.setBrush(ColorStartPoint); 
+        // возвращаем Pen
+        painter.setPen(pen);
+        // Рисуем квадраты на концах и в середине, если линия выделена
+        painter.setBrush(ColorStartPoint);
         painter.drawRect(getStartHandle());
         painter.setBrush(ColorEndPoint);
         painter.drawRect(getEndHandle());
@@ -146,6 +145,21 @@ void Line::draw(QPainter& painter) const {
         // Отключаем заливку
         painter.setBrush(Qt::NoBrush);
     }
+
+     if (iscursorhovershape) {
+        QColor highlightedColor(250, 250, 250, 120);
+        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
+        painter.setPen(highlightedPen);
+        painter.drawLine(startPoint, endPoint);
+
+        // возвращаем Pen
+        painter.setPen(pen);
+    }
+    
+    painter.setPen(pen);
+    painter.drawLine(startPoint, endPoint); 
+   
+    
 }
 
 // Реализация метода перемещения отрезка
@@ -265,17 +279,11 @@ void Circle::draw(QPainter& painter) const
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawEllipse(startPoint, radius, radius);
-        
-    }
-
-    painter.setPen(pen);
-    painter.drawEllipse(startPoint, radius, radius);
-
-    // Рисуем квадраты на сверху снизу спарва и слева, если линия выделена
-    if (isSelected) {
-
+        // возвращаем Pen
+        painter.setPen(pen);
+        // Рисуем квадраты на сверху снизу спарва и слева и по центру, если  выделено
         painter.setBrush(ColorStartPoint);
-        painter.drawRect(getStartHandle());       
+        painter.drawRect(getStartHandle());
 
         painter.setBrush(ColorLeftPoint);
         painter.drawRect(getLeftHandle());
@@ -292,6 +300,20 @@ void Circle::draw(QPainter& painter) const
         // Отключаем заливку
         painter.setBrush(Qt::NoBrush);
     }
+
+    if (iscursorhovershape) {
+        QColor highlightedColor(250, 250, 250, 120);
+        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
+        painter.setPen(highlightedPen);
+        painter.drawEllipse(startPoint, radius, radius);
+
+        // возвращаем Pen
+        painter.setPen(pen);
+    }
+    painter.setPen(pen);
+    painter.drawEllipse(startPoint, radius, radius);
+
+   
 }
 
 void Circle::move(const QPoint& delta)
@@ -478,6 +500,11 @@ bool Circle::getisBottom() const
 Type Circle::name() const
 {
     return Type::circle;
+}
+
+void Circle::setisover(bool iscursorhovershape_)
+{
+    iscursorhovershape = iscursorhovershape_;
 }
 
 QRect Circle::getStartHandle() const
