@@ -20,7 +20,7 @@ extern bool ondrawline;
 extern bool ondrawcircle;
 extern bool updrawcircle;
 extern QPoint clickpoint;
-
+extern int heightwindow_prev;
 
 extern std::vector<bool> movingWholeLines;
 extern std::vector<bool>  movingEnds;
@@ -48,6 +48,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool event(QEvent* e)override;
     void keyPressEvent(QKeyEvent* event);
+
 private:
     QVector<TabData> tabDataList; // Список данных для каждой вкладки
 
