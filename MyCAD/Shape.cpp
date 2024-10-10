@@ -128,7 +128,7 @@ void Line::draw(QPainter& painter) const {
     QPen pen = painter.pen();
 
     // Если линия выделена, изменяем цвет
-    if (isSelected) {
+    if (isSelected && !moveSelected) {
         QColor highlightedColor(90, 150, 255, 169);
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
@@ -187,12 +187,17 @@ void Line::setSelected(bool selected) {
     isSelected = selected;
 }
 
+void Line::setMoveSelected(bool selected)
+{
+    moveSelected = selected;
+}
+
 // Реализация метода проверки попадания точки в отрезок
 bool Line::contains(const QPoint& point) const {
     // Проверка попадания в квадраты (для перемещения концов или всей линии)
-    if (getStartHandle().contains(point) || getEndHandle().contains(point) || getMiddleHandle().contains(point)) {
+    /*if (getStartHandle().contains(point) || getEndHandle().contains(point) || getMiddleHandle().contains(point)) {
         return true;
-    }
+    }*/
 
     // Основная логика проверки принадлежности точки линии
     QPoint v1 = point - startPoint;
@@ -274,7 +279,7 @@ void Circle::draw(QPainter& painter) const
 {
     QPen pen = painter.pen();
     // Если линия выделена, изменяем цвет
-    if (isSelected) {
+    if (isSelected && !moveSelected) {
         QColor highlightedColor(90, 150, 255, 169);
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
@@ -351,6 +356,11 @@ void Circle::setSelected(bool selected)
     isSelected = selected;
 }
 
+void Circle::setMoveSelected(bool selected)
+{
+    moveSelected = selected;
+}
+
 HandleType Circle::getHandleAt(const QPoint& point)
 {
     
@@ -392,7 +402,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
 
     return HandleType::None;
 }
-
+//
 std::shared_ptr<Shape> Circle::clone() const
 {    
     return std::make_shared<Circle>(*this);

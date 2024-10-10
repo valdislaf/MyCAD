@@ -57,7 +57,7 @@ private slots:  // Методы, связанные с сигналами
     void onDrawLine();
     void onDrawCircle();
     void onTabChanged(int index);
-    void movingPush(HandleType handle);
+    void movingPush(HandleType handle, bool isselected);
 
 private:  // Обычные методы
     void createNewWindow();
