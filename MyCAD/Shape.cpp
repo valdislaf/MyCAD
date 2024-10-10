@@ -117,27 +117,26 @@ Type Line::name() const
     return Type::line;
 }
 
+void Line::setisover(bool iscursorhovershape_) 
+{
+     iscursorhovershape = iscursorhovershape_;
+}
+
 
 // Реализация метода рисования отрезка
 void Line::draw(QPainter& painter) const {
     QPen pen = painter.pen();
 
     // Если линия выделена, изменяем цвет
-    if (isSelected) {
+    if (isSelected && !moveSelected) {
         QColor highlightedColor(90, 150, 255, 169);
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawLine(startPoint, endPoint);
-       /* painter.setPen(painter.pen());
-        painter.drawLine(startPoint, endPoint);*/
-    }
-
-    painter.setPen(pen);
-    painter.drawLine(startPoint, endPoint);
-
-    // Рисуем квадраты на концах и в середине, если линия выделена
-    if (isSelected) {        
-        painter.setBrush(ColorStartPoint); 
+        // возвращаем Pen
+        painter.setPen(pen);
+        // Рисуем квадраты на концах и в середине, если линия выделена
+        painter.setBrush(ColorStartPoint);
         painter.drawRect(getStartHandle());
         painter.setBrush(ColorEndPoint);
         painter.drawRect(getEndHandle());
@@ -146,6 +145,21 @@ void Line::draw(QPainter& painter) const {
         // Отключаем заливку
         painter.setBrush(Qt::NoBrush);
     }
+
+     if (iscursorhovershape) {
+        QColor highlightedColor(250, 250, 250, 120);
+        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
+        painter.setPen(highlightedPen);
+        painter.drawLine(startPoint, endPoint);
+
+        // возвращаем Pen
+        painter.setPen(pen);
+    }
+    
+    painter.setPen(pen);
+    painter.drawLine(startPoint, endPoint); 
+   
+    
 }
 
 // Реализация метода перемещения отрезка
@@ -173,12 +187,17 @@ void Line::setSelected(bool selected) {
     isSelected = selected;
 }
 
+void Line::setMoveSelected(bool selected)
+{
+    moveSelected = selected;
+}
+
 // Реализация метода проверки попадания точки в отрезок
 bool Line::contains(const QPoint& point) const {
     // Проверка попадания в квадраты (для перемещения концов или всей линии)
-    if (getStartHandle().contains(point) || getEndHandle().contains(point) || getMiddleHandle().contains(point)) {
+    /*if (getStartHandle().contains(point) || getEndHandle().contains(point) || getMiddleHandle().contains(point)) {
         return true;
-    }
+    }*/
 
     // Основная логика проверки принадлежности точки линии
     QPoint v1 = point - startPoint;
@@ -260,22 +279,16 @@ void Circle::draw(QPainter& painter) const
 {
     QPen pen = painter.pen();
     // Если линия выделена, изменяем цвет
-    if (isSelected) {
+    if (isSelected && !moveSelected) {
         QColor highlightedColor(90, 150, 255, 169);
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawEllipse(startPoint, radius, radius);
-        
-    }
-
-    painter.setPen(pen);
-    painter.drawEllipse(startPoint, radius, radius);
-
-    // Рисуем квадраты на сверху снизу спарва и слева, если линия выделена
-    if (isSelected) {
-
+        // возвращаем Pen
+        painter.setPen(pen);
+        // Рисуем квадраты на сверху снизу спарва и слева и по центру, если  выделено
         painter.setBrush(ColorStartPoint);
-        painter.drawRect(getStartHandle());       
+        painter.drawRect(getStartHandle());
 
         painter.setBrush(ColorLeftPoint);
         painter.drawRect(getLeftHandle());
@@ -292,6 +305,20 @@ void Circle::draw(QPainter& painter) const
         // Отключаем заливку
         painter.setBrush(Qt::NoBrush);
     }
+
+    if (iscursorhovershape) {
+        QColor highlightedColor(250, 250, 250, 120);
+        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
+        painter.setPen(highlightedPen);
+        painter.drawEllipse(startPoint, radius, radius);
+
+        // возвращаем Pen
+        painter.setPen(pen);
+    }
+    painter.setPen(pen);
+    painter.drawEllipse(startPoint, radius, radius);
+
+   
 }
 
 void Circle::move(const QPoint& delta)
@@ -327,6 +354,11 @@ bool Circle::contains(const QPoint& point) const
 void Circle::setSelected(bool selected)
 {
     isSelected = selected;
+}
+
+void Circle::setMoveSelected(bool selected)
+{
+    moveSelected = selected;
 }
 
 HandleType Circle::getHandleAt(const QPoint& point)
@@ -370,7 +402,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
 
     return HandleType::None;
 }
-
+//
 std::shared_ptr<Shape> Circle::clone() const
 {    
     return std::make_shared<Circle>(*this);
@@ -478,6 +510,11 @@ bool Circle::getisBottom() const
 Type Circle::name() const
 {
     return Type::circle;
+}
+
+void Circle::setisover(bool iscursorhovershape_)
+{
+    iscursorhovershape = iscursorhovershape_;
 }
 
 QRect Circle::getStartHandle() const

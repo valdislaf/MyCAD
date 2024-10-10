@@ -34,9 +34,10 @@ public:
     virtual void moveRadius(const int radius) = 0;
     virtual bool contains(const QPoint& point) const = 0;
     virtual void setSelected(bool selected) = 0;
+    virtual void setMoveSelected(bool selected) = 0;
     virtual  HandleType getHandleAt(const QPoint& point) = 0;
     // Метод клонирования
-    virtual std::shared_ptr<Shape> clone() const = 0;
+   virtual std::shared_ptr<Shape> clone() const = 0;
     virtual void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) = 0;
     virtual void setCentre(const QPoint& startPoint, const int radius, bool isSelected) = 0;
     virtual QPoint getstartPoint()const = 0;
@@ -58,6 +59,7 @@ public:
     virtual bool getisTop()const = 0;
     virtual bool getisBottom()const = 0;
     virtual Type name() const = 0;
+    virtual void setisover(bool iscursorhovershape) = 0; //курсор над 
 };
 
 // Класс отрезка, наследник Shape
@@ -78,6 +80,7 @@ public:
     void moveRadius(const int radius)override;
     bool contains(const QPoint& point) const override;
     void setSelected(bool selected) override;
+    void setMoveSelected(bool selected)override;
     HandleType getHandleAt(const QPoint& point)  override;
     // Метод клонирования
     std::shared_ptr<Shape> clone() const override;
@@ -100,11 +103,13 @@ public:
       bool getisTop()const override;
       bool getisBottom()const override;
       Type name() const override;
+      void setisover(bool iscursorhovershape) override;
 private:
    
     QPoint startPoint;
     QPoint endPoint;
     bool isSelected = false;  // Флаг выделения
+    bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
     QColor ColorEndPoint = QColor(0, 127, 255);
     QColor ColorMiddlePoint = QColor(0, 127, 255);
@@ -117,6 +122,7 @@ private:
     bool isStart = false;  // Флаг выделения
     bool isEnd = false;  // Флаг выделения
     bool isMiddle = false;  // Флаг выделения
+    bool iscursorhovershape = false; //курсор над 
 
 };
 
@@ -139,6 +145,7 @@ public:
     void moveRadius(const int radius)override;
     bool contains(const QPoint& point) const override;
     void setSelected(bool selected) override;
+    void setMoveSelected(bool selected)override;
     HandleType getHandleAt(const QPoint& point)  override;
     // Метод клонирования
     std::shared_ptr<Shape> clone() const override;
@@ -162,6 +169,7 @@ public:
     bool getisTop()const override;
     bool getisBottom()const override;
     Type name() const override;
+    void setisover(bool iscursorhovershape) override;
 
 private:
     QPoint startPoint;
@@ -171,6 +179,7 @@ private:
     QPoint bottomPoint;
     int radius;
     bool isSelected = false;  // Флаг выделения
+    bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
     QColor ColorLeftPoint = QColor(0, 127, 255);
     QColor ColorTopPoint = QColor(0, 127, 255);
@@ -190,4 +199,5 @@ private:
     bool isTop = false;  // Флаг выделения
     bool isRight = false;  // Флаг выделения
     bool isBottom = false;  // Флаг выделения
+    bool iscursorhovershape = false; //курсор над 
 };      
