@@ -16,7 +16,7 @@ bool isdraw = false;
 bool ondrawline = false;
 bool ondrawcircle = false;
 bool updrawcircle = false;
-
+int heightwindow_prev = 0;
 QPoint clickpoint = QPoint(0, 0);
 std::vector<std::shared_ptr<Shape>>selShapes;
 std::vector<std::shared_ptr<Shape>>tmpShapes;
@@ -971,8 +971,16 @@ void MyCAD::clearSelection()
 }
 
 void MyCAD::drawShapes(QPainter& painter) {
+
+
+
     // Получаем индекс активной вкладки
     int currentIndex = tabWidget->currentIndex();
+    int delataX = tabDataList[currentIndex].delataX;
+    int delataY = tabDataList[currentIndex].delataY;
+    QPoint delta(delataX, delataY);
+    QWidget* currentTab = tabWidget->widget(tabWidget->currentIndex());
+    int widgetHeight = currentTab->height();
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
         if (!isDragging) {          
@@ -985,9 +993,14 @@ void MyCAD::drawShapes(QPainter& painter) {
         }
         // Рисуем фигуры только для активной вкладки
         for (const auto& shape : tabDataList[currentIndex].shapes) {
+            if (heightwindow_prev != 0) {
+                QPoint delta(0, widgetHeight - heightwindow_prev);
+                shape->move(delta);
+            }
             shape->draw(painter);  // Вызов метода отрисовки фигуры
         }
     }
+    heightwindow_prev = widgetHeight;
 }
 
 void MyCAD::keyPressEvent(QKeyEvent* event) {
