@@ -467,12 +467,16 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 QWidget* currentTab = tabWidget->currentWidget();
                 QPoint newpoint = currentTab->mapFromGlobal(globalPos);
 
-                for (const auto& shape : tabDataList[currentIndex].shapes) {
-                    if (shape->contains(newpoint)) {
-                        // Действие, если точка попала в фигуру, например, выделение
-                        shape->setSelected(true);
+                // Проходим в обратном порядке по вектору и ищем пересечение
+                for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
+                    if ((*it)->contains(newpoint)) {
+                        // Если точка попала в фигуру, выделяем её
+                        (*it)->setSelected(true);
+                        // Выделяем только последнюю добавленную фигуру, которая попала под точку
+                        break;
                     }
                 }
+
 
             }
         }
@@ -641,15 +645,22 @@ bool MyCAD::event(QEvent* e) {
             QWidget* currentTab = tabWidget->currentWidget();
             QPoint newpoint = currentTab->mapFromGlobal(globalPos);
 
+            // Сначала сбрасываем подсветку для всех фигур
             for (const auto& shape : tabDataList[currentIndex].shapes) {
-                if (shape->contains(newpoint)) {
-                    // Действие, если точка попала в фигуру, например, выделение
-                   // shape->setSelected(true);
-
-                    // если навели то true 
-                    shape->setisover(true); //должно быть свойство shape
-                }else{ shape->setisover(false); }
+                shape->setisover(false);  // Сброс свойства подсветки
             }
+
+            // Проходим в обратном порядке по вектору и ищем пересечение
+            for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
+                if (!(*it)->contains(newpoint)) {
+                    (*it)->setisover(false);  // Если не пересекается, не подсвечиваем
+                }
+                else {
+                    (*it)->setisover(true);  // Если пересекается, подсвечиваем последнюю
+                    break;  // Останавливаемся на первой найденной (последней добавленной) фигуре
+                }
+            }
+
 
         }
 
@@ -950,10 +961,20 @@ void MyCAD::clearSelection()
     ondrawline = false;
     ondrawcircle = false;
     
-    movingEnds.clear();
-    movingWholeLines.clear();
-    selShapes.clear();
     tmpShapes.clear();
+    tmpShapes.resize(0);
+    selShapes.clear();
+    selShapes.resize(0);
+    movingWholeLines.clear();
+    movingStarts.clear();
+    movingEnds.clear();
+    movingLefts.clear();
+    movingTops.clear();
+    movingRights.clear();
+    movingBottoms.clear();
+
+
+
     update();
    
 
