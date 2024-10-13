@@ -92,7 +92,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CrossCursor.cpp" />
     <ClCompile Include="DrawingWidget.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="MenuInit.cpp" />
     <ClCompile Include="MenuMain.cpp" />
     <ClCompile Include="Shape.cpp" />
@@ -111,6 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MenuMain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CrossCursor.h" />
+    <ClInclude Include="Grid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

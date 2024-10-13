@@ -244,19 +244,19 @@ HandleType Line::getHandleAt(const QPoint& point)  {
     ColorMiddlePoint = QColor(0, 127, 255);
 
     if (getStartHandle().contains(point)) {
-         ColorStartPoint = QColor(0, 0, 0);
+//         ColorStartPoint = QColor(0, 0, 0);
          isStart = true;
         return HandleType::StartHandle;
     }
 
     if (getEndHandle().contains(point)) {
-         ColorEndPoint = QColor(165, 0, 0);
+ //        ColorEndPoint = QColor(165, 0, 0);
          isEnd = true;
         return HandleType::EndHandle;
     }
 
     if (getMiddleHandle().contains(point)) {
-         ColorMiddlePoint = QColor(165, 0, 0);
+   //      ColorMiddlePoint = QColor(165, 0, 0);
          isMiddle = true;
         return HandleType::MiddleHandle;
     }
@@ -322,7 +322,7 @@ void Circle::draw(QPainter& painter) const
 }
 
 void Circle::move(const QPoint& delta)
-{
+{    
     startPoint += delta;
 }
 
@@ -371,31 +371,31 @@ HandleType Circle::getHandleAt(const QPoint& point)
      ColorBottomPoint = QColor(0, 127, 255);
 
     if (getStartHandle().contains(point)) {
-        ColorStartPoint = QColor(0, 0, 0);
+      //  ColorStartPoint = QColor(0, 0, 0);
         isStart = true;
         return HandleType::StartHandle;
     }
 
     if (getLeftHandle().contains(point)) {
-        ColorLeftPoint = QColor(165, 0, 0);
+       // ColorLeftPoint = QColor(165, 0, 0);
         isLeft = true;
         return HandleType::LeftHandle;
     }
 
     if (getToptHandle().contains(point)) {
-        ColorTopPoint = QColor(165, 0, 0);
+       // ColorTopPoint = QColor(165, 0, 0);
         isTop = true;
         return HandleType::TopHandle;
     }
 
     if (getRighttHandle().contains(point)) {
-        ColorRightPoint = QColor(165, 0, 0);
+      //  ColorRightPoint = QColor(165, 0, 0);
         isRight = true;
         return HandleType::RightHandle;
     }
 
     if (getBottomtHandle().contains(point)) {
-        ColorBottomPoint = QColor(165, 0, 0);
+     //   ColorBottomPoint = QColor(165, 0, 0);
         isBottom = true;
         return HandleType::BottomHandle;
     }

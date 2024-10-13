@@ -64,10 +64,10 @@ private:  // Обычные методы
     void createNewWindow();
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();
-    void setupTabWidgetStyle();
-    void CoordinateAxes(QPainter& painter, QWidget* currentTab);
+    void setupTabWidgetStyle();   
     void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
     void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
+    void clearvectors();
     void clearSelection();
 private:
     //Ui::MyCADClass ui;

@@ -11,6 +11,8 @@
 #include "MyCAD.h"
 #include <MenuInit.h>
 #include <MenuMain.h>
+#include <Grid.h>
+#include <CrossCursor.h>
 
 bool isdraw = false;
 bool ondrawline = false;
@@ -83,103 +85,22 @@ void MyCAD::movingPush(HandleType handle, bool isselected)
 
 QCursor MyCAD::createCustomCrossCursor()
 {
-    // Размеры курсора
-    int cursorSize = 97;
-    QPixmap cursorPixmap(cursorSize, cursorSize);
-    cursorPixmap.fill(Qt::transparent);
-
-    QPainter painter(&cursorPixmap);
-    painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
-
-    // Рисуем перекрестие
-    int squareside = 3; // сторона внутреннего квадрата
-    painter.drawLine(cursorSize / 2, 0, cursorSize / 2, cursorSize / 2 - squareside);
-    painter.drawLine(0, cursorSize / 2, cursorSize / 2 - squareside, cursorSize / 2);
-    painter.drawLine(cursorSize / 2, cursorSize / 2 + squareside, cursorSize / 2, cursorSize);
-    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2, cursorSize, cursorSize / 2);
-
-    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 + squareside);
-    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside);
-    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 - squareside);
-    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside);
-    painter.end();
-
     // Создаем курсор
-    return QCursor(cursorPixmap);
+    CrossCursor cursor(97, QPen(Qt::white, 1), 3);    
+    return cursor.createCursor();
 }
 
 QCursor MyCAD::createCustomCrossCursorIn()
 {
-
-    // Размеры курсора
-    int cursorSize = 97;
-    QPixmap cursorPixmap(cursorSize, cursorSize);
-    cursorPixmap.fill(Qt::transparent);
-
-    QPainter painter(&cursorPixmap);
-    painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
-
-    // Рисуем перекрестие
-    int squareside = 0; // сторона внутреннего квадрата
-    painter.drawLine(cursorSize / 2, 0, cursorSize / 2, cursorSize / 2 - squareside);
-    painter.drawLine(0, cursorSize / 2, cursorSize / 2 - squareside, cursorSize / 2);
-    painter.drawLine(cursorSize / 2, cursorSize / 2 + squareside, cursorSize / 2, cursorSize);
-    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2, cursorSize, cursorSize / 2);
-
-    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 + squareside);
-    painter.drawLine(cursorSize / 2 - squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside);
-    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 + squareside, cursorSize / 2 - squareside);
-    painter.drawLine(cursorSize / 2 + squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside, cursorSize / 2 - squareside);
-    painter.end();
-
     // Создаем курсор
-    return QCursor(cursorPixmap);
-}
-
-void MyCAD::CoordinateAxes(QPainter& painter, QWidget* currentTab)
-{
-    int currentIndex = tabWidget->currentIndex();
-    int widgetHeight = currentTab->height();
-    int widgetWidth = currentTab->width();
-    painter.setPen(QPen(Qt::white, 1)); // Устанавливаем цвет и толщину линий
-    int cursorSize = 100;
-    // Рисуем перекрестие
-    int squareside = 5; // сторона внутреннего квадрата
-    int delataX = tabDataList[currentIndex].delataX;
-    int delataY = tabDataList[currentIndex].delataY;
-
-    if (delataX<0 || (widgetHeight + delataY) < 0 || delataX > widgetWidth || (widgetHeight + delataY)>widgetHeight)
-    {
-        delataX = 10;
-        delataY = -10;
-    }
-
-    // Y    
-    painter.drawLine(delataX + 8, widgetHeight + delataY - 61, delataX + 4, widgetHeight + delataY - 66);
-    painter.drawLine(delataX + 8, widgetHeight + delataY - 61, delataX + 12, widgetHeight + delataY - 66);
-    painter.drawLine(delataX + 8, widgetHeight + delataY - 61, delataX + 8, widgetHeight + delataY - 54);
-
-    // X  
-    painter.drawLine(delataX + 54, widgetHeight + delataY - 12, delataX + 63, widgetHeight + delataY - 3);
-    painter.drawLine(delataX + 63, widgetHeight + delataY - 12, delataX + 54, widgetHeight + delataY - 3);
-
-
-    painter.drawLine(delataX, widgetHeight + delataY, delataX, widgetHeight - cursorSize / 2 + delataY);
-    painter.drawLine(delataX, widgetHeight + delataY, cursorSize / 2 + delataX, widgetHeight + delataY);
-
-    painter.drawLine(-squareside + delataX, widgetHeight - squareside + delataY, -squareside + delataX, widgetHeight + squareside + delataY);
-    painter.drawLine(-squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight + squareside + delataY);
-    painter.drawLine(squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight - squareside + delataY);
-    painter.drawLine(squareside + delataX, widgetHeight - squareside + delataY, -squareside + delataX, widgetHeight - squareside + delataY);
-
+    CrossCursor cursor(97, QPen(Qt::white, 1), 0);
+    return cursor.createCursor();
 }
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
 {  
 
     bool circleflag = false;
-
-
 
     if (ondrawcircle) { isdraw = true; }
     else  if (ondrawline) { isdraw = true; }
@@ -241,27 +162,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-    else {
-        //int currentIndex = tabWidget->currentIndex();
-
-        //if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        //    QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
-
-        //    // Предположим, что у вас есть указатель на текущую вкладку:
-        //    QWidget* currentTab = tabWidget->currentWidget();
-        //    QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-
-        //    for (const auto& shape : tabDataList[currentIndex].shapes) {
-        //        if (shape->contains(newpoint)) {
-        //            // Действие, если точка попала в фигуру, например, выделение
-        //            shape->setSelected(true);
-        //        }
-        //    }
-
-        //}
-    }
-
-
+    
     if (event->button() == Qt::MiddleButton) // Проверяем, что нажата средняя кнопка мыши
     {
         // tabWidget->setCursor(QCursor(Qt::PointingHandCursor));
@@ -305,17 +206,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                        if (tmpShapes[i]->name() == Type::circle) {
                            tmpShapes[i]->setCentre(tmpShapes[i]->getstartPoint(), selShapes[i]->getradius(), tmpShapes[i]->getisSelected());
                        }
-                      // int currentIndex = tabWidget->currentIndex();
-                      // if (currentIndex == -1) {
-                      //     return;
-                      // }
-                      // QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
-                      // // Преобразуем глобальные координаты в локальные относительно текущей вкладки
-                      // QPoint localPos = tabWidget->widget(currentIndex)->mapFromGlobal(globalPos);
-                      // // Вычисляем радиус как максимальное расстояние по X или Y от центра до текущей позиции
-                      // int radius = std::hypot(localPos.x() - tmpShapes[i]->getstartPoint().x(), localPos.y() - tmpShapes[i]->getstartPoint().y());
-                      //tmpShapes[i]->setCentre(tmpShapes[i]->getstartPoint(), radius, tmpShapes[i]->getisSelected());
-
+                  
                    }
               //  selShapes[i].reset();
             }
@@ -330,18 +221,8 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                     }
                 }
             }
-       
-            tmpShapes.clear();
-            tmpShapes.resize(0);
-            selShapes.clear();
-            selShapes.resize(0);
-            movingWholeLines.clear();
-            movingStarts.clear();
-            movingEnds.clear();
-            movingLefts.clear();
-            movingTops.clear();
-            movingRights.clear();
-            movingBottoms.clear();
+            clearvectors();
+           
 
             update();
         }
@@ -635,37 +516,37 @@ void MyCAD::createNewWindow()
 bool MyCAD::event(QEvent* e) {
    
     if (e->type() == QEvent::HoverMove) {
-
+       
         int currentIndex = tabWidget->currentIndex();
 
-        if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-            QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+        if (!isdraw) {
+            if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+                QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
 
-            // Предположим, что у вас есть указатель на текущую вкладку:
-            QWidget* currentTab = tabWidget->currentWidget();
-            QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                // Предположим, что у вас есть указатель на текущую вкладку:
+                QWidget* currentTab = tabWidget->currentWidget();
+                QPoint newpoint = currentTab->mapFromGlobal(globalPos);
 
-            // Сначала сбрасываем подсветку для всех фигур
-            for (const auto& shape : tabDataList[currentIndex].shapes) {
-                shape->setisover(false);  // Сброс свойства подсветки
-            }
-
-            // Проходим в обратном порядке по вектору и ищем пересечение
-            for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
-                if (!(*it)->contains(newpoint)) {
-                    (*it)->setisover(false);  // Если не пересекается, не подсвечиваем
+                // Сначала сбрасываем подсветку для всех фигур
+                for (const auto& shape : tabDataList[currentIndex].shapes) {
+                    shape->setisover(false);  // Сброс свойства подсветки
                 }
-                else {
-                    (*it)->setisover(true);  // Если пересекается, подсвечиваем последнюю
-                    break;  // Останавливаемся на первой найденной (последней добавленной) фигуре
+
+                // Проходим в обратном порядке по вектору и ищем пересечение
+                for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
+                    if (!(*it)->contains(newpoint)) {
+                        (*it)->setisover(false);  // Если не пересекается, не подсвечиваем
+                    }
+                    else {
+                        (*it)->setisover(true);  // Если пересекается, подсвечиваем последнюю
+                        break;  // Останавливаемся на первой найденной (последней добавленной) фигуре
+                    }
                 }
             }
-
-
         }
-
-
         update();
+
+
         if (!ondrawline && !isDragging) {
             if (!selShapes.empty() && !movingStarts.empty()) {
                 setCursor(createCustomCrossCursorIn());
@@ -770,86 +651,16 @@ void MyCAD::drawGrid(QPainter& painter)
     }
 
     QWidget* currentTab = tabWidget->widget(currentIndex);
-    int delataX = tabDataList[currentIndex].delataX;
-    int delataY = tabDataList[currentIndex].delataY;
+   
     // Проверяем, что событие происходит на текущей активной вкладке
     if (currentTab) {
 
+        int delataX = tabDataList[currentIndex].delataX;
+        int delataY = tabDataList[currentIndex].delataY;
         // Устанавливаем параметры для рисования сетки
         int gridSize = 37;  // Размер ячейки сетки
-        int widgetWidth = currentTab->width();
-        int widgetHeight = currentTab->height();
-
-
-        int xmax = 0; int ymax = 0;
-        // Создаем QPen для основных линий сетки
-        QColor mainGridColor(38, 44, 55);  // Цвет основной сетки
-        QPen mainGridPen(mainGridColor, 2, Qt::DotLine);
-
-        // Создаем QPen для линий, которые отображаются каждые 5 шагов
-        QColor highlightedGridColor(48, 54, 69);  // Цвет выделенной сетки
-        QPen highlightedGridPen(highlightedGridColor, 2, Qt::SolidLine);
-
-        // Рисуем вертикальные линии сетки вправо от начала координат
-        for (int x = 0; x < widgetWidth + std::abs(delataX); x += gridSize) {
-            if ((x / gridSize) % 5 == 0) {
-                painter.setPen(highlightedGridPen);
-            }
-            else {
-                painter.setPen(mainGridPen);
-            }
-            painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
-            xmax = x;
-        }
-
-        // Рисуем вертикальные линии сетки влево от начала координат
-        for (int x = 0; x > -std::abs(delataX); x -= gridSize) {
-            if ((x / gridSize) % 5 == 0) {
-                painter.setPen(highlightedGridPen);
-            }
-            else {
-                painter.setPen(mainGridPen);
-            }
-            painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
-            xmax = x;
-        }
-
-        // Рисуем горизонтальные линии сетки вверх от начала координат
-        int y5 = 0;
-        for (int y = widgetHeight; y > -std::abs(delataY); y -= gridSize) {
-            if ((y5 / gridSize) % 5 == 0) {
-                painter.setPen(highlightedGridPen);
-            }
-            else {
-                painter.setPen(mainGridPen);
-            }
-
-            painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
-            y5 += gridSize;
-        }
-        // ymax = widgetHeight;
-         // Рисуем горизонтальные линии сетки вниз от начала координат
-        y5 = 0;
-        for (int y = widgetHeight; y < std::abs(delataY) + widgetHeight; y += gridSize) {
-            if ((y5 / gridSize) % 5 == 0) {
-                painter.setPen(highlightedGridPen);
-            }
-            else {
-                painter.setPen(mainGridPen);
-            }
-
-            painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
-            y5 += gridSize;
-        }
-
-        // Рисуем оси координат
-        QColor XColor(130, 0, 0);
-        painter.setPen(QPen(XColor, 1));
-        painter.drawLine(0 + delataX, widgetHeight + delataY, widgetWidth + std::abs(delataX), widgetHeight + delataY);  // Ось X
-        QColor YColor(0, 130, 0);
-        painter.setPen(QPen(YColor, 1));
-        painter.drawLine(0 + delataX, 0, 0 + delataX, widgetHeight + delataY);  // Ось Y
-        CoordinateAxes(painter, currentTab);
+        Grid grid(currentTab, gridSize, delataX, delataY);  // Создаем экземпляр класса сетки
+        grid.draw(painter);     // Рисуем сетку
     }
 }
 
@@ -952,15 +763,8 @@ void MyCAD::addShape(std::unique_ptr<Shape>&& shape) {
     }
 }
 
-void MyCAD::clearSelection()
+void MyCAD::clearvectors()
 {
-
-    setCursor(createCustomCrossCursor());
-    clickpoint = QPoint(0, 0);
-    isdraw = false;
-    ondrawline = false;
-    ondrawcircle = false;
-    
     tmpShapes.clear();
     tmpShapes.resize(0);
     selShapes.clear();
@@ -973,7 +777,18 @@ void MyCAD::clearSelection()
     movingRights.clear();
     movingBottoms.clear();
 
+}
 
+void MyCAD::clearSelection()
+{
+
+    setCursor(createCustomCrossCursor());
+    clickpoint = QPoint(0, 0);
+    isdraw = false;
+    ondrawline = false;
+    ondrawcircle = false;
+    
+    clearvectors();
 
     update();
    
@@ -992,8 +807,6 @@ void MyCAD::clearSelection()
 }
 
 void MyCAD::drawShapes(QPainter& painter) {
-
-
 
     // Получаем индекс активной вкладки
     int currentIndex = tabWidget->currentIndex();
