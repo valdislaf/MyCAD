@@ -42,6 +42,7 @@ public:
     virtual void setCentre(const QPoint& startPoint, const int radius, bool isSelected) = 0;
     virtual QPoint getstartPoint()const = 0;
     virtual QPoint getendPoint()const = 0;
+    virtual QPoint getmiddlePoint() = 0;
     virtual QPoint getleftPoint()const = 0;
     virtual QPoint gettopPoint()const = 0;
     virtual QPoint getrightPoint()const = 0;
@@ -88,6 +89,7 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
+     QPoint getmiddlePoint() override;
      QPoint getleftPoint()const override;
      QPoint gettopPoint()const override;
      QPoint getrightPoint()const override;
@@ -108,6 +110,7 @@ private:
    
     QPoint startPoint;
     QPoint endPoint;
+    QPoint middlePoint;
     bool isSelected = false;  // Флаг выделения
     bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
@@ -153,6 +156,7 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
+    QPoint getmiddlePoint() override;
     QPoint getleftPoint()const override;
     QPoint gettopPoint()const override;
     QPoint getrightPoint()const override;

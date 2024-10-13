@@ -79,7 +79,6 @@ void MyCAD::movingPush(HandleType handle, bool isselected)
         movingTops.push_back(handle == HandleType::TopHandle);
         movingRights.push_back(handle == HandleType::RightHandle);
         movingBottoms.push_back(handle == HandleType::BottomHandle);
-
     }
 }
 
@@ -170,9 +169,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
         lastMousePosition = event->pos(); // Сохраняем позицию мыши
     }
 
-
     // Проверяем, находится ли клик внутри tabWidget
-
 
     if (event->button() == Qt::LeftButton) {
         if (!selShapes.empty() && !isdraw && !movingStarts.empty()) {
@@ -323,8 +320,6 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
         }
     }
-  
-
 
     if (event->button() == Qt::LeftButton)
     {
@@ -335,8 +330,6 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
             }
         }
-
-
 
         if (!isdraw && !circleflag) {
             int currentIndex = tabWidget->currentIndex();
@@ -357,8 +350,6 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         break;
                     }
                 }
-
-
             }
         }
     }
@@ -726,24 +717,26 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
             // Рисуем круг, используя радиус
             painter.drawEllipse(localPos0, radius, radius);  // Рисуем круг с одинаковым радиусом по X и Y
 
-            QColor Color2(212, 161, 32);
-            QPen Pen2(Color2, 1);
-
-            // Увеличьте шаг, изменяя длину и расстояние между штрихами
-            qreal dashLength = 10; // Длина штриха
-            qreal gapLength = 5;   // Расстояние между штрихами
-
-            QVector<qreal> dashPattern;
-            dashPattern << dashLength << gapLength; // Определите паттерн
-
-            Pen2.setDashPattern(dashPattern); // Установите паттерн в перо
-
-            painter.setPen(Pen2);
+            painter.setPen(DashPen(QColor(212, 161, 32),10,5));
             painter.drawLine(localPos0.x(), localPos0.y(), localPos.x(), localPos.y());
         }
     }
 }
+QPen MyCAD::DashPen(QColor Color, qreal dashLength, qreal gapLength)
+{
+    //QColor Color2(212, 161, 32);
+    QPen Pen2(Color, 1);
 
+    // Увеличьте шаг, изменяя длину и расстояние между штрихами
+  //  qreal dashLength = 10; // Длина штриха
+ //  qreal gapLength = 5;   // Расстояние между штрихами
+
+    QVector<qreal> dashPattern;
+    dashPattern << dashLength << gapLength; // Определите паттерн
+
+    Pen2.setDashPattern(dashPattern); // Установите паттерн в перо
+    return Pen2;
+}
 
 void MyCAD::addShape(std::unique_ptr<Shape>&& shape) {
     // Получаем индекс активной вкладки
@@ -819,9 +812,44 @@ void MyCAD::drawShapes(QPainter& painter) {
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
         if (!isDragging) {          
             if (!selShapes.empty()) {
+                auto tmpShapeIt = tmpShapes.begin();
                 for (auto& shape : selShapes)
                 {
-                    shape->draw(painter);
+                    if (tmpShapeIt != tmpShapes.end()) {
+                        QPen pen = painter.pen();
+                        QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
+                        // Преобразуем глобальные координаты в локальные относительно текущей вкладки
+                        QPoint localPos = currentTab->mapFromGlobal(globalPos);
+                        painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
+
+                        if ((*tmpShapeIt)->getisStart()) {
+                        painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        }
+                        if ((*tmpShapeIt)->getisEnd()) {
+                            painter.drawLine((*tmpShapeIt)->getendPoint().x(), (*tmpShapeIt)->getendPoint().y(), localPos.x(), localPos.y());
+                        }
+                        if ((*tmpShapeIt)->getisMiddle()) {
+                            painter.drawLine((*tmpShapeIt)->getmiddlePoint().x(), (*tmpShapeIt)->getmiddlePoint().y(), localPos.x(), localPos.y());
+                        }
+                        painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
+                        if ((*tmpShapeIt)->getisLeft()) {
+                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        }
+                        if ((*tmpShapeIt)->getisTop()) {
+                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        }
+                        if ((*tmpShapeIt)->getisRight()) {
+                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        }
+                        if ((*tmpShapeIt)->getisBottom()) {
+                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        }
+                        
+                        // возвращаем Pen
+                        painter.setPen(pen);
+                        shape->draw(painter);
+                        tmpShapeIt++;
+                    }
                 }
             }
         }

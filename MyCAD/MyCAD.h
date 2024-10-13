@@ -85,6 +85,7 @@ public:
     void drawGrid(QPainter& painter);
     void DrawLine(QPainter& painter, QPoint localPos);
     void DrawCircle(QPainter& painter, QPoint localPos);
+    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);   
     QCursor createCustomCrossCursor();
     QCursor createCustomCrossCursorIn();
 };

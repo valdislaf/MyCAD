@@ -37,6 +37,12 @@ QPoint Line::getendPoint() const
     return endPoint;
 }
 
+QPoint Line::getmiddlePoint() 
+{
+    middlePoint = (startPoint + endPoint) / 2;
+    return middlePoint;
+}
+
 QPoint Line::getleftPoint() const
 {
     return QPoint();
@@ -448,6 +454,11 @@ QPoint Circle::getstartPoint() const
 }
 
 QPoint Circle::getendPoint() const
+{
+    return QPoint();
+}
+
+QPoint Circle::getmiddlePoint() 
 {
     return QPoint();
 }
