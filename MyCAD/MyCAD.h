@@ -47,7 +47,7 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool event(QEvent* e)override;
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     QVector<TabData> tabDataList; // Список данных для каждой вкладки
@@ -88,4 +88,6 @@ public:
     QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);   
     QCursor createCustomCrossCursor();
     QCursor createCustomCrossCursorIn();
+    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
+    void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный 
 };

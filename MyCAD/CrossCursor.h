@@ -5,8 +5,9 @@
 class CrossCursor {
 
 public:
-	CrossCursor(int size, QPen pen,int squareside);
+	CrossCursor(int size, QPen pen, int squareside);
 	QCursor createCursor() const;
+
 private:
 	int cursorSize;
 	QPen pen;

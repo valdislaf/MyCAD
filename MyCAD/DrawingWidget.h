@@ -12,6 +12,7 @@ class DrawingWidget : public QWidget
 public:
     explicit DrawingWidget(MyCAD* parent = nullptr);
     void MyMethod();
+    bool isMiddlON =false;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
