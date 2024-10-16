@@ -134,7 +134,7 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
         else { myCad->CrossCursorIn(painter); }
         }
         
-        if (isdraw) {
+        if (isdraw && clickpoint!=QPoint(INT_MIN, INT_MIN)) {
             if (ondrawline) { myCad->DrawLine(painter, clickpoint); }
             else  if (ondrawcircle) { myCad->DrawCircle(painter, clickpoint); }
         }

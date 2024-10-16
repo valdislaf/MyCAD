@@ -19,7 +19,7 @@ bool ondrawline = false;
 bool ondrawcircle = false;
 bool updrawcircle = false;
 int heightwindow_prev = 0;
-QPoint clickpoint = QPoint(0, 0);
+QPoint clickpoint = QPoint(INT_MIN, INT_MIN);
 std::vector<std::shared_ptr<Shape>>selShapes;
 std::vector<std::shared_ptr<Shape>>tmpShapes;
 std::vector<bool> movingWholeLines;
@@ -133,12 +133,12 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
                        
                             QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-                            if (clickpoint != QPoint(0, 0))
+                            if (clickpoint != QPoint(INT_MIN, INT_MIN))
                             {
                                 if (ondrawline) // если рисуем линию
                                 {
                                     auto line = std::make_unique<Line>(clickpoint, newpoint);
-                                    addShape(std::move(line));  // Обратите внимание на вызов addShape
+                                    addShape(std::move(line));  
                                 }
                                 if (updrawcircle) // если рисуем круг
                                 {
@@ -386,7 +386,7 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         // Обновляем значения смещения сетки на основе переданного delta
         tabDataList[currentIndex].delataX += delta.x();
         tabDataList[currentIndex].delataY += delta.y();
-        if (isdraw) {
+        if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
             clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
         }
         // Перерисовываем текущий активный виджет
@@ -793,7 +793,7 @@ void MyCAD::clearSelection()
 {
 
    // setCursor(createCustomCrossCursor());
-    clickpoint = QPoint(0, 0);
+    clickpoint = QPoint(INT_MIN, INT_MIN);
     isdraw = false;
     ondrawline = false;
     ondrawcircle = false;
@@ -879,30 +879,35 @@ void MyCAD::drawShapes(QPainter& painter) {
                         // Преобразуем глобальные координаты в локальные относительно текущей вкладки
                         QPoint localPos = currentTab->mapFromGlobal(globalPos);
 
-                        painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
+                        
 
-                        if ((*tmpShapeIt)->getisStart()) {                      
+                        if ((*tmpShapeIt)->getisStart()) {  
+                            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                         painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-                        if ((*tmpShapeIt)->getisEnd()) {
+                        else if ((*tmpShapeIt)->getisEnd()) {
+                            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                             painter.drawLine((*tmpShapeIt)->getendPoint().x(), (*tmpShapeIt)->getendPoint().y(), localPos.x(), localPos.y());
                         }
-                        if ((*tmpShapeIt)->getisMiddle()) {
+                        else if ((*tmpShapeIt)->getisMiddle()) {
+                            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                             painter.drawLine((*tmpShapeIt)->getmiddlePoint().x(), (*tmpShapeIt)->getmiddlePoint().y(), localPos.x(), localPos.y());
                         }
 
-                        painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-
-                        if ((*tmpShapeIt)->getisLeft()) {
+                        else if ((*tmpShapeIt)->getisLeft()) {
+                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-                        if ((*tmpShapeIt)->getisTop()) {
+                        else if ((*tmpShapeIt)->getisTop()) {
+                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-                        if ((*tmpShapeIt)->getisRight()) {
+                        else if ((*tmpShapeIt)->getisRight()) {
+                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-                        if ((*tmpShapeIt)->getisBottom()) {
+                        else if ((*tmpShapeIt)->getisBottom()) {
+                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
                         //qDebug() << "------------------------------";
