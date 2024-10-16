@@ -31,9 +31,8 @@ std::vector<bool> movingRights;
 std::vector<bool> movingBottoms;
 
 MyCAD::MyCAD(QWidget* parent)
-    : QMainWindow(parent)
-{
-    //setupUi(this);
+    : QMainWindow(parent) {
+
     tabWidget = new QTabWidget(this);  // Инициализация tabWidget
     menuBar = new QMenuBar(this);  // Создаем QMenuBar
     setMenuBar(menuBar);
@@ -85,7 +84,7 @@ void MyCAD::movingPush(HandleType handle, bool isselected)
 QCursor MyCAD::createCustomCrossCursor()
 {
     // Создаем курсор
-    CrossCursor cursor(97, QPen(Qt::white, 1), 3);    
+    CrossCursor cursor(97, QPen(Qt::white, 1), 3);
     return cursor.createCursor();
 }
 
@@ -97,7 +96,7 @@ QCursor MyCAD::createCustomCrossCursorIn()
 }
 
 void MyCAD::mousePressEvent(QMouseEvent* event)
-{  
+{
 
     bool circleflag = false;
 
@@ -105,7 +104,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
     else  if (ondrawline) { isdraw = true; }
     if (isdraw) {
         if (event->button() == Qt::LeftButton)
-        {            
+        {
 
             if (ondrawcircle)
             {
@@ -119,7 +118,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 int currentIndex = tabWidget->currentIndex();
                 if (currentIndex != -1)
                 {
-                    
+
                     // Преобразуем глобальные координаты события в локальные координаты tabWidget
                     QPoint localPos = tabWidget->mapFromGlobal(event->globalPosition().toPoint());
                     QRect tabBarRect = tabWidget->geometry();
@@ -131,28 +130,28 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         // Предположим, что у вас есть указатель на текущую вкладку:
                         QWidget* currentTab = tabWidget->currentWidget();
 
-                       
-                            QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-                            if (clickpoint != QPoint(INT_MIN, INT_MIN))
+
+                        QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                        if (clickpoint != QPoint(INT_MIN, INT_MIN))
+                        {
+                            if (ondrawline) // если рисуем линию
                             {
-                                if (ondrawline) // если рисуем линию
-                                {
-                                    auto line = std::make_unique<Line>(clickpoint, newpoint);
-                                    addShape(std::move(line));  
-                                }
-                                if (updrawcircle) // если рисуем круг
-                                {
-                                    int radius = std::hypot(newpoint.x() - clickpoint.x(), newpoint.y() - clickpoint.y());
-                                    auto circle = std::make_unique<Circle>(clickpoint, radius);
-                                    addShape(std::move(circle));                                   
-                                    ondrawcircle = false;
-                                    updrawcircle = false;
-                                    clearSelection();
-                                    circleflag = true;
-                                }
+                                auto line = std::make_unique<Line>(clickpoint, newpoint);
+                                addShape(std::move(line));
                             }
-                            // Преобразуем глобальные координаты в локальные относительно текущей вкладки
-                            clickpoint = newpoint;
+                            if (updrawcircle) // если рисуем круг
+                            {
+                                int radius = std::hypot(newpoint.x() - clickpoint.x(), newpoint.y() - clickpoint.y());
+                                auto circle = std::make_unique<Circle>(clickpoint, radius);
+                                addShape(std::move(circle));
+                                ondrawcircle = false;
+                                updrawcircle = false;
+                                clearSelection();
+                                circleflag = true;
+                            }
+                        }
+                        // Преобразуем глобальные координаты в локальные относительно текущей вкладки
+                        clickpoint = newpoint;
 
 
                         // QMessageBox::information(this, "Tab Click", "Клик по вкладке с индексом: " + QString::number(currentIndex));
@@ -161,7 +160,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-    
+
     if (event->button() == Qt::MiddleButton) // Проверяем, что нажата средняя кнопка мыши
     {
         // tabWidget->setCursor(QCursor(Qt::PointingHandCursor));
@@ -194,18 +193,18 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         tmpShapes[i]->setCentre(selShapes[i]->getstartPoint(), tmpShapes[i]->getradius(), tmpShapes[i]->getisSelected());
                     }
                 }
-                   if (movingEnds[i]) {
-                       if (tmpShapes[i]->name() == Type::line) {
-                           tmpShapes[i]->setCoords(tmpShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
-                       }
+                if (movingEnds[i]) {
+                    if (tmpShapes[i]->name() == Type::line) {
+                        tmpShapes[i]->setCoords(tmpShapes[i]->getstartPoint(), selShapes[i]->getendPoint(), tmpShapes[i]->getisSelected());
+                    }
                 }
-                   if (movingLefts[i] || movingTops[i] || movingRights[i] || movingBottoms[i]) {
-                       if (tmpShapes[i]->name() == Type::circle) {
-                           tmpShapes[i]->setCentre(tmpShapes[i]->getstartPoint(), selShapes[i]->getradius(), tmpShapes[i]->getisSelected());
-                       }
-                  
-                   }
-              //  selShapes[i].reset();
+                if (movingLefts[i] || movingTops[i] || movingRights[i] || movingBottoms[i]) {
+                    if (tmpShapes[i]->name() == Type::circle) {
+                        tmpShapes[i]->setCentre(tmpShapes[i]->getstartPoint(), selShapes[i]->getradius(), tmpShapes[i]->getisSelected());
+                    }
+
+                }
+                //  selShapes[i].reset();
             }
             int currentIndex = tabWidget->currentIndex();
             // Проверяем, что currentIndex находится в допустимых пределах
@@ -214,16 +213,16 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 if (!tabDataList[currentIndex].shapes.empty()) {
                     // Снимаем выделение со всех фигур
                     for (const auto& shape : tabDataList[currentIndex].shapes) {
-                        shape->resetColor();                       
+                        shape->resetColor();
                     }
                 }
             }
             clearvectors();
-           
+
 
             update();
         }
-        
+
         else  if (tabWidget->rect().contains(event->pos()))
         {
             // Определяем индекс вкладки, по которой был клик
@@ -252,7 +251,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                             }
                         }
                     }
-                    else if (handle == HandleType::EndHandle  && shape->getisEnd()) {
+                    else if (handle == HandleType::EndHandle && shape->getisEnd()) {
                         // Логика для перемещения конечной точки линии 
                         if (shape->getisSelected()) {
                             selShapes.push_back(shape->clone());
@@ -263,7 +262,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                             }
                         }
                     }
-                    else if (handle == HandleType::MiddleHandle  && shape->getisMiddle()) {
+                    else if (handle == HandleType::MiddleHandle && shape->getisMiddle()) {
                         if (shape->getisSelected()) {
                             selShapes.push_back(shape->clone());
                             selShapes.back()->setSelected(shape->getisSelected());
@@ -313,7 +312,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                             }
                         }
                     }
-                   
+
                 }
 
             }
@@ -353,8 +352,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-   // if (isdraw) { ondrawcircle = false; }
-    // Вызываем базовый обработчик события
+
     QMainWindow::mousePressEvent(event);
 }
 
@@ -371,8 +369,6 @@ void MyCAD::mouseMoveEvent(QMouseEvent* event)
         updateGridPosition(delta); // Обновляем позицию сетки
         lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши        
     }
-
-
 
     QMainWindow::mouseMoveEvent(event); // Вызов базового метода
 }
@@ -394,11 +390,11 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
         }
-       // if (selShape != nullptr) { selShape->move(delta); }
+        // if (selShape != nullptr) { selShape->move(delta); }
         if (!selShapes.empty()) {
             for (const auto& shape : selShapes)
             {
-               shape->move(delta);
+                shape->move(delta);
             }
         }
         // Рисуем фигуры только для активной вкладки
@@ -411,7 +407,7 @@ void MyCAD::updateGridPosition(const QPoint& delta)
 
 void MyCAD::mouseReleaseEvent(QMouseEvent* event)
 {
-    
+
     if (event->button() == Qt::MiddleButton) // Проверяем, что отпущена средняя кнопка мыши
     {
         if (tabWidget != nullptr) {
@@ -433,7 +429,7 @@ void MyCAD::mouseReleaseEvent(QMouseEvent* event)
     }
     if (event->button() == Qt::LeftButton) // Проверяем, что отпущена средняя кнопка мыши
     {
-        
+
     }
     QMainWindow::mouseReleaseEvent(event); // Вызов базового метода
 }
@@ -472,10 +468,10 @@ void MyCAD::createNewWindow()
         updateMenusBasedOnTabWidgetVisibility();
     }
 
-    
+
     DrawingWidget* newDrawingWidget = new DrawingWidget(this);
 
-    
+
     int tabIndex = tabWidget->addTab(std::move(newDrawingWidget), tr("Чертеж %1").arg(tabWidget->count() + 1));
     //int tabIndex = tabWidget->addTab(newDrawingWidget, tr("Чертеж %1").arg(tabWidget->count() + 1));
 
@@ -501,13 +497,11 @@ void MyCAD::createNewWindow()
     else {
         // qDebug() << "Ошибка приведения типа!";
     }
-
 }
-
 bool MyCAD::event(QEvent* e) {
-   
+
     if (e->type() == QEvent::HoverMove) {
-       
+
         int currentIndex = tabWidget->currentIndex();
 
         if (!isdraw) {
@@ -552,7 +546,7 @@ bool MyCAD::event(QEvent* e) {
 
                 for (int i = 0; i < selShapes.size(); i++) {
 
-                    if (movingStarts.empty()|| movingWholeLines.empty() || movingEnds.empty() || movingLefts.empty() || movingTops.empty() || movingRights.empty() || movingBottoms.empty()  )
+                    if (movingStarts.empty() || movingWholeLines.empty() || movingEnds.empty() || movingLefts.empty() || movingTops.empty() || movingRights.empty() || movingBottoms.empty())
                     {
                         int stop = 0;
                     }
@@ -575,22 +569,17 @@ bool MyCAD::event(QEvent* e) {
                             selShapes[i]->moveRadius(radius);
                         }
                     }
-                   /* qDebug() << "movingLefts[i]"<< movingLefts[i];
-                    qDebug() << "movingTops[i]" << movingTops[i];
-                    qDebug() << "movingRights[i]" << movingRights[i];
-                    qDebug() << "movingBottoms[i]" << movingBottoms[i];*/
                 }
                 lastMousePosition = newpoint;
-                
+
             }
-           
+
         }
-       
+
     }
 
     return QWidget::event(e);  // Не забывайте передавать событие дальше
 }
-
 
 void MyCAD::updateMenusBasedOnTabWidgetVisibility()
 {
@@ -616,27 +605,14 @@ void MyCAD::initialTabWidget()
 {
 }
 
-void MyCAD::onDrawLine() 
+void MyCAD::onDrawLine()
 {
     clearSelection();
-    ondrawline = true; 
-    //this->setCursor(Qt::BlankCursor);
-    //createCustomCrossCursorIn();
-    //if (ondrawline || ondrawcircle) {
-    //    this->setCursor(Qt::BlankCursor);
-
-    //    // рисуем курсор перемещения
-    //    painter.drawLine(localPos.x() - 48, localPos.y(), localPos.x() + 48, localPos.y());
-    //    painter.drawLine(localPos.x(), localPos.y() - 48, localPos.x(), localPos.y() + 48);
-    //}
-    //else {
-    //    this->unsetCursor();
-    //}
+    ondrawline = true;
 }
 
 void MyCAD::onDrawCircle()
 {
-  //  this->setCursor(Qt::BlankCursor);
     clearSelection();
     ondrawcircle = true;
 }
@@ -655,7 +631,7 @@ void MyCAD::drawGrid(QPainter& painter)
     }
 
     QWidget* currentTab = tabWidget->widget(currentIndex);
-   
+
     // Проверяем, что событие происходит на текущей активной вкладке
     if (currentTab) {
 
@@ -680,7 +656,7 @@ void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
         if (currentIndex == -1) {
             return;
         }
-     //   QPen penInit = painter.pen();
+        //   QPen penInit = painter.pen();
         QWidget* currentTab = tabWidget->widget(currentIndex);
         // Проверяем, что событие происходит на текущей активной вкладке
         if (currentTab && !isDragging) {
@@ -692,12 +668,10 @@ void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
             // Преобразуем глобальные координаты в локальные относительно текущей вкладки
             QPoint localPos = currentTab->mapFromGlobal(globalPos);
 
-            QColor Color(255, 155, 155); 
+            QColor Color(255, 155, 155);
             QPen Pen(Color, 1, Qt::SolidLine);
             painter.setPen(Pen);
             painter.drawLine(localPos0.x(), localPos0.y(), localPos.x(), localPos.y());
-         /*   painter.setPen(penInit);
-            CrossCursorIn(painter);*/
         }
     }
 }
@@ -713,7 +687,7 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
         if (currentIndex == -1) {
             return;
         }
-      //  QPen penInit = painter.pen();
+
         QWidget* currentTab = tabWidget->widget(currentIndex);
         // Проверяем, что событие происходит на текущей активной вкладке
         if (currentTab && !isDragging) {
@@ -728,14 +702,13 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
             QColor Color(255, 155, 155);
             QPen Pen(Color, 1, Qt::SolidLine);
             painter.setPen(Pen);
-           
+
             // Рисуем круг, используя радиус
             painter.drawEllipse(localPos0, radius, radius);  // Рисуем круг с одинаковым радиусом по X и Y
 
-            painter.setPen(DashPen(QColor(212, 161, 32),10,5));
+            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
             painter.drawLine(localPos0.x(), localPos0.y(), localPos.x(), localPos.y());
-           /* painter.setPen(penInit);
-            CrossCursorIn(painter);*/
+
         }
     }
 }
@@ -792,16 +765,16 @@ void MyCAD::clearvectors()
 void MyCAD::clearSelection()
 {
 
-   // setCursor(createCustomCrossCursor());
+    // setCursor(createCustomCrossCursor());
     clickpoint = QPoint(INT_MIN, INT_MIN);
     isdraw = false;
     ondrawline = false;
     ondrawcircle = false;
-    
+
     clearvectors();
 
     update();
-   
+
 
     int currentIndex = tabWidget->currentIndex();
     // Проверяем, что currentIndex находится в допустимых пределах
@@ -816,17 +789,17 @@ void MyCAD::clearSelection()
     }
 }
 
-void MyCAD::CrossCursorIn(QPainter& painter) 
+void MyCAD::CrossCursorIn(QPainter& painter)
 {
-   
+
     QWidget* currentTab = tabWidget->widget(tabWidget->currentIndex());
     QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
-        // Преобразуем глобальные координаты в локальные относительно текущей вкладки
+    // Преобразуем глобальные координаты в локальные относительно текущей вкладки
     QPoint localPos = currentTab->mapFromGlobal(globalPos);
     // рисуем курсор перемещения
-   painter.drawLine(localPos.x() - 48, localPos.y(), localPos.x() + 48, localPos.y());
-   painter.drawLine(localPos.x(), localPos.y() - 48, localPos.x(), localPos.y() + 48);
-    
+    painter.drawLine(localPos.x() - 48, localPos.y(), localPos.x() + 48, localPos.y());
+    painter.drawLine(localPos.x(), localPos.y() - 48, localPos.x(), localPos.y() + 48);
+
 }
 
 void MyCAD::CrossCursorOut(QPainter& painter)
@@ -868,7 +841,7 @@ void MyCAD::drawShapes(QPainter& painter) {
     int widgetHeight = currentTab->height();
 
     if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
-        if (!isDragging) {          
+        if (!isDragging) {
             if (!selShapes.empty()) {
                 auto tmpShapeIt = tmpShapes.begin();
                 for (auto& shape : selShapes)
@@ -879,11 +852,9 @@ void MyCAD::drawShapes(QPainter& painter) {
                         // Преобразуем глобальные координаты в локальные относительно текущей вкладки
                         QPoint localPos = currentTab->mapFromGlobal(globalPos);
 
-                        
-
-                        if ((*tmpShapeIt)->getisStart()) {  
+                        if ((*tmpShapeIt)->getisStart()) {
                             painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
-                        painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
                         else if ((*tmpShapeIt)->getisEnd()) {
                             painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
@@ -910,21 +881,9 @@ void MyCAD::drawShapes(QPainter& painter) {
                             painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-                        //qDebug() << "------------------------------";
-                        //qDebug() << "shape.x()    " << shape->getstartPoint().x()   << " shape.y()    " << shape->getstartPoint().y();
-                        //qDebug() << "localPos.x() " << localPos.x()                 << " localPos.y() " << localPos.y();
-                        //qDebug() << "------------------------------";
-
                         // возвращаем Pen
                         painter.setPen(pen);
                         shape->draw(painter);
-
-                       // this->setCursor(Qt::BlankCursor);
-
-                        // рисуем курсор перемещения
-                      //  painter.drawLine(localPos.x() - 48, localPos.y(), localPos.x() + 48, localPos.y());
-                      //  painter.drawLine(localPos.x(), localPos.y() - 48, localPos.x(), localPos.y() + 48);
-
                         tmpShapeIt++;
                     }
                 }
@@ -943,26 +902,10 @@ void MyCAD::drawShapes(QPainter& painter) {
 }
 
 void MyCAD::keyPressEvent(QKeyEvent* event) {
-    // Проверяем, что нажата клавиша ESC
-   /* if (isdraw) {*/
-        if (event->key() == Qt::Key_Escape) {
-           /* int currentIndex = tabWidget->currentIndex();
-            QWidget* currentTab = tabWidget->widget(tabWidget->currentIndex());
-            if (currentTab){*/
-            clearSelection();
-              //  unsetCursor();
-           // setCursor(createCustomCrossCursor());
-          //  }
-        }
-        //else {
-        //    // Передаем событие базовому классу
-        //    QMainWindow::keyPressEvent(event);
-
-        //}
-  /*  }*/
-   /* else if (event->key() == Qt::Key_Escape) {
+    // Проверяем, что нажата клавиша ESC  
+    if (event->key() == Qt::Key_Escape) {
         clearSelection();
-    }*/
-    // Передаем событие базовому классу
+    }
+
     QMainWindow::keyPressEvent(event);
 }

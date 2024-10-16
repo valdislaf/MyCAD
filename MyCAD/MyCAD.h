@@ -2,11 +2,9 @@
 
 #include <memory>
 #include <vector>
-
 #include <QtWidgets/QMainWindow>
 
 #include "Shape.h"
-//#include "ui_MyCAD.h"
 #include "DrawingWidget.h"
 
 struct TabData {
@@ -21,11 +19,9 @@ extern bool ondrawcircle;
 extern bool updrawcircle;
 extern QPoint clickpoint;
 extern int heightwindow_prev;
-
 extern std::vector<bool> movingWholeLines;
 extern std::vector<bool>  movingEnds;
 extern std::vector<bool>  movingStarts;
-
 extern std::vector<bool> movingLefts;
 extern std::vector<bool> movingTops;
 extern std::vector<bool> movingRights;
@@ -64,13 +60,11 @@ private:  // Обычные методы
     void createNewWindow();
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();
-    void setupTabWidgetStyle();   
+    void setupTabWidgetStyle();
     void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
     void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
     void clearvectors();
     void clearSelection();
-private:
-    //Ui::MyCADClass ui;
 
 private:
     bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
@@ -80,12 +74,11 @@ private:
     QMenuBar* menuBar;
 
 public:
-    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур
-    
+    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур    
     void drawGrid(QPainter& painter);
     void DrawLine(QPainter& painter, QPoint localPos);
     void DrawCircle(QPainter& painter, QPoint localPos);
-    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);   
+    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
     QCursor createCustomCrossCursor();
     QCursor createCustomCrossCursorIn();
     void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
