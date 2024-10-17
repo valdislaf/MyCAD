@@ -128,6 +128,11 @@ void Line::setisover(bool iscursorhovershape_)
      iscursorhovershape = iscursorhovershape_;
 }
 
+bool Line::getisover() const
+{
+    return iscursorhovershape;
+}
+
 
 // Реализация метода рисования отрезка
 void Line::draw(QPainter& painter) const {
@@ -199,12 +204,7 @@ void Line::setMoveSelected(bool selected)
 }
 
 // Реализация метода проверки попадания точки в отрезок
-bool Line::contains(const QPoint& point) const {
-    // Проверка попадания в квадраты (для перемещения концов или всей линии)
-    /*if (getStartHandle().contains(point) || getEndHandle().contains(point) || getMiddleHandle().contains(point)) {
-        return true;
-    }*/
-
+bool Line::contains(const QPoint& point)  {
     // Основная логика проверки принадлежности точки линии
     QPoint v1 = point - startPoint;
     QPoint v2 = endPoint - startPoint;
@@ -219,7 +219,7 @@ bool Line::contains(const QPoint& point) const {
     }
 
     QPoint closestPoint = startPoint + projection * v2;
-   // if ((point - closestPoint).manhattanLength() < 5) { setSelected(true); }
+
     return (point - closestPoint).manhattanLength() < 5; // Допускаем небольшое расстояние для попадания
 }
 
@@ -238,6 +238,28 @@ QRect Line::getMiddleHandle() const {
     QPoint middlePoint = (startPoint + endPoint) / 2;
     return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
 }
+
+QRect Line::getLeftHandle() const
+{
+    return QRect();
+}
+
+QRect Line::getToptHandle() const
+{
+    return QRect();
+}
+
+QRect Line::getRighttHandle() const
+{
+    return QRect();
+}
+
+QRect Line::getBottomtHandle() const
+{
+    return QRect();
+}
+
+
 
 HandleType Line::getHandleAt(const QPoint& point) {
 
@@ -361,7 +383,7 @@ void Circle::moveRadius(const int radius_)
     radius = radius_;
 }
 
-bool Circle::contains(const QPoint& point) const
+bool Circle::contains(const QPoint& point) 
 {
     // Вычисляем расстояние от точки до центра
     double distanceSquared = pow(point.x() - startPoint.x(), 2) + pow(point.y() - startPoint.y(), 2);
@@ -567,9 +589,24 @@ void Circle::setisover(bool iscursorhovershape_)
     iscursorhovershape = iscursorhovershape_;
 }
 
+bool Circle::getisover() const
+{
+    return iscursorhovershape;
+}
+
 QRect Circle::getStartHandle() const
 {
     return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+}
+
+QRect Circle::getEndHandle() const
+{
+    return QRect();
+}
+
+QRect Circle::getMiddleHandle() const
+{
+    return QRect();
 }
 
 QRect Circle::getLeftHandle() const {
@@ -588,5 +625,4 @@ QRect Circle::getToptHandle() const {
 QRect Circle::getBottomtHandle() const {
     return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
 }
-
 

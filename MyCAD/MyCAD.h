@@ -58,6 +58,7 @@ private slots:  // Методы, связанные с сигналами
 
 private:  // Обычные методы
     void createNewWindow();
+    void captureCursorforHandle(QWidget* currentTab, const QRect& handleRect, const QPoint& cursorPos);
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();
     void setupTabWidgetStyle();

@@ -61,7 +61,7 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
     if (!painter.isActive()) {
         return;
     }
-
+  
     // Ваш код отрисовки
     if (myCad) {
         myCad->drawGrid(painter);

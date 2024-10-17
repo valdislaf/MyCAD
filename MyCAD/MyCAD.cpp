@@ -498,11 +498,50 @@ void MyCAD::createNewWindow()
         // qDebug() << "Ошибка приведения типа!";
     }
 }
+
+void MyCAD::captureCursorforHandle(QWidget* currentTab, const QRect& handleRect, const QPoint& cursorPos) {
+    // Проверяем, находится ли курсор в области handleRect
+    if (handleRect.contains(cursorPos)) {
+        // Получаем центр квадрата Handle
+        QPoint centerHandle = handleRect.center();
+
+        // Преобразуем локальные координаты в глобальные
+        QPoint globalPos = currentTab->mapToGlobal(centerHandle);
+
+        // Если курсор не в центре, возвращаем его обратно
+        if (cursorPos != centerHandle) {
+            QCursor::setPos(globalPos);
+        }
+    }
+}
+
+
 bool MyCAD::event(QEvent* e) {
 
     if (e->type() == QEvent::HoverMove) {
 
         int currentIndex = tabWidget->currentIndex();
+
+        if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+
+            if (!tabDataList[currentIndex].shapes.empty()) {
+                for (int i = 0; i < tabDataList[currentIndex].shapes.size(); i++) {
+                    QWidget* currentTab = tabWidget->currentWidget();
+                    QPoint newpoint = currentTab->mapFromGlobal(QCursor::pos());
+                    // Если shapes[i] выделен и курсор над ним
+                    if (tabDataList[currentIndex].shapes[i]->getisSelected())
+                    {
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getStartHandle(), newpoint);
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getEndHandle(), newpoint);
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getMiddleHandle(), newpoint);
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getLeftHandle(), newpoint);
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getRighttHandle(), newpoint);
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getToptHandle(), newpoint);
+                        captureCursorforHandle(currentTab, tabDataList[currentIndex].shapes[i]->getBottomtHandle(), newpoint);
+                    }
+                }
+            }
+        }
 
         if (!isdraw) {
             if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
