@@ -152,8 +152,6 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                         }
                         // Преобразуем глобальные координаты в локальные относительно текущей вкладки
                         clickpoint = newpoint;
-
-
                         // QMessageBox::information(this, "Tab Click", "Клик по вкладке с индексом: " + QString::number(currentIndex));
                     }
                 }
@@ -240,78 +238,85 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                     // Проверяем, попали ли мы на одну из ручек линии
                     HandleType handle = shape->getHandleAt(newpoint);
 
-                    if (handle == HandleType::StartHandle && shape->getisStart()) {
-                        // Логика для перемещения начальной точки линии  
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisStart()) {
-                                movingPush(handle, shape->getisSelected());   // && shape->getisSelected()???
-                            }
-                        }
+                    if (shape->getisSelected() && shape->isHandleSelected(handle)) {
+                        selShapes.push_back(shape->clone());
+                        selShapes.back()->setSelected(shape->getisSelected());
+                        tmpShapes.push_back(shape);
+                        movingPush(handle, shape->getisSelected());
                     }
-                    else if (handle == HandleType::EndHandle && shape->getisEnd()) {
-                        // Логика для перемещения конечной точки линии 
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisEnd()) {
-                                movingPush(handle, shape->getisSelected());
-                            }
-                        }
-                    }
-                    else if (handle == HandleType::MiddleHandle && shape->getisMiddle()) {
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisMiddle()) {
-                                movingPush(handle, shape->getisSelected());
-                            }
-                        }
-                    }
-                    else if (handle == HandleType::LeftHandle && shape->getisLeft()) {
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisLeft()) {
-                                movingPush(handle, shape->getisSelected());
-                            }
-                        }
-                    }
-                    else if (handle == HandleType::TopHandle && shape->getisTop()) {
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisTop()) {
-                                movingPush(handle, shape->getisSelected());
-                            }
-                        }
-                    }
-                    else if (handle == HandleType::RightHandle && shape->getisRight()) {
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisRight()) {
-                                movingPush(handle, shape->getisSelected());
-                            }
-                        }
-                    }
-                    else if (handle == HandleType::BottomHandle && shape->getisBottom()) {
-                        if (shape->getisSelected()) {
-                            selShapes.push_back(shape->clone());
-                            selShapes.back()->setSelected(shape->getisSelected());
-                            tmpShapes.push_back(shape);
-                            if (shape->getisBottom()) {
-                                movingPush(handle, shape->getisSelected());
-                            }
-                        }
-                    }
+
+
+
+                    //if (handle == HandleType::StartHandle && shape->getisStart()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisStart()) {
+                    //            movingPush(handle, shape->getisSelected());   
+                    //        }
+                    //    }
+                    //}
+                    //else if (handle == HandleType::EndHandle && shape->getisEnd()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisEnd()) {
+                    //            movingPush(handle, shape->getisSelected());
+                    //        }
+                    //    }
+                    //}
+                    //else if (handle == HandleType::MiddleHandle && shape->getisMiddle()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisMiddle()) {
+                    //            movingPush(handle, shape->getisSelected());
+                    //        }
+                    //    }
+                    //}
+                    //else if (handle == HandleType::LeftHandle && shape->getisLeft()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisLeft()) {
+                    //            movingPush(handle, shape->getisSelected());
+                    //        }
+                    //    }
+                    //}
+                    //else if (handle == HandleType::TopHandle && shape->getisTop()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisTop()) {
+                    //            movingPush(handle, shape->getisSelected());
+                    //        }
+                    //    }
+                    //}
+                    //else if (handle == HandleType::RightHandle && shape->getisRight()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisRight()) {
+                    //            movingPush(handle, shape->getisSelected());
+                    //        }
+                    //    }
+                    //}
+                    //else if (handle == HandleType::BottomHandle && shape->getisBottom()) {
+                    //    if (shape->getisSelected()) {
+                    //        selShapes.push_back(shape->clone());
+                    //        selShapes.back()->setSelected(shape->getisSelected());
+                    //        tmpShapes.push_back(shape);
+                    //        if (shape->getisBottom()) {
+                    //            movingPush(handle, shape->getisSelected());
+                    //        }
+                    //    }
+                    //}
 
                 }
 
@@ -344,7 +349,10 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
                     if ((*it)->contains(newpoint)) {
                         // Если точка попала в фигуру, выделяем её
+                        HandleType handle = (*it)->getHandleAt(newpoint);
+                        if (handle == None) { // Только если не попали в уже выделенную область ручки
                         (*it)->setSelected(true);
+                        }
                         // Выделяем только последнюю добавленную фигуру, которая попала под точку
                         break;
                     }
@@ -355,6 +363,8 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
 
     QMainWindow::mousePressEvent(event);
 }
+
+
 
 void MyCAD::mouseMoveEvent(QMouseEvent* event)
 {
