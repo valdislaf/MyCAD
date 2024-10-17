@@ -12,6 +12,7 @@ class DrawingWidget : public QWidget
 public:
     explicit DrawingWidget(MyCAD* parent = nullptr);
     void MyMethod();
+    bool isMiddlON = false;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -21,7 +22,7 @@ protected:
     void enterEvent(QEnterEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
-    
+
 private:
     MyCAD* myCad;  // Указатель на родительский объект MyCAD
 };

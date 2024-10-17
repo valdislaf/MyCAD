@@ -37,6 +37,12 @@ QPoint Line::getendPoint() const
     return endPoint;
 }
 
+QPoint Line::getmiddlePoint() 
+{
+    middlePoint = (startPoint + endPoint) / 2;
+    return middlePoint;
+}
+
 QPoint Line::getleftPoint() const
 {
     return QPoint();
@@ -122,6 +128,11 @@ void Line::setisover(bool iscursorhovershape_)
      iscursorhovershape = iscursorhovershape_;
 }
 
+bool Line::getisover() const
+{
+    return iscursorhovershape;
+}
+
 
 // Реализация метода рисования отрезка
 void Line::draw(QPainter& painter) const {
@@ -193,12 +204,7 @@ void Line::setMoveSelected(bool selected)
 }
 
 // Реализация метода проверки попадания точки в отрезок
-bool Line::contains(const QPoint& point) const {
-    // Проверка попадания в квадраты (для перемещения концов или всей линии)
-    /*if (getStartHandle().contains(point) || getEndHandle().contains(point) || getMiddleHandle().contains(point)) {
-        return true;
-    }*/
-
+bool Line::contains(const QPoint& point)  {
     // Основная логика проверки принадлежности точки линии
     QPoint v1 = point - startPoint;
     QPoint v2 = endPoint - startPoint;
@@ -213,7 +219,7 @@ bool Line::contains(const QPoint& point) const {
     }
 
     QPoint closestPoint = startPoint + projection * v2;
-   // if ((point - closestPoint).manhattanLength() < 5) { setSelected(true); }
+
     return (point - closestPoint).manhattanLength() < 5; // Допускаем небольшое расстояние для попадания
 }
 
@@ -233,36 +239,72 @@ QRect Line::getMiddleHandle() const {
     return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
 }
 
-HandleType Line::getHandleAt(const QPoint& point)  {
+QRect Line::getLeftHandle() const
+{
+    return QRect();
+}
 
-    QRect start = getStartHandle();
-    QRect end = getEndHandle();
-    QRect middle = getMiddleHandle();
+QRect Line::getToptHandle() const
+{
+    return QRect();
+}
 
+QRect Line::getRighttHandle() const
+{
+    return QRect();
+}
+
+QRect Line::getBottomtHandle() const
+{
+    return QRect();
+}
+
+
+
+HandleType Line::getHandleAt(const QPoint& point) {
+
+    // Сбрасываем цвета
     ColorStartPoint = QColor(0, 127, 255);
     ColorEndPoint = QColor(0, 127, 255);
     ColorMiddlePoint = QColor(0, 127, 255);
 
+    // Проверка каждого хендла
     if (getStartHandle().contains(point)) {
-         ColorStartPoint = QColor(0, 0, 0);
-         isStart = true;
+        if (isSelected) {
+            ColorStartPoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::StartHandle);
         return HandleType::StartHandle;
     }
 
     if (getEndHandle().contains(point)) {
-         ColorEndPoint = QColor(165, 0, 0);
-         isEnd = true;
+        if (isSelected) {
+            ColorEndPoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::EndHandle);
         return HandleType::EndHandle;
     }
 
     if (getMiddleHandle().contains(point)) {
-         ColorMiddlePoint = QColor(165, 0, 0);
-         isMiddle = true;
+        if (isSelected) {
+            ColorMiddlePoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::MiddleHandle);
         return HandleType::MiddleHandle;
     }
 
+    // Если ни один хендл не выбран
+    setHandleState(HandleType::None);
     return HandleType::None;
 }
+
+// Функция для установки состояния хендлов
+void Line::setHandleState(HandleType handleType) {
+    isStart = (handleType == HandleType::StartHandle);
+    isEnd = (handleType == HandleType::EndHandle);
+    isMiddle = (handleType == HandleType::MiddleHandle);
+}
+
 
 Circle::Circle(const QPoint& startPoint, const int radius)
     : startPoint(startPoint), radius(radius) {}
@@ -322,7 +364,7 @@ void Circle::draw(QPainter& painter) const
 }
 
 void Circle::move(const QPoint& delta)
-{
+{    
     startPoint += delta;
 }
 
@@ -341,7 +383,7 @@ void Circle::moveRadius(const int radius_)
     radius = radius_;
 }
 
-bool Circle::contains(const QPoint& point) const
+bool Circle::contains(const QPoint& point) 
 {
     // Вычисляем расстояние от точки до центра
     double distanceSquared = pow(point.x() - startPoint.x(), 2) + pow(point.y() - startPoint.y(), 2);
@@ -371,37 +413,62 @@ HandleType Circle::getHandleAt(const QPoint& point)
      ColorBottomPoint = QColor(0, 127, 255);
 
     if (getStartHandle().contains(point)) {
-        ColorStartPoint = QColor(0, 0, 0);
-        isStart = true;
+       if( isSelected)
+       {
+          ColorStartPoint = QColor(165, 0, 0);
+       }
+       setHandleState(HandleType::StartHandle);
         return HandleType::StartHandle;
     }
 
     if (getLeftHandle().contains(point)) {
-        ColorLeftPoint = QColor(165, 0, 0);
-        isLeft = true;
+        if (isSelected)
+        {
+            ColorLeftPoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::LeftHandle);
         return HandleType::LeftHandle;
     }
 
     if (getToptHandle().contains(point)) {
-        ColorTopPoint = QColor(165, 0, 0);
-        isTop = true;
+        if (isSelected)
+        {
+            ColorTopPoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::TopHandle);
         return HandleType::TopHandle;
     }
 
     if (getRighttHandle().contains(point)) {
-        ColorRightPoint = QColor(165, 0, 0);
-        isRight = true;
+        if (isSelected)
+        {
+            ColorRightPoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::RightHandle);
         return HandleType::RightHandle;
     }
 
     if (getBottomtHandle().contains(point)) {
-        ColorBottomPoint = QColor(165, 0, 0);
-        isBottom = true;
+        if (isSelected)
+        {
+            ColorBottomPoint = QColor(165, 0, 0);
+        }
+        setHandleState(HandleType::BottomHandle);
         return HandleType::BottomHandle;
     }
-
+    // Если ни один хендл не выбран
+    setHandleState(HandleType::None);
     return HandleType::None;
 }
+// Функция для установки состояния хендлов
+void Circle::setHandleState(HandleType handleType) {
+    isStart = (handleType == HandleType::StartHandle);
+    isLeft = (handleType == HandleType::LeftHandle);
+    isTop = (handleType == HandleType::TopHandle);
+    isRight = (handleType == HandleType::RightHandle);
+    isBottom = (handleType == HandleType::BottomHandle);
+}
+
 //
 std::shared_ptr<Shape> Circle::clone() const
 {    
@@ -424,6 +491,11 @@ QPoint Circle::getstartPoint() const
 }
 
 QPoint Circle::getendPoint() const
+{
+    return QPoint();
+}
+
+QPoint Circle::getmiddlePoint() 
 {
     return QPoint();
 }
@@ -517,9 +589,24 @@ void Circle::setisover(bool iscursorhovershape_)
     iscursorhovershape = iscursorhovershape_;
 }
 
+bool Circle::getisover() const
+{
+    return iscursorhovershape;
+}
+
 QRect Circle::getStartHandle() const
 {
     return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+}
+
+QRect Circle::getEndHandle() const
+{
+    return QRect();
+}
+
+QRect Circle::getMiddleHandle() const
+{
+    return QRect();
 }
 
 QRect Circle::getLeftHandle() const {
@@ -538,5 +625,4 @@ QRect Circle::getToptHandle() const {
 QRect Circle::getBottomtHandle() const {
     return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
 }
-
 
