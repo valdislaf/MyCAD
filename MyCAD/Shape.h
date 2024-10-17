@@ -18,6 +18,7 @@ enum Type {
     line,
     circle
 };
+
 // Абстрактный базовый класс для всех геометрических объектов
 class Shape : public QWidget {
 
@@ -32,12 +33,12 @@ public:
     virtual void moveStart(const QPoint& delta) = 0;
     virtual void moveEnd(const QPoint& delta) = 0;
     virtual void moveRadius(const int radius) = 0;
-    virtual bool contains(const QPoint& point)  = 0;
+    virtual bool contains(const QPoint& point) = 0;
     virtual void setSelected(bool selected) = 0;
     virtual void setMoveSelected(bool selected) = 0;
     virtual  HandleType getHandleAt(const QPoint& point) = 0;
     // Метод клонирования
-   virtual std::shared_ptr<Shape> clone() const = 0;
+    virtual std::shared_ptr<Shape> clone() const = 0;
     virtual void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) = 0;
     virtual void setCentre(const QPoint& startPoint, const int radius, bool isSelected) = 0;
     virtual QPoint getstartPoint()const = 0;
@@ -48,10 +49,8 @@ public:
     virtual QPoint getrightPoint()const = 0;
     virtual QPoint getbottomPoint()const = 0;
     virtual int getradius()const = 0;
-
     virtual bool getisSelected()const = 0;
-    virtual void resetColor()  = 0;
-
+    virtual void resetColor() = 0;
     virtual bool getisStart() const = 0;
     virtual bool getisEnd()const = 0;
     virtual bool getisMiddle()const = 0;
@@ -69,6 +68,9 @@ public:
     virtual  QRect getToptHandle() const = 0;
     virtual  QRect getRighttHandle() const = 0;
     virtual  QRect getBottomtHandle() const = 0;
+
+    virtual bool isHandleSelected(HandleType handle) const = 0;
+
 };
 
 // Класс отрезка, наследник Shape
@@ -98,34 +100,34 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
-     QPoint getmiddlePoint() override;
-     QPoint getleftPoint()const override;
-     QPoint gettopPoint()const override;
-     QPoint getrightPoint()const override;
-     QPoint getbottomPoint()const override;
-     int getradius()const override;
+    QPoint getmiddlePoint() override;
+    QPoint getleftPoint()const override;
+    QPoint gettopPoint()const override;
+    QPoint getrightPoint()const override;
+    QPoint getbottomPoint()const override;
+    int getradius()const override;
     bool getisSelected()const override;
     void resetColor() override;
-     bool getisStart()const override;
-     bool getisEnd()const override;
-     bool getisMiddle()const override;
-      bool getisLeft()const override;
-      bool getisRight()const override;
-      bool getisTop()const override;
-      bool getisBottom()const override;
-      Type name() const override;
-      void setisover(bool iscursorhovershape) override;
-      bool getisover()const  override;
-      QRect getStartHandle() const override;  // Возвращает область квадрата в начале линии
-      QRect getEndHandle() const override;    // Возвращает область квадрата в конце линии
-      QRect getMiddleHandle() const override; // Возвращает область квадрата в середине линии
-      QRect getLeftHandle() const override;
-      QRect getToptHandle() const override;
-      QRect getRighttHandle() const override;
-      QRect getBottomtHandle() const override;
-
+    bool getisStart()const override;
+    bool getisEnd()const override;
+    bool getisMiddle()const override;
+    bool getisLeft()const override;
+    bool getisRight()const override;
+    bool getisTop()const override;
+    bool getisBottom()const override;
+    Type name() const override;
+    void setisover(bool iscursorhovershape) override;
+    bool getisover()const  override;
+    QRect getStartHandle() const override;  // Возвращает область квадрата в начале линии
+    QRect getEndHandle() const override;    // Возвращает область квадрата в конце линии
+    QRect getMiddleHandle() const override; // Возвращает область квадрата в середине линии
+    QRect getLeftHandle() const override;
+    QRect getToptHandle() const override;
+    QRect getRighttHandle() const override;
+    QRect getBottomtHandle() const override;
+    bool isHandleSelected(HandleType handle) const override;
 private:
-   
+
     QPoint startPoint;
     QPoint endPoint;
     QPoint middlePoint;
@@ -136,11 +138,11 @@ private:
     QColor ColorMiddlePoint = QColor(0, 127, 255);
     // Размеры квадратов на концах и в середине линии
     static constexpr int handleSize = 10;
-  bool isStart = false;  // Флаг выделения
+    bool isStart = false;  // Флаг выделения
     bool isEnd = false;  // Флаг выделения
     bool isMiddle = false;  // Флаг выделения
     bool iscursorhovershape = false; //курсор над
-   
+
 };
 
 // В дальнейшем можно добавлять другие классы (Circle, Rectangle и т.д.)
@@ -196,8 +198,8 @@ public:
     QRect getToptHandle() const override;
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
+    bool isHandleSelected(HandleType handle) const override;
 
-       
 private:
     QPoint startPoint;
     QPoint leftPoint;
@@ -216,12 +218,12 @@ private:
     // Размеры квадратов на концах и в середине линии
     static constexpr int handleSize = 10;
 
- 
+
     bool isStart = false;  // Флаг выделения
     bool isLeft = false;  // Флаг выделения
     bool isTop = false;  // Флаг выделения
     bool isRight = false;  // Флаг выделения
     bool isBottom = false;  // Флаг выделения
     bool iscursorhovershape = false; //курсор над 
-   
-};      
+
+};

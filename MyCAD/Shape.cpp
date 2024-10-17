@@ -259,6 +259,20 @@ QRect Line::getBottomtHandle() const
     return QRect();
 }
 
+bool Line::isHandleSelected(HandleType handle) const {
+    switch (handle) {
+    case HandleType::StartHandle: return getisStart();
+    case HandleType::EndHandle: return getisEnd();
+    case HandleType::MiddleHandle: return getisMiddle();
+    case HandleType::LeftHandle: return getisLeft();
+    case HandleType::RightHandle: return getisRight();
+    case HandleType::TopHandle: return getisTop();
+    case HandleType::BottomHandle: return getisBottom();
+    default: return false;
+    }
+}
+
+
 
 
 HandleType Line::getHandleAt(const QPoint& point) {
@@ -625,4 +639,16 @@ QRect Circle::getToptHandle() const {
 QRect Circle::getBottomtHandle() const {
     return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
 }
+
+bool Circle::isHandleSelected(HandleType handle) const {
+    switch (handle) {
+    case HandleType::StartHandle: return getisStart();
+    case HandleType::LeftHandle: return getisLeft();
+    case HandleType::RightHandle: return getisRight();
+    case HandleType::TopHandle: return getisTop();
+    case HandleType::BottomHandle: return getisBottom();
+    default: return false;
+    }
+}
+
 
