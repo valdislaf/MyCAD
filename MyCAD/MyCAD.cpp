@@ -271,14 +271,22 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 // Предположим, что у вас есть указатель на текущую вкладку:
                 QWidget* currentTab = tabWidget->currentWidget();
                 QPoint newpoint = currentTab->mapFromGlobal(globalPos);
+                bool isanyshapeselectedandhandled = false;
+                for (const auto& shape : tabDataList[tabWidget->currentIndex()].shapes)
+                {
+                    if (shape->getisSelected() && shape->getHandleAt(newpoint))
+                    {
+                        isanyshapeselectedandhandled = true;
+                    }
+                }
 
                 // Проходим в обратном порядке по вектору и ищем пересечение
                 for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
                     if ((*it)->contains(newpoint)) {
                         // Если точка попала в фигуру, выделяем её
                         HandleType handle = (*it)->getHandleAt(newpoint);
-                        if (handle == None || selShapes.size()==0) { // Только если не попали в уже выделенную область ручки или нет выделенных
-                           (*it)->setSelected(true);
+                        if (handle == None || selShapes.size() == 0) { // Только если не попали в уже выделенную область ручки или нет выделенных
+                            if (!isanyshapeselectedandhandled) { (*it)->setSelected(true); }
                         }
                         // Выделяем только последнюю добавленную фигуру, которая попала под точку
                         break;
@@ -487,9 +495,15 @@ bool MyCAD::event(QEvent* e) {
                 // Предположим, что у вас есть указатель на текущую вкладку:
                 QWidget* currentTab = tabWidget->currentWidget();
                 QPoint newpoint = currentTab->mapFromGlobal(globalPos);
-
+                bool isanyshapeselectedandhandled = false;
                 // Сначала сбрасываем подсветку для всех фигур
                 for (const auto& shape : tabDataList[currentIndex].shapes) {
+
+                    if (selShapes.size() != 0 && (!movingStarts.empty()))
+                    {
+                        isanyshapeselectedandhandled = true;
+                        break;
+                    }
                     shape->setisover(false);  // Сброс свойства подсветки
                 }
 
@@ -499,7 +513,7 @@ bool MyCAD::event(QEvent* e) {
                         (*it)->setisover(false);  // Если не пересекается, не подсвечиваем
                     }
                     else {
-                        (*it)->setisover(true);  // Если пересекается, подсвечиваем последнюю
+                        if (!isanyshapeselectedandhandled && !(*it)->getisSelected()) { (*it)->setisover(true); } // Если пересекается, подсвечиваем последнюю
                         break;  // Останавливаемся на первой найденной (последней добавленной) фигуре
                     }
                 }
@@ -827,36 +841,39 @@ void MyCAD::drawShapes(QPainter& painter) {
                         QPoint globalPos = QCursor::pos(); // Получаем глобальные координаты мыши
                         // Преобразуем глобальные координаты в локальные относительно текущей вкладки
                         QPoint localPos = currentTab->mapFromGlobal(globalPos);
-
+                        painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                         if ((*tmpShapeIt)->getisStart()) {
-                            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
                         else if ((*tmpShapeIt)->getisEnd()) {
-                            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                             painter.drawLine((*tmpShapeIt)->getendPoint().x(), (*tmpShapeIt)->getendPoint().y(), localPos.x(), localPos.y());
                         }
                         else if ((*tmpShapeIt)->getisMiddle()) {
-                            painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
                             painter.drawLine((*tmpShapeIt)->getmiddlePoint().x(), (*tmpShapeIt)->getmiddlePoint().y(), localPos.x(), localPos.y());
                         }
 
-                        else if ((*tmpShapeIt)->getisLeft()) {
+                        else if ((*tmpShapeIt)->getisLeft() || (*tmpShapeIt)->getisTop() || (*tmpShapeIt)->getisRight() || (*tmpShapeIt)->getisBottom()) {
                             painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-                        else if ((*tmpShapeIt)->getisTop()) {
-                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        }
-                        else if ((*tmpShapeIt)->getisRight()) {
-                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        }
-                        else if ((*tmpShapeIt)->getisBottom()) {
-                            painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                            painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        }
+
+
+                        //else if ((*tmpShapeIt)->getisLeft()) {
+                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
+                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        //}
+                        //else if ((*tmpShapeIt)->getisTop()) {
+                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
+                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        //}
+                        //else if ((*tmpShapeIt)->getisRight()) {
+                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
+                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        //}
+                        //else if ((*tmpShapeIt)->getisBottom()) {
+                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
+                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
+                        //}
                         // возвращаем Pen
                         painter.setPen(pen);
                         shape->draw(painter);
