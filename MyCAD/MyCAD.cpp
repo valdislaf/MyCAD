@@ -856,24 +856,6 @@ void MyCAD::drawShapes(QPainter& painter) {
                             painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
                             painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
                         }
-
-
-                        //else if ((*tmpShapeIt)->getisLeft()) {
-                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        //}
-                        //else if ((*tmpShapeIt)->getisTop()) {
-                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        //}
-                        //else if ((*tmpShapeIt)->getisRight()) {
-                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        //}
-                        //else if ((*tmpShapeIt)->getisBottom()) {
-                        //    painter.setPen(DashPen(QColor(161, 161, 161), 2, 2));
-                        //    painter.drawLine((*tmpShapeIt)->getstartPoint().x(), (*tmpShapeIt)->getstartPoint().y(), localPos.x(), localPos.y());
-                        //}
                         // возвращаем Pen
                         painter.setPen(pen);
                         shape->draw(painter);
