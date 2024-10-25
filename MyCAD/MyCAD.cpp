@@ -7,12 +7,16 @@
 #include <QTabWidget>
 #include <QWidget>
 #include <QMenuBar>
+#include <QDebug>
+
+
 
 #include "MyCAD.h"
-#include <MenuInit.h>
-#include <MenuMain.h>
-#include <Grid.h>
-#include <CrossCursor.h>
+#include "MenuInit.h"
+#include "MenuMain.h"
+#include "Grid.h"
+#include "CrossCursor.h"
+
 
 bool isdraw = false;
 bool ondrawline = false;
@@ -238,6 +242,10 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                     // Проверяем, попали ли мы на одну из ручек линии
                     HandleType handle = shape->getHandleAt(newpoint);
 
+                  //HandleType handle2 = shape->getHandle().Type(newpoint, shape->getisSelected());
+                  //  Q_ASSERT(handle == handle2);
+
+
                     if (shape->getisSelected() && shape->isHandleSelected(handle)) {
                         selShapes.push_back(shape->clone());
                         selShapes.back()->setSelected(shape->getisSelected());
@@ -274,7 +282,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 bool isanyshapeselectedandhandled = false;
                 for (const auto& shape : tabDataList[tabWidget->currentIndex()].shapes)
                 {
-                    if (shape->getisSelected() && shape->getHandleAt(newpoint))
+                    if (shape->getisSelected() && shape->getHandleAt(newpoint)!= HandleType::None)
                     {
                         isanyshapeselectedandhandled = true;
                     }
@@ -285,7 +293,7 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                     if ((*it)->contains(newpoint)) {
                         // Если точка попала в фигуру, выделяем её
                         HandleType handle = (*it)->getHandleAt(newpoint);
-                        if (handle == None || selShapes.size() == 0) { // Только если не попали в уже выделенную область ручки или нет выделенных
+                        if (handle == HandleType::None || selShapes.size() == 0) { // Только если не попали в уже выделенную область ручки или нет выделенных
                             if (!isanyshapeselectedandhandled) { (*it)->setSelected(true); }
                         }
                         // Выделяем только последнюю добавленную фигуру, которая попала под точку
@@ -546,13 +554,17 @@ bool MyCAD::event(QEvent* e) {
                         if (movingWholeLines[i]) {
 
                             selShapes[i]->move(delta);
+                           // selShapes[i]->getHandle().adddeltatoStart(delta);
+                           // selShapes[i]->getHandle().adddeltatoEnd(delta);
                         }
                         if (movingStarts[i]) {
                             selShapes[i]->moveStart(delta);
+                          //  selShapes[i]->getHandle().adddeltatoStart(delta);
                         }
                         // перемещение конца линии
                         if (movingEnds[i]) {
                             selShapes[i]->moveEnd(delta);
+                           // selShapes[i]->getHandle().adddeltatoEnd(delta);
                         }
                         if (movingLefts[i] || movingTops[i] || movingRights[i] || movingBottoms[i]) {
                             int radius = std::hypot(newpoint.x() - selShapes[i]->getstartPoint().x(), newpoint.y() - selShapes[i]->getstartPoint().y());

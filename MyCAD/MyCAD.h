@@ -26,7 +26,6 @@ extern std::vector<bool> movingLefts;
 extern std::vector<bool> movingTops;
 extern std::vector<bool> movingRights;
 extern std::vector<bool> movingBottoms;
-
 extern std::vector<std::shared_ptr<Shape>>selShapes;
 extern std::vector<std::shared_ptr<Shape>>tmpShapes;
 
@@ -37,16 +36,22 @@ class MyCAD : public QMainWindow
 public:
     MyCAD(QWidget* parent = nullptr);
     ~MyCAD();
+    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур    
+    void drawGrid(QPainter& painter);
+    void DrawLine(QPainter& painter, QPoint localPos);
+    void DrawCircle(QPainter& painter, QPoint localPos);
+    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
+    QCursor createCustomCrossCursor();
+    QCursor createCustomCrossCursorIn();
+    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
+    void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool event(QEvent* e)override;
-    void keyPressEvent(QKeyEvent* event) override;
-
-private:
-    QVector<TabData> tabDataList; // Список данных для каждой вкладки
+    void keyPressEvent(QKeyEvent* event) override;   
 
 private slots:  // Методы, связанные с сигналами
     void onExitThis();
@@ -54,7 +59,6 @@ private slots:  // Методы, связанные с сигналами
     void onDrawLine();
     void onDrawCircle();
     void onTabChanged(int index);
-    void movingPush(HandleType handle, bool isselected);
 
 private:  // Обычные методы
     void createNewWindow();
@@ -66,22 +70,11 @@ private:  // Обычные методы
     void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
     void clearvectors();
     void clearSelection();
-
-private:
+    void movingPush(HandleType handle, bool isselected);
+    QVector<TabData> tabDataList; // Список данных для каждой вкладки
     bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
     QPoint lastMousePosition; // Последняя позиция мыши
     QPoint offset;            // Смещение от начальной позиции
     QTabWidget* tabWidget;
     QMenuBar* menuBar;
-
-public:
-    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур    
-    void drawGrid(QPainter& painter);
-    void DrawLine(QPainter& painter, QPoint localPos);
-    void DrawCircle(QPainter& painter, QPoint localPos);
-    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
-    QCursor createCustomCrossCursor();
-    QCursor createCustomCrossCursorIn();
-    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
-    void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный 
 };

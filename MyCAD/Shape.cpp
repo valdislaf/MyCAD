@@ -1,17 +1,29 @@
 #include "Shape.h"
 #include <QDebug>
+//#include "Handle.h"
 
 // Реализация конструктора для класса Line
 Line::Line(const QPoint& startPoint, const QPoint& endPoint)
-    : startPoint(startPoint), endPoint(endPoint) {}
+    : startPoint(startPoint), endPoint(endPoint)  {
+    handleManager = new HandleManager(10);
+}
 
 Line::Line(const Line& other)
-    : startPoint(other.startPoint), endPoint(other.endPoint) {}
+    : startPoint(other.startPoint), endPoint(other.endPoint){
+    handleManager = new HandleManager(10);
+}
 
 Line::~Line()
 {
+    delete handleManager;
+}
+QRect Line::getEndHandle() const  {
+    return handleManager->getHandle(HandleType::EndHandle, startPoint, endPoint);
 }
 
+QRect Line::getMiddleHandle() const  {
+    return handleManager->getHandle(HandleType::MiddleHandle, startPoint, endPoint);
+}
 
 // Реализация метода  клонирования
 std::shared_ptr<Shape> Line::clone() const  {
@@ -177,6 +189,7 @@ void Line::draw(QPainter& painter) const {
 void Line::move(const QPoint& delta) {
     startPoint += delta;
     endPoint += delta;
+    
 }
 
 void Line::moveStart(const QPoint& delta)
@@ -229,15 +242,15 @@ QRect Line::getStartHandle() const {
 }
 
 // Возвращает область квадрата в конце линии
-QRect Line::getEndHandle() const {
-    return QRect(endPoint.x() - handleSize / 2, endPoint.y() - handleSize / 2, handleSize, handleSize);
-}
+//QRect Line::getEndHandle() const {
+//    return QRect(endPoint.x() - handleSize / 2, endPoint.y() - handleSize / 2, handleSize, handleSize);
+//}
 
 // Возвращает область квадрата в середине линии
-QRect Line::getMiddleHandle() const {
-    QPoint middlePoint = (startPoint + endPoint) / 2;
-    return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
-}
+//QRect Line::getMiddleHandle() const {
+//    QPoint middlePoint = (startPoint + endPoint) / 2;
+//    return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
+//}
 
 QRect Line::getLeftHandle() const
 {
@@ -264,16 +277,9 @@ bool Line::isHandleSelected(HandleType handle) const {
     case HandleType::StartHandle: return getisStart();
     case HandleType::EndHandle: return getisEnd();
     case HandleType::MiddleHandle: return getisMiddle();
-    case HandleType::LeftHandle: return getisLeft();
-    case HandleType::RightHandle: return getisRight();
-    case HandleType::TopHandle: return getisTop();
-    case HandleType::BottomHandle: return getisBottom();
     default: return false;
     }
 }
-
-
-
 
 HandleType Line::getHandleAt(const QPoint& point) {
 
@@ -321,15 +327,27 @@ void Line::setHandleState(HandleType handleType) {
 
 
 Circle::Circle(const QPoint& startPoint, const int radius)
-    : startPoint(startPoint), radius(radius) {}
+    : startPoint(startPoint), radius(radius) {
+    handleManager = new HandleManager(10);
+}
 
 Circle::Circle(const Circle& other)
     : startPoint(other.startPoint), radius(other.radius) {
+    handleManager = new HandleManager(10);
 }
 
 Circle::~Circle()
 {
+    delete handleManager;
 }
+QRect Circle::getStartHandle() const  {
+    return handleManager->getHandle(HandleType::StartHandle, startPoint, QPoint(), radius);
+}
+
+QRect Circle::getLeftHandle() const  {
+    return handleManager->getHandle(HandleType::LeftHandle, startPoint, QPoint(), radius);
+}
+
 
 void Circle::draw(QPainter& painter) const
 {
@@ -608,10 +626,10 @@ bool Circle::getisover() const
     return iscursorhovershape;
 }
 
-QRect Circle::getStartHandle() const
-{
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
-}
+//QRect Circle::getStartHandle() const
+//{
+//    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+//}
 
 QRect Circle::getEndHandle() const
 {
@@ -623,10 +641,10 @@ QRect Circle::getMiddleHandle() const
     return QRect();
 }
 
-QRect Circle::getLeftHandle() const {
-    // Центр окружности: centerPoint, радиус: radius
-    return QRect(startPoint.x() - radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
-}
+//QRect Circle::getLeftHandle() const {
+//    // Центр окружности: centerPoint, радиус: radius
+//    return QRect(startPoint.x() - radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+//}
 
 QRect Circle::getRighttHandle() const {
     return QRect(startPoint.x() + radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);

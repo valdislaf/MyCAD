@@ -2,17 +2,19 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPoint>
+#include "HandleManager.h"
 
-enum HandleType {
-    None,
-    StartHandle,
-    EndHandle,
-    MiddleHandle,
-    LeftHandle,
-    TopHandle,
-    RightHandle,
-    BottomHandle
-};
+//
+//enum HandleType {
+//    None,
+//    StartHandle,
+//    EndHandle,
+//    MiddleHandle,
+//    LeftHandle,
+//    TopHandle,
+//    RightHandle,
+//    BottomHandle
+//};
 
 enum Type {
     line,
@@ -70,7 +72,7 @@ public:
     virtual  QRect getBottomtHandle() const = 0;
 
     virtual bool isHandleSelected(HandleType handle) const = 0;
-
+    
 };
 
 // Класс отрезка, наследник Shape
@@ -126,6 +128,7 @@ public:
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
     bool isHandleSelected(HandleType handle) const override;
+    
 private:
 
     QPoint startPoint;
@@ -142,7 +145,8 @@ private:
     bool isEnd = false;  // Флаг выделения
     bool isMiddle = false;  // Флаг выделения
     bool iscursorhovershape = false; //курсор над
-
+    HandleManager* handleManager;
+ 
 };
 
 // В дальнейшем можно добавлять другие классы (Circle, Rectangle и т.д.)
@@ -199,6 +203,7 @@ public:
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
     bool isHandleSelected(HandleType handle) const override;
+    
 
 private:
     QPoint startPoint;
@@ -225,5 +230,6 @@ private:
     bool isRight = false;  // Флаг выделения
     bool isBottom = false;  // Флаг выделения
     bool iscursorhovershape = false; //курсор над 
-
+    HandleManager* handleManager;
+    
 };

@@ -95,6 +95,9 @@
     <ClCompile Include="CrossCursor.cpp" />
     <ClCompile Include="DrawingWidget.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HandleManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MenuInit.cpp" />
     <ClCompile Include="MenuMain.cpp" />
     <ClCompile Include="Shape.cpp" />
@@ -117,6 +120,9 @@
   <ItemGroup>
     <ClInclude Include="CrossCursor.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HandleManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
