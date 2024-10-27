@@ -220,8 +220,6 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                 }
             }
             clearvectors();
-
-
             update();
         }
 
@@ -245,8 +243,8 @@ void MyCAD::mousePressEvent(QMouseEvent* event)
                   //HandleType handle2 = shape->getHandle().Type(newpoint, shape->getisSelected());
                   //  Q_ASSERT(handle == handle2);
 
-
-                    if (shape->getisSelected() && shape->isHandleSelected(handle)) {
+                   
+                    if (shape->getisSelected() && shape->isHandleSelected(handle, newpoint)) {
                         selShapes.push_back(shape->clone());
                         selShapes.back()->setSelected(shape->getisSelected());
                         tmpShapes.push_back(shape);

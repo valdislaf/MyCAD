@@ -17,13 +17,7 @@ Line::~Line()
 {
     delete handleManager;
 }
-QRect Line::getEndHandle() const  {
-    return handleManager->getHandle(HandleType::EndHandle, startPoint, endPoint);
-}
 
-QRect Line::getMiddleHandle() const  {
-    return handleManager->getHandle(HandleType::MiddleHandle, startPoint, endPoint);
-}
 
 // Реализация метода  клонирования
 std::shared_ptr<Shape> Line::clone() const  {
@@ -237,9 +231,13 @@ bool Line::contains(const QPoint& point)  {
 }
 
 // Возвращает область квадрата в начале линии
+// Возвращает область квадрата в начале линии
 QRect Line::getStartHandle() const {
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+    return handleManager->getHandle(HandleType::StartHandle, startPoint, endPoint);
 }
+//QRect Line::getStartHandle() const {
+//    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+//}
 
 // Возвращает область квадрата в конце линии
 //QRect Line::getEndHandle() const {
@@ -251,6 +249,14 @@ QRect Line::getStartHandle() const {
 //    QPoint middlePoint = (startPoint + endPoint) / 2;
 //    return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
 //}
+
+QRect Line::getEndHandle() const {
+    return handleManager->getHandle(HandleType::EndHandle, startPoint, endPoint);
+}
+
+QRect Line::getMiddleHandle() const {
+    return handleManager->getHandle(HandleType::MiddleHandle, startPoint, endPoint);
+}
 
 QRect Line::getLeftHandle() const
 {
@@ -272,13 +278,22 @@ QRect Line::getBottomtHandle() const
     return QRect();
 }
 
-bool Line::isHandleSelected(HandleType handle) const {
+bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const {
+    QRect handleRect;
     switch (handle) {
-    case HandleType::StartHandle: return getisStart();
-    case HandleType::EndHandle: return getisEnd();
-    case HandleType::MiddleHandle: return getisMiddle();
-    default: return false;
+    case HandleType::StartHandle:
+        handleRect = getStartHandle();
+        break;
+    case HandleType::EndHandle:
+        handleRect = getEndHandle();
+        break;
+    case HandleType::MiddleHandle:
+        handleRect = getMiddleHandle();
+        break;
+    default:
+        return false;
     }
+    return handleManager->isHandleSelected(handleRect, point);
 }
 
 HandleType Line::getHandleAt(const QPoint& point) {
@@ -339,13 +354,6 @@ Circle::Circle(const Circle& other)
 Circle::~Circle()
 {
     delete handleManager;
-}
-QRect Circle::getStartHandle() const  {
-    return handleManager->getHandle(HandleType::StartHandle, startPoint, QPoint(), radius);
-}
-
-QRect Circle::getLeftHandle() const  {
-    return handleManager->getHandle(HandleType::LeftHandle, startPoint, QPoint(), radius);
 }
 
 
@@ -626,6 +634,11 @@ bool Circle::getisover() const
     return iscursorhovershape;
 }
 
+QRect Circle::getStartHandle() const {
+    return handleManager->getHandle(HandleType::StartHandle, startPoint, QPoint(), radius);
+}
+
+
 //QRect Circle::getStartHandle() const
 //{
 //    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
@@ -645,28 +658,42 @@ QRect Circle::getMiddleHandle() const
 //    // Центр окружности: centerPoint, радиус: radius
 //    return QRect(startPoint.x() - radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
 //}
+QRect Circle::getLeftHandle() const {
+    return handleManager->getHandle(HandleType::LeftHandle, startPoint, QPoint(), radius);
+}
 
 QRect Circle::getRighttHandle() const {
-    return QRect(startPoint.x() + radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+    return handleManager->getHandle(HandleType::RightHandle, startPoint, QPoint(), radius);
 }
 
 QRect Circle::getToptHandle() const {
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - radius - handleSize / 2, handleSize, handleSize);
+    return handleManager->getHandle(HandleType::TopHandle, startPoint, QPoint(), radius);
 }
 
 QRect Circle::getBottomtHandle() const {
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
+    return handleManager->getHandle(HandleType::BottomHandle, startPoint, QPoint(), radius);
 }
 
-bool Circle::isHandleSelected(HandleType handle) const {
-    switch (handle) {
-    case HandleType::StartHandle: return getisStart();
-    case HandleType::LeftHandle: return getisLeft();
-    case HandleType::RightHandle: return getisRight();
-    case HandleType::TopHandle: return getisTop();
-    case HandleType::BottomHandle: return getisBottom();
-    default: return false;
-    }
+bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) const {  
+   QRect handleRect;  
+   switch (handle) {  
+   case HandleType::StartHandle:  
+       handleRect = getStartHandle();  
+       break;  
+   case HandleType::LeftHandle:  
+       handleRect = getLeftHandle();  
+       break;  
+   case HandleType::RightHandle:  
+       handleRect = getRighttHandle();  
+       break;  
+   case HandleType::TopHandle:  
+       handleRect = getToptHandle();  
+       break;  
+   case HandleType::BottomHandle:  
+       handleRect = getBottomtHandle();  
+       break;  
+   default:  
+       return false;  
+   }  
+   return handleManager->isHandleSelected(handleRect, point);  
 }
-
-

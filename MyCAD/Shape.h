@@ -71,8 +71,8 @@ public:
     virtual  QRect getRighttHandle() const = 0;
     virtual  QRect getBottomtHandle() const = 0;
 
-    virtual bool isHandleSelected(HandleType handle) const = 0;
-    
+    //virtual bool isHandleSelected(HandleType handle) const = 0;
+    virtual  bool isHandleSelected(const HandleType& handle, const QPoint& point) const = 0;
 };
 
 // Класс отрезка, наследник Shape
@@ -127,7 +127,7 @@ public:
     QRect getToptHandle() const override;
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
-    bool isHandleSelected(HandleType handle) const override;
+    bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
     
 private:
 
@@ -202,7 +202,7 @@ public:
     QRect getToptHandle() const override;
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
-    bool isHandleSelected(HandleType handle) const override;
+    bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
     
 
 private:
