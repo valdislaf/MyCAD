@@ -4,18 +4,6 @@
 #include <QPoint>
 #include "HandleManager.h"
 
-//
-//enum HandleType {
-//    None,
-//    StartHandle,
-//    EndHandle,
-//    MiddleHandle,
-//    LeftHandle,
-//    TopHandle,
-//    RightHandle,
-//    BottomHandle
-//};
-
 enum Type {
     line,
     circle

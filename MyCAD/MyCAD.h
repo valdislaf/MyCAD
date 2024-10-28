@@ -12,11 +12,12 @@ struct TabData {
     int delataY = 0;
     std::vector<std::shared_ptr<Shape>> shapes;  // Список фигур для этой вкладки
 };
-
+enum class DrawMode {
+    None,
+    Circle,
+    Line
+};
 extern bool isdraw;
-extern bool ondrawline;
-extern bool ondrawcircle;
-extern bool updrawcircle;
 extern QPoint clickpoint;
 extern int heightwindow_prev;
 extern std::vector<bool> movingWholeLines;
@@ -28,7 +29,7 @@ extern std::vector<bool> movingRights;
 extern std::vector<bool> movingBottoms;
 extern std::vector<std::shared_ptr<Shape>>selShapes;
 extern std::vector<std::shared_ptr<Shape>>tmpShapes;
-
+extern DrawMode currentDrawMode;
 class MyCAD : public QMainWindow
 {
     Q_OBJECT
@@ -48,6 +49,12 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;
+    void handleDrawing(QMouseEvent* event, bool& circleflag);
+    void handleSelection(QMouseEvent* event, bool circleflag);
+    void updateShapeCoordinates(int i);
+    void resetShapeColors();
+    void selectShapes(QMouseEvent* event);
+    void highlightShapes(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool event(QEvent* e)override;
@@ -77,4 +84,5 @@ private:  // Обычные методы
     QPoint offset;            // Смещение от начальной позиции
     QTabWidget* tabWidget;
     QMenuBar* menuBar;
+	
 };

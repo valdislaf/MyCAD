@@ -20,7 +20,8 @@ public:
 
     QRect getHandle(HandleType type, const QPoint& startPoint, const QPoint& endPoint = QPoint(), int radius = 0) const;
 
-    bool isHandleSelected(const QRect& handleRect, const QPoint& point) const;
+    bool isHandleSelected(const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) const;
+
 
 private:
     int handleSize;

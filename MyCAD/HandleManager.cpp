@@ -27,7 +27,7 @@ QRect HandleManager::getHandle(HandleType type, const QPoint& startPoint, const 
     }
 }
 
-bool HandleManager::isHandleSelected(const QRect& handleRect, const QPoint& point) const
-{
+bool HandleManager::isHandleSelected(const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) const {
+    QRect handleRect = getHandle(handle, startPoint, endPoint, radius);
     return handleRect.contains(point);
 }
