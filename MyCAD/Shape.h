@@ -9,12 +9,21 @@ enum Type {
     circle
 };
 
+struct ShapePoints {
+    QPoint startPoint;
+    QPoint endPoint;   
+    int radius;
+};
 // Абстрактный базовый класс для всех геометрических объектов
 class Shape : public QWidget {
 
     Q_OBJECT
+private:
+    ShapePoints points;
 
 public:
+    const ShapePoints& getPoints() const { return points; }
+    void setPoints(const ShapePoints& newPoints) { points = newPoints; }
     virtual ~Shape() = default;
 
     // Чисто виртуальные методы, которые должны быть реализованы в наследниках
@@ -33,11 +42,7 @@ public:
     virtual void setCentre(const QPoint& startPoint, const int radius, bool isSelected) = 0;
     virtual QPoint getstartPoint()const = 0;
     virtual QPoint getendPoint()const = 0;
-    virtual QPoint getmiddlePoint() = 0;
-    virtual QPoint getleftPoint()const = 0;
-    virtual QPoint gettopPoint()const = 0;
-    virtual QPoint getrightPoint()const = 0;
-    virtual QPoint getbottomPoint()const = 0;
+    virtual QPoint getmiddlePoint()const = 0;
     virtual int getradius()const = 0;
     virtual bool getisSelected()const = 0;
     virtual void resetColor() = 0;
@@ -91,11 +96,7 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
-    QPoint getmiddlePoint() override;
-    QPoint getleftPoint()const override;
-    QPoint gettopPoint()const override;
-    QPoint getrightPoint()const override;
-    QPoint getbottomPoint()const override;
+    QPoint getmiddlePoint()const override;
     int getradius()const override;
     bool getisSelected()const override;
     void resetColor() override;
@@ -118,11 +119,12 @@ public:
     QRect getBottomtHandle() const override;
     bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
     void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
+
 private:
 
-    QPoint startPoint;
+   /* QPoint startPoint;
     QPoint endPoint;
-    QPoint middlePoint;
+    QPoint middlePoint;*/
     bool isSelected = false;  // Флаг выделения
     bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
@@ -166,11 +168,7 @@ public:
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
     QPoint getendPoint()const override;
-    QPoint getmiddlePoint() override;
-    QPoint getleftPoint()const override;
-    QPoint gettopPoint()const override;
-    QPoint getrightPoint()const override;
-    QPoint getbottomPoint()const override;
+    QPoint getmiddlePoint()const override;
     int getradius()const override;
     bool getisSelected()const override;
     void resetColor() override;
@@ -197,12 +195,12 @@ public:
     
 
 private:
-    QPoint startPoint;
+   /* QPoint startPoint;
     QPoint leftPoint;
     QPoint topPoint;
     QPoint rightPoint;
     QPoint bottomPoint;
-    int radius;
+    int radius;*/
     bool isSelected = false;  // Флаг выделения
     bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
