@@ -101,8 +101,6 @@
     <ClCompile Include="MenuInit.cpp" />
     <ClCompile Include="MenuMain.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <QtRcc Include="MyCAD.qrc" />
-    <QtUic Include="MyCAD.ui" />
     <QtMoc Include="MyCAD.h" />
     <ClCompile Include="MyCAD.cpp" />
     <ClCompile Include="main.cpp" />

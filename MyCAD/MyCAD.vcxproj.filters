@@ -23,12 +23,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="MyCAD.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <QtUic Include="MyCAD.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtMoc Include="MyCAD.h">
       <Filter>Header Files</Filter>
     </QtMoc>

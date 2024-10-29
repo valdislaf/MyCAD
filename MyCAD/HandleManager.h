@@ -27,6 +27,26 @@ struct ShapePoints {
     int radius;
 };
 
+struct Colors {
+    QColor   ColorStartPoint = QColor(0, 127, 255);
+    QColor  ColorEndPoint = QColor(0, 127, 255);
+    QColor ColorMiddlePoint = QColor(0, 127, 255);
+    QColor  ColorLeftPoint = QColor(0, 127, 255);
+    QColor  ColorTopPoint = QColor(0, 127, 255);
+    QColor  ColorRightPoint = QColor(0, 127, 255);    
+    QColor ColorBottomPoint = QColor(0, 127, 255);
+};
+
+struct Selected {
+    bool  isStart = false;  // Флаг выделения
+    bool isEnd = false;  // Флаг выделения
+    bool isMiddle = false;  // Флаг выделения 
+    bool isLeft = false;  // Флаг выделения
+    bool isTop = false;  // Флаг выделения
+    bool isRight = false;  // Флаг выделения
+    bool isBottom = false;  // Флаг выделения
+};
+
 class HandleManager {
 
 public:
