@@ -52,3 +52,12 @@ void HandleManager::captureCursorforHandle(QTabWidget* tabWidget, const HandleTy
         }
     }
 }
+// Добавляем метод в HandleManager
+void HandleManager::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) {
+    // Проходимся по всем типам HandleType
+    for (HandleType handle : {HandleType::StartHandle, HandleType::EndHandle, HandleType::MiddleHandle,
+        HandleType::LeftHandle, HandleType::RightHandle, HandleType::TopHandle, HandleType::BottomHandle}) {
+        captureCursorforHandle(tabWidget, handle, point, startPoint, endPoint, radius);
+    }
+}
+

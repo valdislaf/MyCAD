@@ -61,7 +61,7 @@ public:
 
     //virtual bool isHandleSelected(HandleType handle) const = 0;
     virtual  bool isHandleSelected(const HandleType& handle, const QPoint& point) const = 0;
-    virtual void captureCursorforHandle( QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) = 0;
+    virtual void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) = 0;
 };
 
 // Класс отрезка, наследник Shape
@@ -117,7 +117,7 @@ public:
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
     bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
-    void captureCursorforHandle( QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
+    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
 private:
 
     QPoint startPoint;
@@ -193,7 +193,7 @@ public:
     QRect getBottomtHandle() const override;
     bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
 
-    void captureCursorforHandle( QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
+    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
     
 
 private:

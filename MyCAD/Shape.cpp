@@ -269,9 +269,9 @@ bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const
     return handleManager->isHandleSelected(handle, point, startPoint, endPoint, 0);
 }
 
-void Line::captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius)
+void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) 
 {
-    return handleManager->captureCursorforHandle(tabWidget, handle, point, startPoint, endPoint, radius);
+    return handleManager->captureCursorForAllHandles(tabWidget, point,  startPoint, endPoint,radius);
 }
 
 
@@ -646,6 +646,7 @@ bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) con
     return handleManager->isHandleSelected(handle, point, startPoint, QPoint(), radius);
 }
 
-void Circle::captureCursorforHandle( QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) {
-    return handleManager->captureCursorforHandle( tabWidget,  handle,  point,  startPoint,  endPoint,  radius);    
+void Circle::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius)
+{
+    return handleManager->captureCursorForAllHandles(tabWidget, point, startPoint, endPoint, radius);
 }

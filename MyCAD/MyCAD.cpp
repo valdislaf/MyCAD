@@ -296,23 +296,17 @@ void MyCAD::handleHoverMoveEvent() {
 }
 
 // Обработка выделения фигур
+// Обновленный метод processShapeSelection
 void MyCAD::processShapeSelection(int currentIndex) {
-    for (int i = 0; i < tabDataList[currentIndex].shapes.size(); i++) {
-        const auto& shape = tabDataList[currentIndex].shapes[i];
-        QWidget* currentTab = tabWidget->currentWidget();
-        QPoint newpoint = currentTab->mapFromGlobal(QCursor::pos());
-        if (shape->getisSelected()) { 
-            shape->captureCursorforHandle(tabWidget, HandleType::StartHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-            shape->captureCursorforHandle(tabWidget, HandleType::EndHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-            shape->captureCursorforHandle(tabWidget, HandleType::MiddleHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-            shape->captureCursorforHandle(tabWidget, HandleType::LeftHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-            shape->captureCursorforHandle(tabWidget, HandleType::RightHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-            shape->captureCursorforHandle(tabWidget, HandleType::TopHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-            shape->captureCursorforHandle(tabWidget, HandleType::BottomHandle, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
-
+    for (const auto& shape : tabDataList[currentIndex].shapes) {
+        if (shape->getisSelected()) {
+            QWidget* currentTab = tabWidget->currentWidget();
+            QPoint newpoint = currentTab->mapFromGlobal(QCursor::pos());
+            shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
         }
     }
 }
+
 
 // Подсветка фигур под курсором
 void MyCAD::highlightShapesUnderCursor(int currentIndex) {
