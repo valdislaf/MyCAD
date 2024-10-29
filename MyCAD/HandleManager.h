@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <QRect>
 #include <QPoint>
+#include <QCursor>
+#include <QTabWidget>
+#include <QWidget>
 
 enum class HandleType {
     None,
@@ -22,7 +25,8 @@ public:
 
     bool isHandleSelected(const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) const;
 
-
+    void captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius);
+    
 private:
     int handleSize;
 

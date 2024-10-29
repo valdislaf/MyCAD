@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "HandleManager.h"
 #include <QPoint>
+#include <QTabWidget>
+#include <QWidget>
 
 HandleManager::HandleManager(int handleSize) : handleSize(handleSize) {}
 
@@ -30,4 +32,23 @@ QRect HandleManager::getHandle(HandleType type, const QPoint& startPoint, const 
 bool HandleManager::isHandleSelected(const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) const {
     QRect handleRect = getHandle(handle, startPoint, endPoint, radius);
     return handleRect.contains(point);
+}
+
+void HandleManager::captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) {
+    QRect handleRect = getHandle(handle, startPoint, endPoint, radius);
+    QWidget* currentTab = tabWidget->currentWidget();
+  
+    // Проверяем, находится ли курсор в области handleRect
+    if (handleRect.contains(point)) {
+        // Получаем центр квадрата Handle
+        QPoint centerHandle = handleRect.center();
+
+        // Преобразуем локальные координаты в глобальные
+        QPoint globalPos = currentTab->mapToGlobal(centerHandle);
+
+        // Если курсор не в центре, возвращаем его обратно
+        if (point != centerHandle) {
+            QCursor::setPos(globalPos);
+        }
+    }
 }

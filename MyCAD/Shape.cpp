@@ -1,6 +1,7 @@
 #include "Shape.h"
 #include <QDebug>
-
+#include <QTabWidget>
+#include <QWidget>
 
 // Реализация конструктора для класса Line
 Line::Line(const QPoint& startPoint, const QPoint& endPoint)
@@ -266,6 +267,11 @@ QRect Line::getBottomtHandle() const
 
 bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const {
     return handleManager->isHandleSelected(handle, point, startPoint, endPoint, 0);
+}
+
+void Line::captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius)
+{
+    return handleManager->captureCursorforHandle(tabWidget, handle, point, startPoint, endPoint, radius);
 }
 
 
@@ -638,4 +644,8 @@ QRect Circle::getBottomtHandle() const {
 
 bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) const {
     return handleManager->isHandleSelected(handle, point, startPoint, QPoint(), radius);
+}
+
+void Circle::captureCursorforHandle( QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) {
+    return handleManager->captureCursorforHandle( tabWidget,  handle,  point,  startPoint,  endPoint,  radius);    
 }

@@ -58,6 +58,7 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool event(QEvent* e)override;
+    void handleHoverMoveEvent();
     void keyPressEvent(QKeyEvent* event) override;   
 
 private slots:  // Методы, связанные с сигналами
@@ -69,7 +70,10 @@ private slots:  // Методы, связанные с сигналами
 
 private:  // Обычные методы
     void createNewWindow();
-    void captureCursorforHandle(QWidget* currentTab, const QRect& handleRect, const QPoint& cursorPos);
+    void processShapeSelection(int currentIndex);
+    void highlightShapesUnderCursor(int currentIndex);
+    void updateShapePositions();
+  //  void captureCursorforHandle(QWidget* currentTab, const QRect& handleRect, const QPoint& cursorPos);
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();
     void setupTabWidgetStyle();
