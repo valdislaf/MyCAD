@@ -4,8 +4,7 @@
 #include <QWidget>
 
 // Реализация конструктора для класса Line
-Line::Line(const QPoint& startPoint, const QPoint& endPoint)
-   // : startPoint(startPoint), endPoint(endPoint) 
+Line::Line(const QPoint& startPoint, const QPoint& endPoint)   
 {
     handleManager = new HandleManager(10);
     ShapePoints points;
@@ -15,7 +14,6 @@ Line::Line(const QPoint& startPoint, const QPoint& endPoint)
 }
 
 Line::Line(const Line& other)
-    //: startPoint(other.startPoint), endPoint(other.endPoint)
 {
     handleManager = new HandleManager(10);
     const  ShapePoints& otherpoints = other.getPoints();
@@ -30,15 +28,13 @@ Line::~Line()
     delete handleManager;
 }
 
-
 // Реализация метода  клонирования
 std::shared_ptr<Shape> Line::clone() const  {
     return std::make_shared<Line>(*this);
 }
 
 void Line::setCoords(const QPoint& startPoint_, const QPoint& endPoint_, bool isSelected_) 
-{
-   // startPoint = startPoint_; endPoint = endPoint_; 
+{    
     isSelected = isSelected_;
     ShapePoints points;
     points.startPoint = startPoint_;
@@ -62,8 +58,7 @@ QPoint Line::getendPoint() const
 
 QPoint Line::getmiddlePoint()const
 {
-    const auto& points = getPoints();
-   // middlePoint = (getPoints().startPoint + getPoints().endPoint) / 2;
+    const auto& points = getPoints(); 
     return (points.startPoint + points.endPoint) / 2;
 }
 
@@ -236,20 +231,19 @@ bool Line::contains(const QPoint& point)  {
 }
 
 // Возвращает область квадрата в начале линии
-// Возвращает область квадрата в начале линии
 QRect Line::getStartHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::StartHandle, points.startPoint, points.endPoint);
+    return handleManager->getHandle(HandleType::StartHandle, points);
 }
 
 QRect Line::getEndHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::EndHandle, points.startPoint, points.endPoint);
+    return handleManager->getHandle(HandleType::EndHandle, points);
 }
 
 QRect Line::getMiddleHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::MiddleHandle, points.startPoint, points.endPoint);
+    return handleManager->getHandle(HandleType::MiddleHandle, points);
 }
 
 QRect Line::getLeftHandle() const
@@ -274,12 +268,12 @@ QRect Line::getBottomtHandle() const
 
 bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const {
     const auto& points = getPoints();
-    return handleManager->isHandleSelected(handle, point, points.startPoint, points.endPoint, 0);
+    return handleManager->isHandleSelected(handle, point, points);
 }
 
-void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) 
+void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
 {
-    return handleManager->captureCursorForAllHandles(tabWidget, point,  startPoint, endPoint,radius);
+    return handleManager->captureCursorForAllHandles(tabWidget, point,  points);
 }
 
 
@@ -291,7 +285,7 @@ HandleType Line::getHandleAt(const QPoint& point) {
 
     const auto& points = getPoints();
     // Проверка каждого хендла через HandleManager
-    if (handleManager->isHandleSelected(HandleType::StartHandle, point, points.startPoint, points.endPoint, 0)) {
+    if (handleManager->isHandleSelected(HandleType::StartHandle, point, points)) {
         if (isSelected) {
             ColorStartPoint = QColor(165, 0, 0);
         }
@@ -299,7 +293,7 @@ HandleType Line::getHandleAt(const QPoint& point) {
         return HandleType::StartHandle;
     }
 
-    if (handleManager->isHandleSelected(HandleType::EndHandle, point, points.startPoint, points.endPoint, 0)) {
+    if (handleManager->isHandleSelected(HandleType::EndHandle, point, points)) {
         if (isSelected) {
             ColorEndPoint = QColor(165, 0, 0);
         }
@@ -307,7 +301,7 @@ HandleType Line::getHandleAt(const QPoint& point) {
         return HandleType::EndHandle;
     }
 
-    if (handleManager->isHandleSelected(HandleType::MiddleHandle, point, points.startPoint, points.endPoint, 0)) {
+    if (handleManager->isHandleSelected(HandleType::MiddleHandle, point, points)) {
         if (isSelected) {
             ColorMiddlePoint = QColor(165, 0, 0);
         }
@@ -330,7 +324,6 @@ void Line::setHandleState(HandleType handleType) {
 
 
 Circle::Circle(const QPoint& startPoint, const int radius)
-  //  : startPoint(startPoint), radius(radius) 
   {
     handleManager = new HandleManager(10);
     ShapePoints points;
@@ -340,7 +333,6 @@ Circle::Circle(const QPoint& startPoint, const int radius)
 }
 
 Circle::Circle(const Circle& other)
-   // : startPoint(other.startPoint), radius(other.radius) 
 {
     handleManager = new HandleManager(10);
     const  ShapePoints& otherpoints = other.getPoints();
@@ -435,7 +427,6 @@ bool Circle::contains(const QPoint& point)
     // Вычисляем расстояние от точки до центра
     double distanceSquared = pow(point.x() - points.startPoint.x(), 2) + pow(point.y() - points.startPoint.y(), 2);
     double radiusSquared = points.radius * points.radius;
-    //float  result = fabs(distanceSquared - radiusSquared) ;
     // Проверяем условие на нахождение точки на окружности с учетом погрешности
     return fabs(distanceSquared - radiusSquared) < 1000;
 }
@@ -461,7 +452,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
     ColorBottomPoint = QColor(0, 127, 255);
 
     // Проверка каждого хендла через HandleManager
-    if (handleManager->isHandleSelected(HandleType::StartHandle, point, points.startPoint, QPoint(), points.radius)) {
+    if (handleManager->isHandleSelected(HandleType::StartHandle, point, points)) {
         if (isSelected) {
             ColorStartPoint = QColor(165, 0, 0);
         }
@@ -469,7 +460,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
         return HandleType::StartHandle;
     }
 
-    if (handleManager->isHandleSelected(HandleType::LeftHandle, point, points.startPoint, QPoint(), points.radius)) {
+    if (handleManager->isHandleSelected(HandleType::LeftHandle, point, points)) {
         if (isSelected) {
             ColorLeftPoint = QColor(165, 0, 0);
         }
@@ -477,7 +468,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
         return HandleType::LeftHandle;
     }
 
-    if (handleManager->isHandleSelected(HandleType::TopHandle, point, points.startPoint, QPoint(), points.radius)) {
+    if (handleManager->isHandleSelected(HandleType::TopHandle, point, points)) {
         if (isSelected) {
             ColorTopPoint = QColor(165, 0, 0);
         }
@@ -485,7 +476,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
         return HandleType::TopHandle;
     }
 
-    if (handleManager->isHandleSelected(HandleType::RightHandle, point, points.startPoint, QPoint(), points.radius)) {
+    if (handleManager->isHandleSelected(HandleType::RightHandle, point, points)) {
         if (isSelected) {
             ColorRightPoint = QColor(165, 0, 0);
         }
@@ -493,7 +484,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
         return HandleType::RightHandle;
     }
 
-    if (handleManager->isHandleSelected(HandleType::BottomHandle, point, points.startPoint, QPoint(), points.radius)) {
+    if (handleManager->isHandleSelected(HandleType::BottomHandle, point, points)) {
         if (isSelected) {
             ColorBottomPoint = QColor(165, 0, 0);
         }
@@ -527,8 +518,7 @@ void Circle::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool is
 }
 
 void Circle::setCentre(const QPoint& startPoint_, const int radius_, bool isSelected_)
-{
-    //startPoint = startPoint_;  radius = radius_; 
+{   
     isSelected = isSelected_;
     ShapePoints points;
     points.startPoint = startPoint_;
@@ -628,7 +618,7 @@ bool Circle::getisover() const
 
 QRect Circle::getStartHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::StartHandle, points.startPoint, QPoint(), points.radius);
+    return handleManager->getHandle(HandleType::StartHandle, points);
 }
 
 
@@ -644,30 +634,30 @@ QRect Circle::getMiddleHandle() const
 
 QRect Circle::getLeftHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::LeftHandle, points.startPoint, QPoint(), points.radius);
+    return handleManager->getHandle(HandleType::LeftHandle, points);
 }
 
 QRect Circle::getRighttHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::RightHandle, points.startPoint, QPoint(), points.radius);
+    return handleManager->getHandle(HandleType::RightHandle, points);
 }
 
 QRect Circle::getToptHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::TopHandle, points.startPoint, QPoint(), points.radius);
+    return handleManager->getHandle(HandleType::TopHandle, points);
 }
 
 QRect Circle::getBottomtHandle() const {
     const auto& points = getPoints();
-    return handleManager->getHandle(HandleType::BottomHandle, points.startPoint, QPoint(), points.radius);
+    return handleManager->getHandle(HandleType::BottomHandle, points);
 }
 
 bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) const {
     const auto& points = getPoints();
-    return handleManager->isHandleSelected(handle, point, points.startPoint, QPoint(), points.radius);
+    return handleManager->isHandleSelected(handle, point, points);
 }
 
-void Circle::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius)
+void Circle::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
 {
-    return handleManager->captureCursorForAllHandles(tabWidget, point, startPoint, endPoint, radius);
+    return handleManager->captureCursorForAllHandles(tabWidget, point, points);
 }

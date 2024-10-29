@@ -302,7 +302,7 @@ void MyCAD::processShapeSelection(int currentIndex) {
         if (shape->getisSelected()) {
             QWidget* currentTab = tabWidget->currentWidget();
             QPoint newpoint = currentTab->mapFromGlobal(QCursor::pos());
-            shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getstartPoint(), shape->getendPoint(), shape->getradius());
+            shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getPoints());
         }
     }
 }

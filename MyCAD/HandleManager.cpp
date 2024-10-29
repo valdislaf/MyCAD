@@ -6,36 +6,36 @@
 
 HandleManager::HandleManager(int handleSize) : handleSize(handleSize) {}
 
-QRect HandleManager::getHandle(HandleType type, const QPoint& startPoint, const QPoint& endPoint, int radius) const {
+QRect HandleManager::getHandle(HandleType type, const ShapePoints& points) const {
     QPoint middlePoint; // Инициализация переменной
     switch (type) {
     case HandleType::StartHandle:
-        return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+        return QRect(points.startPoint.x() - handleSize / 2, points.startPoint.y() - handleSize / 2, handleSize, handleSize);
     case HandleType::EndHandle:
-        return QRect(endPoint.x() - handleSize / 2, endPoint.y() - handleSize / 2, handleSize, handleSize);
+        return QRect(points.endPoint.x() - handleSize / 2, points.endPoint.y() - handleSize / 2, handleSize, handleSize);
     case HandleType::MiddleHandle:
-        middlePoint = (startPoint + endPoint) / 2;
+        middlePoint = (points.startPoint + points.endPoint) / 2;
         return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
     case HandleType::LeftHandle:
-        return QRect(startPoint.x() - radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+        return QRect(points.startPoint.x() - points.radius - handleSize / 2, points.startPoint.y() - handleSize / 2, handleSize, handleSize);
     case HandleType::RightHandle:
-        return QRect(startPoint.x() + radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+        return QRect(points.startPoint.x() + points.radius - handleSize / 2, points.startPoint.y() - handleSize / 2, handleSize, handleSize);
     case HandleType::TopHandle:
-        return QRect(startPoint.x() - handleSize / 2, startPoint.y() - radius - handleSize / 2, handleSize, handleSize);
+        return QRect(points.startPoint.x() - handleSize / 2, points.startPoint.y() - points.radius - handleSize / 2, handleSize, handleSize);
     case HandleType::BottomHandle:
-        return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
+        return QRect(points.startPoint.x() - handleSize / 2, points.startPoint.y() + points.radius - handleSize / 2, handleSize, handleSize);
     default:
         return QRect();
     }
 }
 
-bool HandleManager::isHandleSelected(const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) const {
-    QRect handleRect = getHandle(handle, startPoint, endPoint, radius);
+bool HandleManager::isHandleSelected(const HandleType& handle, const QPoint& point, const ShapePoints& points) const {
+    QRect handleRect = getHandle(handle, points);
     return handleRect.contains(point);
 }
 
-void HandleManager::captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) {
-    QRect handleRect = getHandle(handle, startPoint, endPoint, radius);
+void HandleManager::captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const ShapePoints& points) {
+    QRect handleRect = getHandle(handle, points);
     QWidget* currentTab = tabWidget->currentWidget();
   
     // Проверяем, находится ли курсор в области handleRect
@@ -52,12 +52,13 @@ void HandleManager::captureCursorforHandle(QTabWidget* tabWidget, const HandleTy
         }
     }
 }
+
 // Добавляем метод в HandleManager
-void HandleManager::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) {
+void HandleManager::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) {
     // Проходимся по всем типам HandleType
     for (HandleType handle : {HandleType::StartHandle, HandleType::EndHandle, HandleType::MiddleHandle,
         HandleType::LeftHandle, HandleType::RightHandle, HandleType::TopHandle, HandleType::BottomHandle}) {
-        captureCursorforHandle(tabWidget, handle, point, startPoint, endPoint, radius);
+        captureCursorforHandle(tabWidget, handle, point, points);
     }
 }
 

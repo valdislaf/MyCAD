@@ -4,16 +4,7 @@
 #include <QPoint>
 #include "HandleManager.h"
 
-enum Type {
-    line,
-    circle
-};
 
-struct ShapePoints {
-    QPoint startPoint;
-    QPoint endPoint;   
-    int radius;
-};
 // Абстрактный базовый класс для всех геометрических объектов
 class Shape : public QWidget {
 
@@ -66,7 +57,7 @@ public:
 
     //virtual bool isHandleSelected(HandleType handle) const = 0;
     virtual  bool isHandleSelected(const HandleType& handle, const QPoint& point) const = 0;
-    virtual void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) = 0;
+    virtual void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) = 0;
 };
 
 // Класс отрезка, наследник Shape
@@ -118,13 +109,10 @@ public:
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
     bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
-    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
+    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) override;
 
 private:
 
-   /* QPoint startPoint;
-    QPoint endPoint;
-    QPoint middlePoint;*/
     bool isSelected = false;  // Флаг выделения
     bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
@@ -191,16 +179,11 @@ public:
     QRect getBottomtHandle() const override;
     bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
 
-    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius) override;
+    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) override;
     
 
 private:
-   /* QPoint startPoint;
-    QPoint leftPoint;
-    QPoint topPoint;
-    QPoint rightPoint;
-    QPoint bottomPoint;
-    int radius;*/
+  
     bool isSelected = false;  // Флаг выделения
     bool moveSelected = false;  // Флаг снятия выделения при перемещении
     QColor ColorStartPoint = QColor(0, 127, 255);
@@ -211,7 +194,6 @@ private:
 
     // Размеры квадратов на концах и в середине линии
     static constexpr int handleSize = 10;
-
 
     bool isStart = false;  // Флаг выделения
     bool isLeft = false;  // Флаг выделения
