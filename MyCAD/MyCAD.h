@@ -20,7 +20,7 @@ enum class DrawMode {
 extern bool isdraw;
 extern QPoint clickpoint;
 extern int heightwindow_prev;
-extern std::vector<bool> movingWholeLines;
+extern std::vector<bool> movingMiddles;
 extern std::vector<bool>  movingEnds;
 extern std::vector<bool>  movingStarts;
 extern std::vector<bool> movingLefts;
