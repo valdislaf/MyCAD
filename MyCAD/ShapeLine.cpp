@@ -1,6 +1,6 @@
-#include "ShapeLine.h"
+п»ї#include "ShapeLine.h"
 
-// Реализация конструктора для класса Line
+// Р РµР°Р»РёР·Р°С†РёСЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РґР»СЏ РєР»Р°СЃСЃР° Line
 Line::Line(const QPoint& startPoint, const QPoint& endPoint)
 {
     setHandleSize(10);
@@ -20,7 +20,7 @@ Line::Line(const Line& other)
     setPoints(points);
 }
 
-// Реализация метода  клонирования
+// Р РµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґР°  РєР»РѕРЅРёСЂРѕРІР°РЅРёСЏ
 std::shared_ptr<Shape> Line::clone() const {
     return std::make_shared<Line>(*this);
 }
@@ -71,26 +71,26 @@ Type Line::name() const
     return Type::line;
 }
 
-// Реализация метода рисования отрезка
+// Р РµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґР° СЂРёСЃРѕРІР°РЅРёСЏ РѕС‚СЂРµР·РєР°
 void Line::draw(QPainter& painter) const {
     QPen pen = painter.pen();
     const auto& points = getPoints();
-    // Если линия выделена, изменяем цвет
+    // Р•СЃР»Рё Р»РёРЅРёСЏ РІС‹РґРµР»РµРЅР°, РёР·РјРµРЅСЏРµРј С†РІРµС‚
     if (getisSelected() && !getisMoveSelected()) {
         QColor highlightedColor(90, 150, 255, 169);
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawLine(points.startPoint, points.endPoint);
-        // возвращаем Pen
+        // РІРѕР·РІСЂР°С‰Р°РµРј Pen
         painter.setPen(pen);
-        // Рисуем квадраты на концах и в середине, если линия выделена
+        // Р РёСЃСѓРµРј РєРІР°РґСЂР°С‚С‹ РЅР° РєРѕРЅС†Р°С… Рё РІ СЃРµСЂРµРґРёРЅРµ, РµСЃР»Рё Р»РёРЅРёСЏ РІС‹РґРµР»РµРЅР°
         painter.setBrush(getColors().ColorStartPoint);
         painter.drawRect(getStartHandle());
         painter.setBrush(getColors().ColorEndPoint);
         painter.drawRect(getEndHandle());
         painter.setBrush(getColors().ColorMiddlePoint);
         painter.drawRect(getMiddleHandle());
-        // Отключаем заливку
+        // РћС‚РєР»СЋС‡Р°РµРј Р·Р°Р»РёРІРєСѓ
         painter.setBrush(Qt::NoBrush);
     }
 
@@ -100,7 +100,7 @@ void Line::draw(QPainter& painter) const {
         painter.setPen(highlightedPen);
         painter.drawLine(points.startPoint, points.endPoint);
 
-        // возвращаем Pen
+        // РІРѕР·РІСЂР°С‰Р°РµРј Pen
         painter.setPen(pen);
     }
 
@@ -108,7 +108,7 @@ void Line::draw(QPainter& painter) const {
     painter.drawLine(points.startPoint, points.endPoint);
 }
 
-// Реализация метода перемещения отрезка
+// Р РµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґР° РїРµСЂРµРјРµС‰РµРЅРёСЏ РѕС‚СЂРµР·РєР°
 void Line::move(const QPoint& delta) {
     auto points = getPoints();
     points.startPoint += delta;
@@ -131,10 +131,10 @@ void Line::moveEnd(const QPoint& delta)
     setPoints(points);
 }
 
-// Реализация метода проверки попадания точки в отрезок
+// Р РµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґР° РїСЂРѕРІРµСЂРєРё РїРѕРїР°РґР°РЅРёСЏ С‚РѕС‡РєРё РІ РѕС‚СЂРµР·РѕРє
 bool Line::contains(const QPoint& point) {
     const auto& points = getPoints();
-    // Основная логика проверки принадлежности точки линии
+    // РћСЃРЅРѕРІРЅР°СЏ Р»РѕРіРёРєР° РїСЂРѕРІРµСЂРєРё РїСЂРёРЅР°РґР»РµР¶РЅРѕСЃС‚Рё С‚РѕС‡РєРё Р»РёРЅРёРё
     QPoint v1 = point - points.startPoint;
     QPoint v2 = points.endPoint - points.startPoint;
 
@@ -149,10 +149,10 @@ bool Line::contains(const QPoint& point) {
 
     QPoint closestPoint = points.startPoint + projection * v2;
 
-    return (point - closestPoint).manhattanLength() < 5; // Допускаем небольшое расстояние для попадания
+    return (point - closestPoint).manhattanLength() < 5; // Р”РѕРїСѓСЃРєР°РµРј РЅРµР±РѕР»СЊС€РѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РґР»СЏ РїРѕРїР°РґР°РЅРёСЏ
 }
 
-// Возвращает область квадрата в начале линии
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РѕР±Р»Р°СЃС‚СЊ РєРІР°РґСЂР°С‚Р° РІ РЅР°С‡Р°Р»Рµ Р»РёРЅРёРё
 QRect Line::getStartHandle() const {
     const auto& points = getPoints();
     return getHandle()->getHandle(HandleType::StartHandle, points);
@@ -180,11 +180,11 @@ void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point
 
 
 HandleType Line::getHandleAt(const QPoint& point) {
-    // Сбрасываем цвета хендлов
+    // РЎР±СЂР°СЃС‹РІР°РµРј С†РІРµС‚Р° С…РµРЅРґР»РѕРІ
     resetColor();
 
     const auto& points = getPoints();
-    // Проверка каждого хендла через HandleManager
+    // РџСЂРѕРІРµСЂРєР° РєР°Р¶РґРѕРіРѕ С…РµРЅРґР»Р° С‡РµСЂРµР· HandleManager
     if (getHandle()->isHandleSelected(HandleType::StartHandle, point, points)) {
         if (getisSelected()) {
             setColorsStart(QColor(165, 0, 0));
@@ -209,13 +209,13 @@ HandleType Line::getHandleAt(const QPoint& point) {
         return HandleType::MiddleHandle;
     }
 
-    // Если ни один хендл не выбран
+    // Р•СЃР»Рё РЅРё РѕРґРёРЅ С…РµРЅРґР» РЅРµ РІС‹Р±СЂР°РЅ
     setHandleState(HandleType::None);
     return HandleType::None;
 }
 
 
-// Функция для установки состояния хендлов
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё СЃРѕСЃС‚РѕСЏРЅРёСЏ С…РµРЅРґР»РѕРІ
 void Line::setHandleState(HandleType handleType) {
     setisStart(handleType == HandleType::StartHandle);
     setisEnd(handleType == HandleType::EndHandle);

@@ -1,4 +1,4 @@
-#include "ShapeCircle.h"
+п»ї#include "ShapeCircle.h"
 
 
 Circle::Circle(const QPoint& startPoint, const int radius)
@@ -24,15 +24,15 @@ void Circle::draw(QPainter& painter) const
 {
     const auto& points = getPoints();
     QPen pen = painter.pen();
-    // Если линия выделена, изменяем цвет
+    // Р•СЃР»Рё Р»РёРЅРёСЏ РІС‹РґРµР»РµРЅР°, РёР·РјРµРЅСЏРµРј С†РІРµС‚
     if (getisSelected() && !getisMoveSelected()) {
         QColor highlightedColor(90, 150, 255, 169);
         QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
         painter.setPen(highlightedPen);
         painter.drawEllipse(points.startPoint, points.radius, points.radius);
-        // возвращаем Pen
+        // РІРѕР·РІСЂР°С‰Р°РµРј Pen
         painter.setPen(pen);
-        // Рисуем квадраты на сверху снизу спарва и слева и по центру, если  выделено
+        // Р РёСЃСѓРµРј РєРІР°РґСЂР°С‚С‹ РЅР° СЃРІРµСЂС…Сѓ СЃРЅРёР·Сѓ СЃРїР°СЂРІР° Рё СЃР»РµРІР° Рё РїРѕ С†РµРЅС‚СЂСѓ, РµСЃР»Рё  РІС‹РґРµР»РµРЅРѕ
         painter.setBrush(getColors().ColorStartPoint);
         painter.drawRect(getStartHandle());
 
@@ -48,7 +48,7 @@ void Circle::draw(QPainter& painter) const
         painter.setBrush(getColors().ColorBottomPoint);
         painter.drawRect(getBottomtHandle());
 
-        // Отключаем заливку
+        // РћС‚РєР»СЋС‡Р°РµРј Р·Р°Р»РёРІРєСѓ
         painter.setBrush(Qt::NoBrush);
     }
 
@@ -58,7 +58,7 @@ void Circle::draw(QPainter& painter) const
         painter.setPen(highlightedPen);
         painter.drawEllipse(points.startPoint, points.radius, points.radius);
 
-        // возвращаем Pen
+        // РІРѕР·РІСЂР°С‰Р°РµРј Pen
         painter.setPen(pen);
     }
     painter.setPen(pen);
@@ -91,20 +91,20 @@ void Circle::moveRadius(const int radius_)
 bool Circle::contains(const QPoint& point)
 {
     const auto& points = getPoints();
-    // Вычисляем расстояние от точки до центра
+    // Р’С‹С‡РёСЃР»СЏРµРј СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ С‚РѕС‡РєРё РґРѕ С†РµРЅС‚СЂР°
     double distanceSquared = pow(point.x() - points.startPoint.x(), 2) + pow(point.y() - points.startPoint.y(), 2);
     double radiusSquared = points.radius * points.radius;
-    // Проверяем условие на нахождение точки на окружности с учетом погрешности
+    // РџСЂРѕРІРµСЂСЏРµРј СѓСЃР»РѕРІРёРµ РЅР° РЅР°С…РѕР¶РґРµРЅРёРµ С‚РѕС‡РєРё РЅР° РѕРєСЂСѓР¶РЅРѕСЃС‚Рё СЃ СѓС‡РµС‚РѕРј РїРѕРіСЂРµС€РЅРѕСЃС‚Рё
     return fabs(distanceSquared - radiusSquared) < 1000;
 }
 
 HandleType Circle::getHandleAt(const QPoint& point)
 {
     const auto& points = getPoints();
-    // Сбрасываем цвета всех хендлов
+    // РЎР±СЂР°СЃС‹РІР°РµРј С†РІРµС‚Р° РІСЃРµС… С…РµРЅРґР»РѕРІ
     resetColor();
 
-    // Проверка каждого хендла через HandleManager
+    // РџСЂРѕРІРµСЂРєР° РєР°Р¶РґРѕРіРѕ С…РµРЅРґР»Р° С‡РµСЂРµР· HandleManager
     if (getHandle()->isHandleSelected(HandleType::StartHandle, point, points)) {
         if (getisSelected()) {
             setColorsStart(QColor(165, 0, 0));
@@ -145,12 +145,12 @@ HandleType Circle::getHandleAt(const QPoint& point)
         return HandleType::BottomHandle;
     }
 
-    // Если ни один хендл не выбран
+    // Р•СЃР»Рё РЅРё РѕРґРёРЅ С…РµРЅРґР» РЅРµ РІС‹Р±СЂР°РЅ
     setHandleState(HandleType::None);
     return HandleType::None;
 }
 
-// Функция для установки состояния хендлов
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё СЃРѕСЃС‚РѕСЏРЅРёСЏ С…РµРЅРґР»РѕРІ
 void Circle::setHandleState(HandleType handleType) {
     setisStart(handleType == HandleType::StartHandle);
     setisLeft(handleType == HandleType::LeftHandle);

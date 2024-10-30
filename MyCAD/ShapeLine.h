@@ -1,6 +1,6 @@
-#pragma once
+п»ї#pragma once
 #include "Shape.h"
-// Класс отрезка, наследник Shape
+// РљР»Р°СЃСЃ РѕС‚СЂРµР·РєР°, РЅР°СЃР»РµРґРЅРёРє Shape
 class Line : public Shape {
 
     Q_OBJECT
@@ -15,7 +15,7 @@ public:
     bool contains(const QPoint& point)  override;
     HandleType getHandleAt(const QPoint& point)  override;
     void setHandleState(HandleType handleType);
-    // Метод клонирования
+    // РњРµС‚РѕРґ РєР»РѕРЅРёСЂРѕРІР°РЅРёСЏ
     std::shared_ptr<Shape> clone() const override;
     void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) override;
     QPoint getstartPoint()const override;
@@ -25,9 +25,9 @@ public:
     bool getisEnd()const override;
     bool getisMiddle()const override;
     Type name() const override;
-    QRect getStartHandle() const override;  // Возвращает область квадрата в начале линии
-    QRect getEndHandle() const override;    // Возвращает область квадрата в конце линии
-    QRect getMiddleHandle() const override; // Возвращает область квадрата в середине линии
+    QRect getStartHandle() const override;  // Р’РѕР·РІСЂР°С‰Р°РµС‚ РѕР±Р»Р°СЃС‚СЊ РєРІР°РґСЂР°С‚Р° РІ РЅР°С‡Р°Р»Рµ Р»РёРЅРёРё
+    QRect getEndHandle() const override;    // Р’РѕР·РІСЂР°С‰Р°РµС‚ РѕР±Р»Р°СЃС‚СЊ РєРІР°РґСЂР°С‚Р° РІ РєРѕРЅС†Рµ Р»РёРЅРёРё
+    QRect getMiddleHandle() const override; // Р’РѕР·РІСЂР°С‰Р°РµС‚ РѕР±Р»Р°СЃС‚СЊ РєРІР°РґСЂР°С‚Р° РІ СЃРµСЂРµРґРёРЅРµ Р»РёРЅРёРё
     bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
     void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) override;
 

@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "Shape.h"
 
 
@@ -16,7 +16,7 @@ public:
     bool contains(const QPoint& point)  override;
     HandleType getHandleAt(const QPoint& point)  override;
     void setHandleState(HandleType handleType);
-    // Метод клонирования
+    // РњРµС‚РѕРґ РєР»РѕРЅРёСЂРѕРІР°РЅРёСЏ
     std::shared_ptr<Shape> clone() const override;
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;
     QPoint getstartPoint()const override;
@@ -27,7 +27,7 @@ public:
     bool getisTop()const override;
     bool getisBottom()const override;
     Type name() const override;
-    QRect getStartHandle() const override;  // Возвращает область квадрата в начале линии    
+    QRect getStartHandle() const override;  // Р’РѕР·РІСЂР°С‰Р°РµС‚ РѕР±Р»Р°СЃС‚СЊ РєРІР°РґСЂР°С‚Р° РІ РЅР°С‡Р°Р»Рµ Р»РёРЅРёРё    
     QRect getLeftHandle() const override;
     QRect getToptHandle() const override;
     QRect getRighttHandle() const override;

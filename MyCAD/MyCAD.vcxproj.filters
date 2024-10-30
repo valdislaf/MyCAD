@@ -35,6 +35,9 @@
     <QtMoc Include="ShapeLine.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="EventHandling.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +68,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShapeCircle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

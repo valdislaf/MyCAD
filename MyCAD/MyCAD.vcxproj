@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClCompile Include="CrossCursor.cpp" />
     <ClCompile Include="DrawingWidget.cpp" />
+    <ClCompile Include="EventHandling.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HandleManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -119,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrossCursor.h" />
+    <QtMoc Include="EventHandling.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HandleManager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
