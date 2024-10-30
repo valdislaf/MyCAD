@@ -1,4 +1,4 @@
-#include "EventHandling.h"
+ï»¿#include "EventHandling.h"
 #include <QBitmap>
 #include <QCursor>
 #include <QMessageBox>
@@ -21,60 +21,60 @@
 
 EventHandling::EventHandling(QWidget* parent)
     : QMainWindow(parent) {
-    // Êîíñòðóêòîð
+    // ÐšÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€
 }
 
 EventHandling::~EventHandling() {
-    // Äåñòðóêòîð
+    // Ð”ÐµÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€
 }
 
 void EventHandling::mousePressEvent(QMouseEvent* event) {
-    bool circleFlag = false; // Ôëàã äëÿ îòñëåæèâàíèÿ ðèñîâàíèÿ êðóãà
+    bool circleFlag = false; // Ð¤Ð»Ð°Ð³ Ð´Ð»Ñ Ð¾Ñ‚ÑÐ»ÐµÐ¶Ð¸Ð²Ð°Ð½Ð¸Ñ Ñ€Ð¸ÑÐ¾Ð²Ð°Ð½Ð¸Ñ ÐºÑ€ÑƒÐ³Ð°
     if (currentDrawMode != DrawMode::None) {
-        isdraw = true; // Óñòàíàâëèâàåì ôëàã ðèñîâàíèÿ
+        isdraw = true; // Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ„Ð»Ð°Ð³ Ñ€Ð¸ÑÐ¾Ð²Ð°Ð½Ð¸Ñ
     }
 
     if (isdraw && event->button() == Qt::LeftButton) {
-        handleDrawing(event, circleFlag); // Îáðàáîòêà ðèñîâàíèÿ ôèãóðû
+        handleDrawing(event, circleFlag); // ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ñ€Ð¸ÑÐ¾Ð²Ð°Ð½Ð¸Ñ Ñ„Ð¸Ð³ÑƒÑ€Ñ‹
     }
     else if (event->button() == Qt::LeftButton) {
-        handleSelection(event, circleFlag); // Îáðàáîòêà âûäåëåíèÿ ôèãóðû
+        handleSelection(event, circleFlag); // ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð²Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ñ Ñ„Ð¸Ð³ÑƒÑ€Ñ‹
     }
 
     if (event->button() == Qt::MiddleButton) {
-        isDragging = true; // Óñòàíàâëèâàåì ôëàã ïåðåòàñêèâàíèÿ
-        lastMousePosition = event->pos(); // Ñîõðàíÿåì ïîñëåäíþþ ïîçèöèþ ìûøè
+        isDragging = true; // Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ„Ð»Ð°Ð³ Ð¿ÐµÑ€ÐµÑ‚Ð°ÑÐºÐ¸Ð²Ð°Ð½Ð¸Ñ
+        lastMousePosition = event->pos(); // Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑŽÑŽ Ð¿Ð¾Ð·Ð¸Ñ†Ð¸ÑŽ Ð¼Ñ‹ÑˆÐ¸
     }
-    QMainWindow::mousePressEvent(event); // Âûçîâ áàçîâîãî ìåòîäà
+    QMainWindow::mousePressEvent(event); // Ð’Ñ‹Ð·Ð¾Ð² Ð±Ð°Ð·Ð¾Ð²Ð¾Ð³Ð¾ Ð¼ÐµÑ‚Ð¾Ð´Ð°
 }
 
 void EventHandling::mouseMoveEvent(QMouseEvent* event) {
     update();
 
-    if (isDragging) { // Åñëè ìûøü ïåðåòàñêèâàåòñÿ
-        QPoint delta = event->pos() - lastMousePosition; // Ðàññ÷èòûâàåì ñìåùåíèå
-        updateGridPosition(delta); // Îáíîâëÿåì ïîçèöèþ ñåòêè
-        lastMousePosition = event->pos(); // Îáíîâëÿåì ïîñëåäíþþ ïîçèöèþ ìûøè        
+    if (isDragging) { // Ð•ÑÐ»Ð¸ Ð¼Ñ‹ÑˆÑŒ Ð¿ÐµÑ€ÐµÑ‚Ð°ÑÐºÐ¸Ð²Ð°ÐµÑ‚ÑÑ
+        QPoint delta = event->pos() - lastMousePosition; // Ð Ð°ÑÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸Ðµ
+        updateGridPosition(delta); // ÐžÐ±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾Ð·Ð¸Ñ†Ð¸ÑŽ ÑÐµÑ‚ÐºÐ¸
+        lastMousePosition = event->pos(); // ÐžÐ±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑŽÑŽ Ð¿Ð¾Ð·Ð¸Ñ†Ð¸ÑŽ Ð¼Ñ‹ÑˆÐ¸        
     }
 
-    QMainWindow::mouseMoveEvent(event); // Âûçîâ áàçîâîãî ìåòîäà
+    QMainWindow::mouseMoveEvent(event); // Ð’Ñ‹Ð·Ð¾Ð² Ð±Ð°Ð·Ð¾Ð²Ð¾Ð³Ð¾ Ð¼ÐµÑ‚Ð¾Ð´Ð°
 }
 
 void EventHandling::mouseReleaseEvent(QMouseEvent* event) {
-    if (event->button() == Qt::MiddleButton) { // Ïðîâåðÿåì, ÷òî îòïóùåíà ñðåäíÿÿ êíîïêà ìûøè
+    if (event->button() == Qt::MiddleButton) { // ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼, Ñ‡Ñ‚Ð¾ Ð¾Ñ‚Ð¿ÑƒÑ‰ÐµÐ½Ð° ÑÑ€ÐµÐ´Ð½ÑÑ ÐºÐ½Ð¾Ð¿ÐºÐ° Ð¼Ñ‹ÑˆÐ¸
         if (chekTab()) {
             lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
         }
-        isDragging = false; // Óñòàíàâëèâàåì ôëàã ïåðåòàñêèâàíèÿ â false
+        isDragging = false; // Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ„Ð»Ð°Ð³ Ð¿ÐµÑ€ÐµÑ‚Ð°ÑÐºÐ¸Ð²Ð°Ð½Ð¸Ñ Ð² false
     }
 
     if (chekTab()) {
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
-            currentTab->update();  // Âûçîâ ïåðåðèñîâêè àêòèâíîãî âèäæåòà
+            currentTab->update();  // Ð’Ñ‹Ð·Ð¾Ð² Ð¿ÐµÑ€ÐµÑ€Ð¸ÑÐ¾Ð²ÐºÐ¸ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾Ð³Ð¾ Ð²Ð¸Ð´Ð¶ÐµÑ‚Ð°
         }
     }
-    QMainWindow::mouseReleaseEvent(event); // Âûçîâ áàçîâîãî ìåòîäà
+    QMainWindow::mouseReleaseEvent(event); // Ð’Ñ‹Ð·Ð¾Ð² Ð±Ð°Ð·Ð¾Ð²Ð¾Ð³Ð¾ Ð¼ÐµÑ‚Ð¾Ð´Ð°
 }
 
 void EventHandling::keyPressEvent(QKeyEvent* event) {
@@ -86,22 +86,22 @@ void EventHandling::keyPressEvent(QKeyEvent* event) {
 
 bool EventHandling::event(QEvent* e) {
     if (e->type() == QEvent::HoverMove) {
-        handleHoverMoveEvent(); // Îáðàáîòêà ñîáûòèÿ ïåðåìåùåíèÿ ìûøè
+        handleHoverMoveEvent(); // ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ñ Ð¿ÐµÑ€ÐµÐ¼ÐµÑ‰ÐµÐ½Ð¸Ñ Ð¼Ñ‹ÑˆÐ¸
     }
-    return QWidget::event(e); // Âûçîâ áàçîâîãî ìåòîäà
+    return QWidget::event(e); // Ð’Ñ‹Ð·Ð¾Ð² Ð±Ð°Ð·Ð¾Ð²Ð¾Ð³Ð¾ Ð¼ÐµÑ‚Ð¾Ð´Ð°
 }
 
 void EventHandling::handleHoverMoveEvent() {
     int currentIndex = tabWidget->currentIndex();
     if (shapesNoEmpt()) {
-        processShapeSelection(currentIndex); // Îáðàáîòêà âûäåëåíèÿ ôèãóð        
+        processShapeSelection(currentIndex); // ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð²Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ñ Ñ„Ð¸Ð³ÑƒÑ€        
     }
     if (!isdraw) {
-        highlightShapesUnderCursor(currentIndex); // Ïîäñâåòêà ôèãóð ïîä êóðñîðîì
+        highlightShapesUnderCursor(currentIndex); // ÐŸÐ¾Ð´ÑÐ²ÐµÑ‚ÐºÐ° Ñ„Ð¸Ð³ÑƒÑ€ Ð¿Ð¾Ð´ ÐºÑƒÑ€ÑÐ¾Ñ€Ð¾Ð¼
     }
-    update(); // Îáíîâëåíèå âèäæåòà
+    update(); // ÐžÐ±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ðµ Ð²Ð¸Ð´Ð¶ÐµÑ‚Ð°
     if (currentDrawMode == DrawMode::None && !isDragging) {
-        updateShapePositions(); // Îáíîâëåíèå ïîçèöèé ôèãóð
+        updateShapePositions(); // ÐžÐ±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ð¹ Ñ„Ð¸Ð³ÑƒÑ€
     }
 }
 
@@ -299,19 +299,19 @@ void EventHandling::updateShapePositions() {
 
 void EventHandling::updateGridPosition(const QPoint& delta)
 {
-    // Ïðîâåðêà, ÷òî èíäåêñ êîððåêòíûé è âêëàäêè ñóùåñòâóþò
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ°, Ñ‡Ñ‚Ð¾ Ð¸Ð½Ð´ÐµÐºÑ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð¸ Ð²ÐºÐ»Ð°Ð´ÐºÐ¸ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÑŽÑ‚
     if (chekTab()) {
         int currentIndex = tabWidget->currentIndex();
-        // Îáíîâëÿåì çíà÷åíèÿ ñìåùåíèÿ ñåòêè íà îñíîâå ïåðåäàííîãî delta
+        // ÐžÐ±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸Ñ ÑÐµÑ‚ÐºÐ¸ Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ðµ Ð¿ÐµÑ€ÐµÐ´Ð°Ð½Ð½Ð¾Ð³Ð¾ delta
         tabDataList[currentIndex].delataX += delta.x();
         tabDataList[currentIndex].delataY += delta.y();
         if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
             clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
         }
-        // Ïåðåðèñîâûâàåì òåêóùèé àêòèâíûé âèäæåò
+        // ÐŸÐµÑ€ÐµÑ€Ð¸ÑÐ¾Ð²Ñ‹Ð²Ð°ÐµÐ¼ Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹ Ð°ÐºÑ‚Ð¸Ð²Ð½Ñ‹Ð¹ Ð²Ð¸Ð´Ð¶ÐµÑ‚
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
-            currentTab->update();  // Âûçîâ ïåðåðèñîâêè âèäæåòà
+            currentTab->update();  // Ð’Ñ‹Ð·Ð¾Ð² Ð¿ÐµÑ€ÐµÑ€Ð¸ÑÐ¾Ð²ÐºÐ¸ Ð²Ð¸Ð´Ð¶ÐµÑ‚Ð°
         }
         // if (selShape != nullptr) { selShape->move(delta); }
         if (!selShapes.empty()) {
@@ -320,7 +320,7 @@ void EventHandling::updateGridPosition(const QPoint& delta)
                 shape->move(delta);
             }
         }
-        // Ðèñóåì ôèãóðû òîëüêî äëÿ àêòèâíîé âêëàäêè
+        // Ð Ð¸ÑÑƒÐµÐ¼ Ñ„Ð¸Ð³ÑƒÑ€Ñ‹ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð´Ð»Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾Ð¹ Ð²ÐºÐ»Ð°Ð´ÐºÐ¸
         for (const auto& shape : tabDataList[currentIndex].shapes) {
             shape->move(delta);
         }
@@ -367,11 +367,11 @@ bool EventHandling::shapesNoEmpt()
 
 void EventHandling::addShape(std::unique_ptr<Shape>&& shape) {
     if (chekTab()) {
-        // Ïîëó÷àåì èíäåêñ àêòèâíîé âêëàäêè
+        // ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ Ð¸Ð½Ð´ÐµÐºÑ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾Ð¹ Ð²ÐºÐ»Ð°Ð´ÐºÐ¸
         int currentIndex = tabWidget->currentIndex();
-        // Äîáàâëÿåì ôèãóðó â ñïèñîê ôèãóð àêòèâíîé âêëàäêè
+        // Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼ Ñ„Ð¸Ð³ÑƒÑ€Ñƒ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº Ñ„Ð¸Ð³ÑƒÑ€ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾Ð¹ Ð²ÐºÐ»Ð°Ð´ÐºÐ¸
         tabDataList[currentIndex].shapes.push_back(std::move(shape));
-        // Ïåðåðèñîâûâàåì àêòèâíóþ âêëàäêó
+        // ÐŸÐµÑ€ÐµÑ€Ð¸ÑÐ¾Ð²Ñ‹Ð²Ð°ÐµÐ¼ Ð°ÐºÑ‚Ð¸Ð²Ð½ÑƒÑŽ Ð²ÐºÐ»Ð°Ð´ÐºÑƒ
         QWidget* currentTab = tabWidget->widget(tabWidget->currentIndex());
         if (currentTab) {
             // qDebug() << "Calling repaint on:" << currentTab;
@@ -405,10 +405,10 @@ void EventHandling::clearSelection()
     clearvectors();
     update();
 
-    // Ïðîâåðÿåì, ÷òî currentIndex íàõîäèòñÿ â äîïóñòèìûõ ïðåäåëàõ
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼, Ñ‡Ñ‚Ð¾ currentIndex Ð½Ð°Ñ…Ð¾Ð´Ð¸Ñ‚ÑÑ Ð² Ð´Ð¾Ð¿ÑƒÑÑ‚Ð¸Ð¼Ñ‹Ñ… Ð¿Ñ€ÐµÐ´ÐµÐ»Ð°Ñ…
     if (shapesNoEmpt()) {
         int currentIndex = tabWidget->currentIndex();
-        // Ñíèìàåì âûäåëåíèå ñî âñåõ ôèãóð
+        // Ð¡Ð½Ð¸Ð¼Ð°ÐµÐ¼ Ð²Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ ÑÐ¾ Ð²ÑÐµÑ… Ñ„Ð¸Ð³ÑƒÑ€
         for (const auto& shape : tabDataList[currentIndex].shapes) {
             shape->setSelected(false);
         }

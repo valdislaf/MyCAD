@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 
 #include "Shape.h"
@@ -15,7 +15,7 @@
 struct TabData {
     int delataX = 0;
     int delataY = 0;
-    std::vector<std::shared_ptr<Shape>> shapes;  // Список фигур для этой вкладки
+    std::vector<std::shared_ptr<Shape>> shapes;  // РЎРїРёСЃРѕРє С„РёРіСѓСЂ РґР»СЏ СЌС‚РѕР№ РІРєР»Р°РґРєРё
 };
 
 class EventHandling : public QMainWindow {
@@ -34,7 +34,7 @@ protected:
 
     bool isDragging = false;
     QPoint lastMousePosition;
-    QVector<TabData> tabDataList; // Список данных для каждой вкладки
+    QVector<TabData> tabDataList; // РЎРїРёСЃРѕРє РґР°РЅРЅС‹С… РґР»СЏ РєР°Р¶РґРѕР№ РІРєР»Р°РґРєРё
     QTabWidget* tabWidget;
 
     void handleHoverMoveEvent();
