@@ -101,6 +101,8 @@
     <ClCompile Include="MenuInit.cpp" />
     <ClCompile Include="MenuMain.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="ShapeCircle.cpp" />
+    <ClCompile Include="ShapeLine.cpp" />
     <QtMoc Include="MyCAD.h" />
     <ClCompile Include="MyCAD.cpp" />
     <ClCompile Include="main.cpp" />
@@ -121,6 +123,8 @@
     <ClInclude Include="HandleManager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <QtMoc Include="ShapeCircle.h" />
+    <QtMoc Include="ShapeLine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

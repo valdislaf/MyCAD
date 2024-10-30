@@ -29,6 +29,12 @@
     <ClCompile Include="MyCAD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <QtMoc Include="ShapeCircle.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ShapeLine.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +59,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HandleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeCircle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,7 +4,8 @@
 #include <vector>
 #include <QtWidgets/QMainWindow>
 
-#include "Shape.h"
+#include "ShapeLine.h"
+#include "ShapeCircle.h"
 #include "DrawingWidget.h"
 
 struct TabData {
