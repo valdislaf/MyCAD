@@ -74,11 +74,6 @@ Selected Shape::getSelected()  const
     return selected;
 }
 
-
-void Shape::setisEnd(bool selected)
-{
-}
-
 void Shape::setisStart(bool isSelected)
 {
     selected.isStart = isSelected;
@@ -87,6 +82,11 @@ void Shape::setisStart(bool isSelected)
 void Shape::setisMiddle(bool isSelected)
 {
     selected.isMiddle = isSelected;
+}
+
+void Shape::setisEnd(bool isSelected)
+{
+    selected.isEnd = isSelected;
 }
 
 void Shape::setisLeft(bool isSelected)

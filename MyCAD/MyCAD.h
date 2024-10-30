@@ -38,7 +38,11 @@ class MyCAD : public QMainWindow
 public:
     MyCAD(QWidget* parent = nullptr);
     ~MyCAD();
-    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур    
+    void drawShapes(QPainter& painter);
+    void drawTemporaryShapes(QPainter& painter);
+    void drawLineToCurrentPoint(QPainter& painter, const std::shared_ptr<Shape>& shape);
+    // Метод для рисования всех фигур    
+    QPen getDashPenForShape(const std::shared_ptr<Shape>& shape);
     void drawGrid(QPainter& painter);
     void DrawLine(QPainter& painter, QPoint localPos);
     void DrawCircle(QPainter& painter, QPoint localPos);
@@ -74,6 +78,9 @@ private:  // Обычные методы
     void processShapeSelection(int currentIndex);
     void highlightShapesUnderCursor(int currentIndex);
     void updateShapePositions();
+    bool chekTab();
+    bool shapesNoEmpt();
+    QPoint GetCurrPoint();
   //  void captureCursorforHandle(QWidget* currentTab, const QRect& handleRect, const QPoint& cursorPos);
     void updateMenusBasedOnTabWidgetVisibility();
     void initialTabWidget();

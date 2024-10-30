@@ -1,8 +1,5 @@
 #include "ShapeLine.h"
 
-
-
-
 // Реализация конструктора для класса Line
 Line::Line(const QPoint& startPoint, const QPoint& endPoint)
 {
@@ -109,8 +106,6 @@ void Line::draw(QPainter& painter) const {
 
     painter.setPen(pen);
     painter.drawLine(points.startPoint, points.endPoint);
-
-
 }
 
 // Реализация метода перемещения отрезка
