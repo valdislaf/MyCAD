@@ -1,34 +1,6 @@
-#include <QBitmap>
-#include <QCursor>
-#include <QMessageBox>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QTabBar>
-#include <QTabWidget>
-#include <QWidget>
-#include <QMenuBar>
-#include <QDebug>
-
 #include "MyCAD.h"
-#include "MenuInit.h"
-#include "MenuMain.h"
-#include "Grid.h"
-#include "CrossCursor.h"
 
-
-bool isdraw = false;
-DrawMode currentDrawMode = DrawMode::None;
 int heightwindow_prev = 0;
-QPoint clickpoint = QPoint(INT_MIN, INT_MIN);
-std::vector<std::shared_ptr<Shape>>selShapes;
-std::vector<std::shared_ptr<Shape>>tmpShapes;
-std::vector<bool> movingMiddles;
-std::vector<bool> movingEnds;
-std::vector<bool> movingStarts;
-std::vector<bool> movingLefts;
-std::vector<bool> movingTops;
-std::vector<bool> movingRights;
-std::vector<bool> movingBottoms;
 
 MyCAD::MyCAD(QWidget* parent)
     : EventHandling(parent)
@@ -66,8 +38,6 @@ void MyCAD::onTabChanged(int index)
         QWidget* currentTab = tabWidget->widget(index);
     }
 }
-
-
 
 QCursor MyCAD::createCustomCrossCursor()
 {
@@ -277,8 +247,6 @@ QPen MyCAD::DashPen(QColor Color, qreal dashLength, qreal gapLength)
     Pen2.setDashPattern(dashPattern); // Установите паттерн в перо
     return Pen2;
 }
-
-
 
 void MyCAD::CrossCursorIn(QPainter& painter)
 {

@@ -1,23 +1,18 @@
 ﻿#include "EventHandling.h"
-#include <QBitmap>
-#include <QCursor>
-#include <QMessageBox>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QTabBar>
-#include <QTabWidget>
-#include <QWidget>
-#include <QMenuBar>
-#include <QDebug>
-
 #include "MyCAD.h"
-#include "MenuInit.h"
-#include "MenuMain.h"
-#include "Grid.h"
-#include "CrossCursor.h"
 
-
-
+DrawMode currentDrawMode = DrawMode::None;
+bool isdraw = false;
+QPoint clickpoint = QPoint(INT_MIN, INT_MIN);
+std::vector<bool> movingMiddles;
+std::vector<bool> movingEnds;
+std::vector<bool> movingStarts;
+std::vector<bool> movingLefts;
+std::vector<bool> movingTops;
+std::vector<bool> movingRights;
+std::vector<bool> movingBottoms;
+std::vector<std::shared_ptr<Shape>>selShapes;
+std::vector<std::shared_ptr<Shape>>tmpShapes;
 
 EventHandling::EventHandling(QWidget* parent)
     : QMainWindow(parent) {
