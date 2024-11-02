@@ -18,6 +18,9 @@ public:
     void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
     void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный
     void DrawCircle(QPainter& painter, QPoint localPos);
+    QPen createSolidPen(const QColor& color, int width) const;
+    const bool isDrawEnabled() const;
+    const bool isTabActive() const;
     void drawGrid(QPainter& painter);
     void DrawLine(QPainter& painter, QPoint localPos);
     void drawLineToCurrentPoint(QPainter& painter, const std::shared_ptr<Shape>& shape);

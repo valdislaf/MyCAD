@@ -97,8 +97,8 @@ void MyCAD::createNewWindow()
     TabData newTabData;
     newTabData.delataX = 10; // Устанавливаем начальные значения
     newTabData.delataY = -10;
-    tabDataList.push_back(newTabData); // Добавляем данные вкладки в список
-
+   // tabDataList.push_back(newTabData); // Добавляем данные вкладки в список
+    addTab(newTabData);
     // Переключаемся на только что созданную вкладку
     tabWidget->setCurrentIndex(tabIndex);
 
@@ -149,10 +149,10 @@ void MyCAD::updateGridPosition(const QPoint& delta)
 {
     // Проверка, что индекс корректный и вкладки существуют
     if (chekTab()) {
-        int currentIndex = tabWidget->currentIndex();
+     //   int currentIndex = tabWidget->currentIndex();
         // Обновляем значения смещения сетки на основе переданного delta
-        tabDataList[currentIndex].delataX += delta.x();
-        tabDataList[currentIndex].delataY += delta.y();
+        setDelataX(delta.x());
+        setDelataY(delta.y());
         if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
             clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
         }
@@ -169,70 +169,54 @@ void MyCAD::updateGridPosition(const QPoint& delta)
             }
         }
         // Рисуем фигуры только для активной вкладки
-        for (const auto& shape : tabDataList[currentIndex].shapes) {
+        for (const auto& shape : getShapes()) {
             shape->move(delta);
         }
 
     }
 }
 
-void MyCAD::drawGrid(QPainter& painter)
-{
+void MyCAD::drawGrid(QPainter& painter) {
+    if (!isTabActive()) return;  // Объединенная проверка
 
-    if (chekTab()) {
-
-        // Получаем текущий активный виджет во вкладке
-        int currentIndex = tabWidget->currentIndex();
-
-        QWidget* currentTab = tabWidget->widget(currentIndex);
-
-        // Проверяем, что событие происходит на текущей активной вкладке
-        if (currentTab) {
-
-            int delataX = tabDataList[currentIndex].delataX;
-            int delataY = tabDataList[currentIndex].delataY;
-            // Устанавливаем параметры для рисования сетки
-            int gridSize = 37;  // Размер ячейки сетки
-            Grid grid(currentTab, gridSize, delataX, delataY);  // Создаем экземпляр класса сетки
-            grid.draw(painter);     // Рисуем сетку
-        }
-    }
+    int gridSize = 37;
+    Grid grid(tabWidget->currentWidget(), gridSize, getDelataX(), getDelataY());
+    grid.draw(painter);
 }
 
-void MyCAD::DrawLine(QPainter& painter, QPoint localPos0)
-{
-    if (isdraw) {
-        if (chekTab()) {           
-            // Проверяем, что событие происходит на текущей активной вкладке
-            if (!isDragging) {
-                QPoint newpoint = GetCurrPoint();
-                QColor Color(255, 155, 155);
-                QPen Pen(Color, 1, Qt::SolidLine);
-                painter.setPen(Pen);
-                painter.drawLine(localPos0.x(), localPos0.y(), newpoint.x(), newpoint.y());
-            }
-        }
-    }
+void MyCAD::DrawLine(QPainter& painter, QPoint localPos0) {
+    if (!isDrawEnabled()) return;  // Проверка условий перенесена в отдельную функцию
+
+    painter.setPen(createSolidPen(QColor(255, 155, 155), 1));
+    painter.drawLine(localPos0, GetCurrPoint());
 }
 
-void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0)
-{
-    if (isdraw) {
-        if (chekTab()) {           
-            if ( !isDragging) {
-                QPoint newpoint = GetCurrPoint();
-                // Вычисляем радиус как максимальное расстояние по X или Y от центра до текущей позиции
-                int radius = std::hypot(newpoint.x() - localPos0.x(), newpoint.y() - localPos0.y());
-                QColor Color(255, 155, 155);
-                QPen Pen(Color, 1, Qt::SolidLine);
-                painter.setPen(Pen);
-                // Рисуем круг, используя радиус
-                painter.drawEllipse(localPos0, radius, radius);  // Рисуем круг с одинаковым радиусом по X и Y
-                painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
-                painter.drawLine(localPos0.x(), localPos0.y(), newpoint.x(), newpoint.y());
-            }
-        }
-    }
+void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0) {
+    if (!isDrawEnabled()) return;
+
+    QPoint newpoint = GetCurrPoint();
+    int radius = std::hypot(newpoint.x() - localPos0.x(), newpoint.y() - localPos0.y());
+
+    painter.setPen(createSolidPen(QColor(255, 155, 155), 1));
+    painter.drawEllipse(localPos0, radius, radius);
+
+    painter.setPen(DashPen(QColor(212, 161, 32), 10, 5));
+    painter.drawLine(localPos0, newpoint);
+}
+
+// Вспомогательная функция для создания однотонной ручки
+QPen MyCAD::createSolidPen(const QColor& color, int width) const {
+    return QPen(color, width, Qt::SolidLine);
+}
+
+// Вспомогательная функция для проверки активности вкладки и флага isdraw
+const bool MyCAD::isDrawEnabled() const {
+    return isdraw && isTabActive() && !isDragging;
+}
+
+// Вспомогательная функция для проверки активности текущей вкладки
+const bool MyCAD::isTabActive() const {
+    return tabWidget && chekTab() && tabWidget->currentWidget();
 }
 
 QPen MyCAD::DashPen(QColor Color, qreal dashLength, qreal gapLength)
@@ -289,8 +273,8 @@ void MyCAD::drawShapes(QPainter& painter) {
 
     // Получаем индекс активной вкладки и настройки
     int currentIndex = tabWidget->currentIndex();
-    int delataX = tabDataList[currentIndex].delataX;
-    int delataY = tabDataList[currentIndex].delataY;
+    int delataX = getDelataX();
+    int delataY = getDelataY();
     QPoint delta(delataX, delataY);
     QWidget* currentTab = tabWidget->widget(currentIndex);
     int widgetHeight = currentTab->height();
@@ -301,7 +285,8 @@ void MyCAD::drawShapes(QPainter& painter) {
     }
 
     // Основная отрисовка фигур для текущей вкладки
-    for (const auto& shape : tabDataList[currentIndex].shapes) {
+    for (const auto& shape : getShapes()) {
+
         if (heightwindow_prev != 0) {
             QPoint delta(0, widgetHeight - heightwindow_prev);
             shape->move(delta);

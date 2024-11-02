@@ -15,12 +15,13 @@ std::vector<std::shared_ptr<Shape>>selShapes;
 std::vector<std::shared_ptr<Shape>>tmpShapes;
 
 EventHandling::EventHandling(QWidget* parent)
-    : QMainWindow(parent) {
+    : QMainWindow(parent), shapeManager(new ShapeManager()) {
     // Конструктор
 }
 
 EventHandling::~EventHandling() {
     // Деструктор
+    delete shapeManager;
 }
 
 void EventHandling::mousePressEvent(QMouseEvent* event) {
@@ -58,7 +59,7 @@ void EventHandling::mouseMoveEvent(QMouseEvent* event) {
 void EventHandling::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::MiddleButton) { // Проверяем, что отпущена средняя кнопка мыши
         if (chekTab()) {
-            lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+            lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());           
         }
         isDragging = false; // Устанавливаем флаг перетаскивания в false
     }
@@ -87,22 +88,54 @@ bool EventHandling::event(QEvent* e) {
 }
 
 void EventHandling::handleHoverMoveEvent() {
-    int currentIndex = tabWidget->currentIndex();
-    if (shapesNoEmpt()) {
-        processShapeSelection(currentIndex); // Обработка выделения фигур        
+    if (chekTab()) {
+        int currentIndex = tabWidget->currentIndex();
+        if (shapesNoEmpt()) {
+            processShapeSelection(currentIndex); // Обработка выделения фигур        
+        }
+        if (!isdraw) {
+            highlightShapesUnderCursor(currentIndex); // Подсветка фигур под курсором
+        }
+        update(); // Обновление виджета
+        if (currentDrawMode == DrawMode::None && !isDragging) {
+            updateShapePositions(); // Обновление позиций фигур
+        }
     }
-    if (!isdraw) {
-        highlightShapesUnderCursor(currentIndex); // Подсветка фигур под курсором
+}
+
+void EventHandling::addTab(TabData tab) {
+    shapeManager->addTab(tab);
+}
+
+const int EventHandling::idx() const {
+  return  tabWidget->currentIndex();
+}
+
+const std::vector<std::shared_ptr<Shape>>& EventHandling::getShapes() const
+{
+    return shapeManager->getShapes(idx());
+}
+
+const int EventHandling::setDelataX(int dx) const {
+    return  shapeManager->setDelataX(idx(), dx);
     }
-    update(); // Обновление виджета
-    if (currentDrawMode == DrawMode::None && !isDragging) {
-        updateShapePositions(); // Обновление позиций фигур
-    }
+
+const int EventHandling::setDelataY(int dy) const {
+    return  shapeManager->setDelataX(idx(), dy);
+}
+
+const int EventHandling::getDelataX() const {
+    return  shapeManager->getDelataX(idx());
+}
+
+const int EventHandling::getDelataY() const {
+    return  shapeManager->getDelataY(idx());
 }
 
 void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
     if (tabWidget->rect().contains(event->pos())) {
         if (chekTab()) {
+
             QPoint localPos = tabWidget->mapFromGlobal(event->globalPosition().toPoint());
             QRect tabBarRect = tabWidget->geometry();
             if (tabBarRect.contains(localPos)) {
@@ -111,12 +144,12 @@ void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
                 if (clickpoint != QPoint(INT_MIN, INT_MIN)) {
                     if (currentDrawMode == DrawMode::Line) {
                         auto line = std::make_unique<Line>(clickpoint, newpoint);
-                        addShape(std::move(line));
+                        shapeManager->addShape(std::move(line), idx());
                     }
                     else if (currentDrawMode == DrawMode::Circle) {
                         int radius = std::hypot(newpoint.x() - clickpoint.x(), newpoint.y() - clickpoint.y());
                         auto circle = std::make_unique<Circle>(clickpoint, radius);
-                        addShape(std::move(circle));
+                        shapeManager->addShape(std::move(circle), idx());
                         currentDrawMode = DrawMode::None;
                         clearSelection();
                         circleFlag = true;
@@ -127,6 +160,7 @@ void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
         }
     }
 }
+
 
 void EventHandling::handleSelection(QMouseEvent* event, bool circleFlag) {
     if (!selShapes.empty() && !isdraw && !movingStarts.empty()) {
@@ -179,7 +213,7 @@ void EventHandling::updateShapeCoordinates(int i) {
 void EventHandling::resetShapeColors() {
     if (shapesNoEmpt()) {
         int currentIndex = tabWidget->currentIndex();
-        for (const auto& shape : tabDataList[currentIndex].shapes) {
+        for (const auto& shape : getShapes()) {
             shape->resetColor();
         }
     }
@@ -194,7 +228,7 @@ QPoint EventHandling::GetCurrPoint() {
 void EventHandling::selectShapes(QMouseEvent* event) {
     if (chekTab()) {
         QPoint newpoint = GetCurrPoint();
-        for (const auto& shape : tabDataList[tabWidget->currentIndex()].shapes) {
+        for (const auto& shape : shapeManager->getShapes(idx())) {
             HandleType handle = shape->getHandleAt(newpoint);
             if (shape->getisSelected() && shape->isHandleSelected(handle, newpoint)) {
                 selShapes.push_back(shape->clone());
@@ -210,29 +244,30 @@ void EventHandling::highlightShapes(QMouseEvent* event) {
     if (chekTab()) {
         QPoint newpoint = GetCurrPoint();
         bool isanyshapeselectedandhandled = false;
-
-        for (const auto& shape : tabDataList[tabWidget->currentIndex()].shapes) {
-            if (shape->getisSelected() && shape->getHandleAt(newpoint) != HandleType::None) {
-                isanyshapeselectedandhandled = true;
-            }
-        }
-        int currentIndex = tabWidget->currentIndex();
-        for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
-            if ((*it)->contains(newpoint)) {
-                HandleType handle = (*it)->getHandleAt(newpoint);
-                if (handle == HandleType::None || selShapes.size() == 0) {
-                    if (!isanyshapeselectedandhandled) {
-                        (*it)->setSelected(true);
-                    }
+        if (!getShapes().empty()) {
+            for (const auto& shape : shapeManager->getShapes(idx())) {
+                if (shape->getisSelected() && shape->getHandleAt(newpoint) != HandleType::None) {
+                    isanyshapeselectedandhandled = true;
                 }
-                break;
+            }
+           
+            for (auto it = getShapes().rbegin(); it != getShapes().rend(); ++it) {
+                if ((*it)->contains(newpoint)) {
+                    HandleType handle = (*it)->getHandleAt(newpoint);
+                    if (handle == HandleType::None || selShapes.size() == 0) {
+                        if (!isanyshapeselectedandhandled) {
+                            (*it)->setSelected(true);
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
 }
 
 void EventHandling::processShapeSelection(int currentIndex) {
-    for (const auto& shape : tabDataList[currentIndex].shapes) {
+    for (const auto& shape : getShapes()) {
         if (shape->getisSelected()) {
             QPoint newpoint = GetCurrPoint();
             shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getPoints());
@@ -244,22 +279,25 @@ void EventHandling::highlightShapesUnderCursor(int currentIndex) {
     if (chekTab()) {
         QPoint newpoint = GetCurrPoint();
         bool isanyshapeselectedandhandled = false;
-        for (const auto& shape : tabDataList[currentIndex].shapes) {
-            if (selShapes.size() != 0 && (!movingStarts.empty())) {
-                isanyshapeselectedandhandled = true;
-                break;
-            }
-            shape->setisover(false);
-        }
-        for (auto it = tabDataList[currentIndex].shapes.rbegin(); it != tabDataList[currentIndex].shapes.rend(); ++it) {
-            if (!(*it)->contains(newpoint)) {
-                (*it)->setisover(false);
-            }
-            else {
-                if (!isanyshapeselectedandhandled && !(*it)->getisSelected()) {
-                    (*it)->setisover(true);
+        
+        if (!shapeManager->getShapes(idx()).empty()) {
+            for (const auto& shape : shapeManager->getShapes(idx())) {
+                if (selShapes.size() != 0 && (!movingStarts.empty())) {
+                    isanyshapeselectedandhandled = true;
+                    break;
                 }
-                break;
+                shape->setisover(false);
+            }
+            for (auto it = shapeManager->getShapes(idx()).rbegin(); it != shapeManager->getShapes(idx()).rend(); ++it) {
+                if (!(*it)->contains(newpoint)) {
+                    (*it)->setisover(false);
+                }
+                else {
+                    if (!isanyshapeselectedandhandled && !(*it)->getisSelected()) {
+                        (*it)->setisover(true);
+                    }
+                    break;
+                }
             }
         }
     }
@@ -298,11 +336,13 @@ void EventHandling::updateGridPosition(const QPoint& delta)
     if (chekTab()) {
         int currentIndex = tabWidget->currentIndex();
         // Обновляем значения смещения сетки на основе переданного delta
-        tabDataList[currentIndex].delataX += delta.x();
-        tabDataList[currentIndex].delataY += delta.y();
+        shapeManager->setDelataX(idx(), delta.x());
+        shapeManager->setDelataY(idx(), delta.y());
+  
         if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
             clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
         }
+
         // Перерисовываем текущий активный виджет
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
@@ -316,17 +356,18 @@ void EventHandling::updateGridPosition(const QPoint& delta)
             }
         }
         // Рисуем фигуры только для активной вкладки
-        for (const auto& shape : tabDataList[currentIndex].shapes) {
+        for (const auto& shape : getShapes()) {
             shape->move(delta);
         }
 
     }
 }
-bool EventHandling::chekTab() {
+
+const bool EventHandling::chekTab() const {
     bool result = false;
     if (tabWidget != nullptr) {
         int currentIndex = tabWidget->currentIndex();
-        if (currentIndex >= 0 && currentIndex < tabDataList.size()) {
+        if (currentIndex >= 0 /*&& currentIndex < tabDataList.size()*/) {
             result = true;
         }
     }
@@ -346,34 +387,17 @@ void EventHandling::movingPush(HandleType handle, bool isselected)
     }
 }
 
-bool EventHandling::shapesNoEmpt()
+const bool EventHandling::shapesNoEmpt()const
 {
     bool result = false;
     if (chekTab()) {
-        int currentIndex = tabWidget->currentIndex();
-        if (!tabDataList[currentIndex].shapes.empty())
+       
+        if (!getShapes().empty())
         {
             result = true;
         }
     }
     return result;
-}
-
-
-void EventHandling::addShape(std::unique_ptr<Shape>&& shape) {
-    if (chekTab()) {
-        // Получаем индекс активной вкладки
-        int currentIndex = tabWidget->currentIndex();
-        // Добавляем фигуру в список фигур активной вкладки
-        tabDataList[currentIndex].shapes.push_back(std::move(shape));
-        // Перерисовываем активную вкладку
-        QWidget* currentTab = tabWidget->widget(tabWidget->currentIndex());
-        if (currentTab) {
-            // qDebug() << "Calling repaint on:" << currentTab;
-            currentTab->setEnabled(true);
-            currentTab->update();
-        }
-    }
 }
 
 void EventHandling::clearvectors()
@@ -404,7 +428,7 @@ void EventHandling::clearSelection()
     if (shapesNoEmpt()) {
         int currentIndex = tabWidget->currentIndex();
         // Снимаем выделение со всех фигур
-        for (const auto& shape : tabDataList[currentIndex].shapes) {
+        for (const auto& shape : getShapes()) {
             shape->setSelected(false);
         }
     }

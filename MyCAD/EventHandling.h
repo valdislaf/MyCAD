@@ -8,12 +8,8 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include "ShapeManager.h"
 
-struct TabData {
-    int delataX = 0;
-    int delataY = 0;
-    std::vector<std::shared_ptr<Shape>> shapes;  // Список фигур для этой вкладки
-};
 
 enum class DrawMode {
     None,
@@ -39,21 +35,25 @@ class EventHandling : public QMainWindow {
 public:
     EventHandling(QWidget* parent = nullptr);
     ~EventHandling();
-
 protected:
-    bool chekTab();
+    const bool chekTab() const;
     bool event(QEvent* e) override;
     bool isDragging = false;
-    bool shapesNoEmpt();
+    const bool shapesNoEmpt()const;
     QPoint GetCurrPoint();
     QPoint lastMousePosition;
     QTabWidget* tabWidget;
-    QVector<TabData> tabDataList; // Список данных для каждой вкладки
-    void addShape(std::unique_ptr<Shape>&& shape);
     void clearSelection();
     void clearvectors();
     void handleDrawing(QMouseEvent* event, bool& circleFlag);
     void handleHoverMoveEvent();
+    void addTab(TabData tab);
+    const int idx() const;
+    const std::vector<std::shared_ptr<Shape>>& getShapes() const;
+    const int setDelataX(int dx)const;
+    const int setDelataY(int dy)const;
+    const int getDelataX()const;
+    const int getDelataY()const;
     void handleSelection(QMouseEvent* event, bool circleFlag);
     void highlightShapes(QMouseEvent* event);
     void highlightShapesUnderCursor(int currentIndex);
@@ -61,11 +61,13 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-    void movingPush(HandleType handle, bool isselected);
+    void movingPush(HandleType handle, bool isselected);   
     void processShapeSelection(int currentIndex);
     void resetShapeColors();
     void selectShapes(QMouseEvent* event);
     void updateGridPosition(const QPoint& delta);
     void updateShapeCoordinates(int i);
     void updateShapePositions();
+private:
+    ShapeManager* shapeManager;
 };

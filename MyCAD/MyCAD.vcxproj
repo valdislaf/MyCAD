@@ -104,6 +104,7 @@
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeCircle.cpp" />
     <ClCompile Include="ShapeLine.cpp" />
+    <ClCompile Include="ShapeManager.cpp" />
     <QtMoc Include="MyCAD.h" />
     <ClCompile Include="MyCAD.cpp" />
     <ClCompile Include="main.cpp" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrossCursor.h" />
+    <ClInclude Include="ShapeManager.h" />
     <QtMoc Include="EventHandling.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HandleManager.h">
