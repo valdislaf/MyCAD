@@ -101,6 +101,6 @@ public:
 
 
     //virtual bool isHandleSelected(HandleType handle) const = 0;
-    virtual  bool isHandleSelected(const HandleType& handle, const QPoint& point) const = 0;
-    virtual void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) = 0;
+    virtual  bool isHandleSelected(const HandleType& handle, const QPoint& point) const;
+    virtual void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points);
 };

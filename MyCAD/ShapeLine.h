@@ -28,9 +28,7 @@ public:
     QRect getStartHandle() const override;  // Возвращает область квадрата в начале линии
     QRect getEndHandle() const override;    // Возвращает область квадрата в конце линии
     QRect getMiddleHandle() const override; // Возвращает область квадрата в середине линии
-    bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
-    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) override;
-
+    
 private:
 
 };

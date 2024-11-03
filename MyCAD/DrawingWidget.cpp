@@ -66,13 +66,19 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
     if (myCad) {
         myCad->drawGrid(painter);
         myCad->drawShapes(painter);
-        if (!isMiddlON) {
-            if (currentDrawMode == DrawMode::Line) { myCad->CrossCursorIn(painter); }
-            else if (currentDrawMode == DrawMode::Circle) { myCad->CrossCursorIn(painter); }
-            else if (selShapes.empty()) { myCad->CrossCursorOut(painter); }
-            else { myCad->CrossCursorIn(painter); }
+        if (!isMiddlON ) {
+            if (!disableCursor) {
+                if (currentDrawMode == DrawMode::Line) { myCad->CrossCursorIn(painter); }
+                else if (currentDrawMode == DrawMode::Circle) { myCad->CrossCursorIn(painter); }
+                else if (selShapes.empty() && !disableCursor) { myCad->CrossCursorOut(painter); }
+                else {
+                    myCad->CrossCursorIn(painter);
+                }
+			}
+            else {
+                myCad->CrossCursorHandle(painter, myCad->GetHandlePoint());
+            }
         }
-
         if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
             if (currentDrawMode == DrawMode::Line) { myCad->DrawLine(painter, clickpoint); }
             else  if (currentDrawMode == DrawMode::Circle) { myCad->DrawCircle(painter, clickpoint); }

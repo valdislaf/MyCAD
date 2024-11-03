@@ -32,9 +32,7 @@ public:
     QRect getToptHandle() const override;
     QRect getRighttHandle() const override;
     QRect getBottomtHandle() const override;
-    bool isHandleSelected(const HandleType& handle, const QPoint& point) const override;
-    void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) override;
-
+    
 private:
 
 };

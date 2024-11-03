@@ -168,15 +168,15 @@ QRect Line::getMiddleHandle() const {
     return getHandle()->getHandle(HandleType::MiddleHandle, points);
 }
 
-bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const {
-    const auto& points = getPoints();
-    return getHandle()->isHandleSelected(handle, point, points);
-}
+//bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const {
+//    const auto& points = getPoints();
+//    return getHandle()->isHandleSelected(handle, point, points);
+//}
 
-void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
-{
-    getHandle()->captureCursorForAllHandles(tabWidget, point, points);
-}
+//void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
+//{
+//    getHandle()->captureCursorForAllHandles(tabWidget, point, points);    
+//}
 
 
 HandleType Line::getHandleAt(const QPoint& point) {

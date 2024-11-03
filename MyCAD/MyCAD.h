@@ -3,7 +3,7 @@
 #include "EventHandling.h"
 
 extern int heightwindow_prev;
-
+extern bool disableCursor;
 class MyCAD : public EventHandling
 {
     Q_OBJECT
@@ -15,8 +15,9 @@ public:
     QCursor createCustomCrossCursorIn();
     QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
     QPen getDashPenForShape(const std::shared_ptr<Shape>& shape);
-    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
+    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный  
     void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный
+    void CrossCursorHandle(QPainter& painter, QPoint newpoint);// для перекрестия курсора внутри handle 
     void DrawCircle(QPainter& painter, QPoint localPos);
     QPen createSolidPen(const QColor& color, int width) const;
     const bool isDrawEnabled() const;

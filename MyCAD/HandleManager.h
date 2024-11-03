@@ -50,6 +50,7 @@ struct Selected {
 class HandleManager {
 
 public:
+
     HandleManager(int handleSize);
 
     QRect getHandle(HandleType type, const ShapePoints& points) const;
@@ -58,10 +59,17 @@ public:
 
     void captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const ShapePoints& points);
 
-    //void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const QPoint& startPoint, const QPoint& endPoint, int radius);
     void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points);
+
+    const bool getInHandle() const;
+
+    void setInHandle(bool inHandle_);
+
+    const QPoint getHandlepoint() const;
+
 private:
 
     int handleSize;
-
+	bool inHandle = false;
+    QPoint handlepoint;
 };

@@ -37,23 +37,19 @@ bool HandleManager::isHandleSelected(const HandleType& handle, const QPoint& poi
 void HandleManager::captureCursorforHandle(QTabWidget* tabWidget, const HandleType& handle, const QPoint& point, const ShapePoints& points) {
     QRect handleRect = getHandle(handle, points);
     QWidget* currentTab = tabWidget->currentWidget();
-  
+   
     // Проверяем, находится ли курсор в области handleRect
     if (handleRect.contains(point)) {
+        inHandle = true;       
+        handlepoint = QPoint(handleRect.center().x() + 1, handleRect.center().y() + 1);
         // Получаем центр квадрата Handle
         QPoint centerHandle = handleRect.center();
-
         // Преобразуем локальные координаты в глобальные
         QPoint globalPos = currentTab->mapToGlobal(centerHandle);
-
-        // Если курсор не в центре, возвращаем его обратно
-        if (point != centerHandle) {
-            QCursor::setPos(globalPos);
-        }
+        QCursor::setPos(globalPos);       
     }
 }
 
-// Добавляем метод в HandleManager
 void HandleManager::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points) {
     // Проходимся по всем типам HandleType
     for (HandleType handle : {HandleType::StartHandle, HandleType::EndHandle, HandleType::MiddleHandle,
@@ -62,3 +58,15 @@ void HandleManager::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoi
     }
 }
 
+const bool HandleManager::getInHandle() const {
+    return inHandle;
+}
+
+void HandleManager::setInHandle(bool inHandle_)
+{
+	inHandle = inHandle_;
+}
+
+const QPoint HandleManager::getHandlepoint() const {
+	return handlepoint;
+}

@@ -89,12 +89,12 @@ bool EventHandling::event(QEvent* e) {
 
 void EventHandling::handleHoverMoveEvent() {
     if (chekTab()) {
-        int currentIndex = tabWidget->currentIndex();
+       
         if (shapesNoEmpt()) {
-            processShapeSelection(currentIndex); // Обработка выделения фигур        
+            GetHandlePoint(); //Обработка выделения фигур и притягивания к центру handle
         }
         if (!isdraw) {
-            highlightShapesUnderCursor(currentIndex); // Подсветка фигур под курсором
+            highlightShapesUnderCursor(); // Подсветка фигур под курсором
         }
         update(); // Обновление виджета
         if (currentDrawMode == DrawMode::None && !isDragging) {
@@ -160,7 +160,6 @@ void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
         }
     }
 }
-
 
 void EventHandling::handleSelection(QMouseEvent* event, bool circleFlag) {
     if (!selShapes.empty() && !isdraw && !movingStarts.empty()) {
@@ -266,16 +265,29 @@ void EventHandling::highlightShapes(QMouseEvent* event) {
     }
 }
 
-void EventHandling::processShapeSelection(int currentIndex) {
-    for (const auto& shape : getShapes()) {
-        if (shape->getisSelected()) {
-            QPoint newpoint = GetCurrPoint();
-            shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getPoints());
+
+
+QPoint EventHandling::GetHandlePoint() {
+    if (chekTab())
+    {
+        for (const auto& shape : getShapes())
+        {
+            if (shape->getisSelected()) {
+                shape->getHandle()->setInHandle(false);
+                QPoint newpoint = GetCurrPoint();
+                shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getPoints());
+                disableCursor = shape->getHandle()->getInHandle();
+                if (disableCursor) {
+                    return  shape->getHandle()->getHandlepoint();
+                }
+            }
         }
+
     }
+    return QPoint();
 }
 
-void EventHandling::highlightShapesUnderCursor(int currentIndex) {
+void EventHandling::highlightShapesUnderCursor() {
     if (chekTab()) {
         QPoint newpoint = GetCurrPoint();
         bool isanyshapeselectedandhandled = false;
@@ -348,7 +360,7 @@ void EventHandling::updateGridPosition(const QPoint& delta)
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
         }
-        // if (selShape != nullptr) { selShape->move(delta); }
+       
         if (!selShapes.empty()) {
             for (const auto& shape : selShapes)
             {

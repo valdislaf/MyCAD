@@ -35,6 +35,7 @@ class EventHandling : public QMainWindow {
 public:
     EventHandling(QWidget* parent = nullptr);
     ~EventHandling();
+    QPoint GetHandlePoint();
 protected:
     const bool chekTab() const;
     bool event(QEvent* e) override;
@@ -56,13 +57,12 @@ protected:
     const int getDelataY()const;
     void handleSelection(QMouseEvent* event, bool circleFlag);
     void highlightShapes(QMouseEvent* event);
-    void highlightShapesUnderCursor(int currentIndex);
+    void highlightShapesUnderCursor();
     void keyPressEvent(QKeyEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-    void movingPush(HandleType handle, bool isselected);   
-    void processShapeSelection(int currentIndex);
+    void movingPush(HandleType handle, bool isselected);
     void resetShapeColors();
     void selectShapes(QMouseEvent* event);
     void updateGridPosition(const QPoint& delta);

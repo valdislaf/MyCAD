@@ -241,12 +241,12 @@ QRect Circle::getBottomtHandle() const {
     return getHandle()->getHandle(HandleType::BottomHandle, points);
 }
 
-bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) const {
-    const auto& points = getPoints();
-    return getHandle()->isHandleSelected(handle, point, points);
-}
+//bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) const {
+//    const auto& points = getPoints();
+//    return getHandle()->isHandleSelected(handle, point, points);
+//}
 
-void Circle::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
-{
-    getHandle()->captureCursorForAllHandles(tabWidget, point, points);
-}
+//void Circle::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
+//{
+//    getHandle()->captureCursorForAllHandles(tabWidget, point, points);
+//}

@@ -281,4 +281,12 @@ QColor Shape::getColorPoint() const
     return QColor();
 }
 
+void Shape::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
+{
+    getHandle()->captureCursorForAllHandles(tabWidget, point, points);
+}
 
+bool Shape::isHandleSelected(const HandleType& handle, const QPoint& point) const {
+    const auto& points = getPoints();
+    return getHandle()->isHandleSelected(handle, point, points);
+}

@@ -1,6 +1,7 @@
 #include "MyCAD.h"
 
 int heightwindow_prev = 0;
+bool disableCursor = false;
 
 MyCAD::MyCAD(QWidget* parent)
     : EventHandling(parent)
@@ -245,6 +246,28 @@ void MyCAD::CrossCursorOut(QPainter& painter)
 {
     QPoint newpoint = GetCurrPoint();
 
+    // Горизонтальные линии
+    painter.drawLine(newpoint.x() - 3, newpoint.y() - 3, newpoint.x() + 3, newpoint.y() - 3);
+    painter.drawLine(newpoint.x() - 3, newpoint.y() + 3, newpoint.x() + 3, newpoint.y() + 3);
+
+    // Вертикальные линии
+    painter.drawLine(newpoint.x() - 3, newpoint.y() - 3, newpoint.x() - 3, newpoint.y() + 3);
+    painter.drawLine(newpoint.x() + 3, newpoint.y() - 3, newpoint.x() + 3, newpoint.y() + 3);
+
+    int cursorSize = 97;
+    int squareSide = 3; // Половина стороны квадрата 6x6
+
+    // Вертикальные линии перекрестия
+    painter.drawLine(newpoint.x(), newpoint.y() - cursorSize / 2, newpoint.x(), newpoint.y() - squareSide); // Вверх
+    painter.drawLine(newpoint.x(), newpoint.y() + squareSide, newpoint.x(), newpoint.y() + cursorSize / 2); // Вниз
+
+    // Горизонтальные линии перекрестия
+    painter.drawLine(newpoint.x() - cursorSize / 2, newpoint.y(), newpoint.x() - squareSide, newpoint.y()); // Влево
+    painter.drawLine(newpoint.x() + squareSide, newpoint.y(), newpoint.x() + cursorSize / 2, newpoint.y()); // Вправо
+}
+
+void MyCAD::CrossCursorHandle(QPainter& painter, QPoint newpoint)
+{
     // Горизонтальные линии
     painter.drawLine(newpoint.x() - 3, newpoint.y() - 3, newpoint.x() + 3, newpoint.y() - 3);
     painter.drawLine(newpoint.x() - 3, newpoint.y() + 3, newpoint.x() + 3, newpoint.y() + 3);
