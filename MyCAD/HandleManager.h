@@ -65,7 +65,7 @@ public:
 
     void setInHandle(bool inHandle_);
 
-    const QPoint getHandlepoint() const;
+    const QPoint getHandlePoint() const;
 
 private:
 

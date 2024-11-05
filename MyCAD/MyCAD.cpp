@@ -40,20 +40,6 @@ void MyCAD::onTabChanged(int index)
     }
 }
 
-QCursor MyCAD::createCustomCrossCursor()
-{
-    // Создаем курсор
-    CrossCursor cursor(97, QPen(Qt::white, 1), 3);
-    return cursor.createCursor();
-}
-
-QCursor MyCAD::createCustomCrossCursorIn()
-{
-    // Создаем курсор
-    CrossCursor cursor(97, QPen(Qt::white, 1), 0);
-    return cursor.createCursor();
-}
-
 void MyCAD::onExitThis()
 {
     // Создаем диалоговое окно с вопросом о подтверждении выхода

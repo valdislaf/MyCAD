@@ -150,14 +150,7 @@ HandleType Circle::getHandleAt(const QPoint& point)
     return HandleType::None;
 }
 
-// Функция для установки состояния хендлов
-void Circle::setHandleState(HandleType handleType) {
-    setisStart(handleType == HandleType::StartHandle);
-    setisLeft(handleType == HandleType::LeftHandle);
-    setisTop(handleType == HandleType::TopHandle);
-    setisRight(handleType == HandleType::RightHandle);
-    setisBottom(handleType == HandleType::BottomHandle);
-}
+
 
 //
 std::shared_ptr<Shape> Circle::clone() const
@@ -241,12 +234,3 @@ QRect Circle::getBottomtHandle() const {
     return getHandle()->getHandle(HandleType::BottomHandle, points);
 }
 
-//bool Circle::isHandleSelected(const HandleType& handle, const QPoint& point) const {
-//    const auto& points = getPoints();
-//    return getHandle()->isHandleSelected(handle, point, points);
-//}
-
-//void Circle::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
-//{
-//    getHandle()->captureCursorForAllHandles(tabWidget, point, points);
-//}

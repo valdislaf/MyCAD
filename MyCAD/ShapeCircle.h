@@ -15,7 +15,7 @@ public:
     void moveRadius(const int radius)override;
     bool contains(const QPoint& point)  override;
     HandleType getHandleAt(const QPoint& point)  override;
-    void setHandleState(HandleType handleType);
+    
     // Метод клонирования
     std::shared_ptr<Shape> clone() const override;
     void setCentre(const QPoint& startPoint, const int radius, bool isSelected) override;

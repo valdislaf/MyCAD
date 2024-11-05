@@ -14,7 +14,7 @@ public:
     void moveEnd(const QPoint& delta) override;
     bool contains(const QPoint& point)  override;
     HandleType getHandleAt(const QPoint& point)  override;
-    void setHandleState(HandleType handleType);
+    
     // Метод клонирования
     std::shared_ptr<Shape> clone() const override;
     void setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected) override;

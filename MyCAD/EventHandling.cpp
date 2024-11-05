@@ -167,7 +167,7 @@ void EventHandling::handleSelection(QMouseEvent* event, bool circleFlag) {
             updateShapeCoordinates(i);
         }
         resetShapeColors();
-        clearvectors();
+        clearVectors();
         update();
     }
     else if (tabWidget->rect().contains(event->pos())) {
@@ -278,7 +278,7 @@ QPoint EventHandling::GetHandlePoint() {
                 shape->captureCursorForAllHandles(tabWidget, newpoint, shape->getPoints());
                 disableCursor = shape->getHandle()->getInHandle();
                 if (disableCursor) {
-                    return  shape->getHandle()->getHandlepoint();
+                    return  shape->getHandle()->getHandlePoint();
                 }
             }
         }
@@ -412,7 +412,7 @@ const bool EventHandling::shapesNoEmpt()const
     return result;
 }
 
-void EventHandling::clearvectors()
+void EventHandling::clearVectors()
 {
     tmpShapes.clear();
     tmpShapes.resize(0);
@@ -433,7 +433,7 @@ void EventHandling::clearSelection()
     clickpoint = QPoint(INT_MIN, INT_MIN);
     isdraw = false;
     currentDrawMode = DrawMode::None;
-    clearvectors();
+    clearVectors();
     update();
 
     // Проверяем, что currentIndex находится в допустимых пределах

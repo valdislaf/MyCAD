@@ -244,6 +244,17 @@ QRect Shape::getBottomtHandle() const
     return QRect();
 }
 
+void Shape::setHandleState(HandleType handleType)
+{
+    setisStart(handleType == HandleType::StartHandle);
+    setisEnd(handleType == HandleType::EndHandle);
+    setisMiddle(handleType == HandleType::MiddleHandle);
+    setisLeft(handleType == HandleType::LeftHandle);
+    setisTop(handleType == HandleType::TopHandle);
+    setisRight(handleType == HandleType::RightHandle);
+    setisBottom(handleType == HandleType::BottomHandle);
+}
+
 void Shape::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
 {
 }

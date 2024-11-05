@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "CrossCursor.h"
+
 #include "Grid.h"
 #include "MenuInit.h"
 #include "MenuMain.h"
@@ -45,7 +45,7 @@ protected:
     QPoint lastMousePosition;
     QTabWidget* tabWidget;
     void clearSelection();
-    void clearvectors();
+    void clearVectors();
     void handleDrawing(QMouseEvent* event, bool& circleFlag);
     void handleHoverMoveEvent();
     void addTab(TabData tab);

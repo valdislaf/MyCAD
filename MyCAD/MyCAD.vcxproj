@@ -92,7 +92,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CrossCursor.cpp" />
     <ClCompile Include="DrawingWidget.cpp" />
     <ClCompile Include="EventHandling.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -120,7 +119,6 @@
     <QtMoc Include="MenuMain.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CrossCursor.h" />
     <ClInclude Include="ShapeManager.h" />
     <QtMoc Include="EventHandling.h" />
     <ClInclude Include="Grid.h" />

@@ -11,8 +11,7 @@ class MyCAD : public EventHandling
 public:
     MyCAD(QWidget* parent = nullptr);
     ~MyCAD();
-    QCursor createCustomCrossCursor();
-    QCursor createCustomCrossCursorIn();
+   
     QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
     QPen getDashPenForShape(const std::shared_ptr<Shape>& shape);
     void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный  

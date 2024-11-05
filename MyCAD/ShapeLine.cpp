@@ -168,16 +168,6 @@ QRect Line::getMiddleHandle() const {
     return getHandle()->getHandle(HandleType::MiddleHandle, points);
 }
 
-//bool Line::isHandleSelected(const HandleType& handle, const QPoint& point) const {
-//    const auto& points = getPoints();
-//    return getHandle()->isHandleSelected(handle, point, points);
-//}
-
-//void Line::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
-//{
-//    getHandle()->captureCursorForAllHandles(tabWidget, point, points);    
-//}
-
 
 HandleType Line::getHandleAt(const QPoint& point) {
     // Сбрасываем цвета хендлов
@@ -214,11 +204,4 @@ HandleType Line::getHandleAt(const QPoint& point) {
     return HandleType::None;
 }
 
-
-// Функция для установки состояния хендлов
-void Line::setHandleState(HandleType handleType) {
-    setisStart(handleType == HandleType::StartHandle);
-    setisEnd(handleType == HandleType::EndHandle);
-    setisMiddle(handleType == HandleType::MiddleHandle);
-}
 

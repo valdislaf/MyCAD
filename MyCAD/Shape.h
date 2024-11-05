@@ -98,7 +98,7 @@ public:
     virtual  QRect getToptHandle() const;
     virtual  QRect getRighttHandle() const;
     virtual  QRect getBottomtHandle() const;
-
+    virtual void setHandleState(HandleType handleType);
 
     //virtual bool isHandleSelected(HandleType handle) const = 0;
     virtual  bool isHandleSelected(const HandleType& handle, const QPoint& point) const;

@@ -67,6 +67,6 @@ void HandleManager::setInHandle(bool inHandle_)
 	inHandle = inHandle_;
 }
 
-const QPoint HandleManager::getHandlepoint() const {
+const QPoint HandleManager::getHandlePoint() const {
 	return handlepoint;
 }
