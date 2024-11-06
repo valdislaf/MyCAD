@@ -104,6 +104,7 @@
     <ClCompile Include="ShapeCircle.cpp" />
     <ClCompile Include="ShapeLine.cpp" />
     <ClCompile Include="ShapeManager.cpp" />
+    <ClCompile Include="DrawingManager.cpp" />
     <QtMoc Include="MyCAD.h" />
     <ClCompile Include="MyCAD.cpp" />
     <ClCompile Include="main.cpp" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShapeManager.h" />
+    <ClInclude Include="DrawingManager.h" />
     <QtMoc Include="EventHandling.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HandleManager.h">

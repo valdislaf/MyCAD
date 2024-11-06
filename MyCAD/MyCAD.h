@@ -1,6 +1,7 @@
 #pragma once
 #include "DrawingWidget.h"
 #include "EventHandling.h"
+#include "DrawingManager.h"
 
 extern int heightwindow_prev;
 extern bool disableCursor;
@@ -12,20 +13,15 @@ public:
     MyCAD(QWidget* parent = nullptr);
     ~MyCAD();
    
-    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
-    QPen getDashPenForShape(const std::shared_ptr<Shape>& shape);
     void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный  
     void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный
-    void CrossCursorHandle(QPainter& painter, QPoint newpoint);// для перекрестия курсора внутри handle 
-    void DrawCircle(QPainter& painter, QPoint localPos);
-    QPen createSolidPen(const QColor& color, int width) const;
+    void CrossCursorHandle(QPainter& painter);// для перекрестия курсора внутри handle 
+    void DrawCircle(QPainter& painter, QPoint localPos);    
     const bool isDrawEnabled() const;
     const bool isTabActive() const;
     void drawGrid(QPainter& painter);
-    void DrawLine(QPainter& painter, QPoint localPos);
-    void drawLineToCurrentPoint(QPainter& painter, const std::shared_ptr<Shape>& shape);
-    void drawShapes(QPainter& painter);
-    void drawTemporaryShapes(QPainter& painter);
+    void DrawLine(QPainter& painter, QPoint localPos);  
+    void drawShapes(QPainter& painter);  
     void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
 
 private slots:  // Методы, связанные с сигналами
@@ -41,4 +37,5 @@ private:  // Обычные методы
     void updateMenusBasedOnTabWidgetVisibility();
     QPoint offset;            // Смещение от начальной позиции
     QMenuBar* menuBar;
+    DrawingManager* drawingManager;
 };

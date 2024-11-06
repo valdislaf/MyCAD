@@ -76,7 +76,7 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
                 }
 			}
             else {
-                myCad->CrossCursorHandle(painter, myCad->GetHandlePoint());
+                myCad->CrossCursorHandle(painter);
             }
         }
         if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
