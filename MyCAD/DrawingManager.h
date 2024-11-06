@@ -16,12 +16,11 @@ public:
     void drawCircle(QPainter& painter, const QPoint& center, const QPoint& newpoint, const QColor& color = QColor(255, 155, 155));
     void drawCrossCursorIn(QPainter& painter, const QPoint& position);
     void drawCrossCursorOut(QPainter& painter, const QPoint& position);
-   
+    void drawTemporaryShapes(QPainter& painter, std::vector<std::shared_ptr<Shape>>& tmpShapes, std::vector<std::shared_ptr<Shape>>& selShapes, const QPoint& newpoint);
 
-//private:
+private:
     QPen createSolidPen(const QColor& color, int width = 1) const;
     QPen createDashPen(const QColor& color, qreal dashLength = 10, qreal gapLength = 5) const;
-    void drawTemporaryShapes(QPainter& painter, std::vector<std::shared_ptr<Shape>>& tmpShapes, std::vector<std::shared_ptr<Shape>>& selShapes, const QPoint& newpoint);
     void drawLineToCurrentPoint(QPainter& painter, const std::shared_ptr<Shape>& shape, const QPoint& newpoint);
     QPen getDashPenForShape(const std::shared_ptr<Shape>& shape);
 };
