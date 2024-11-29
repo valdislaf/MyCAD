@@ -56,8 +56,7 @@ void Grid::draw(QPainter& painter)
 
         painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
         y5 += gridSize;
-    }
-    // ymax = widgetHeight;
+    }    
      // Рисуем горизонтальные линии сетки вниз от начала координат
     y5 = 0;
     for (int y = widgetHeight; y < std::abs(delataY) + widgetHeight; y += gridSize) {
