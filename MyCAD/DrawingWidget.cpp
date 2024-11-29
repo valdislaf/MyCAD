@@ -57,6 +57,7 @@ void DrawingWidget::mouseMoveEvent(QMouseEvent* event)
 
 
 void DrawingWidget::paintEvent(QPaintEvent* event) {
+    (void)event; // Явно указываем, что параметр игнорируется
     QPainter painter(this);
     if (!painter.isActive()) {
         return;

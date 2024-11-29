@@ -20,6 +20,10 @@ Circle::Circle(const Circle& other)
     setPoints(points);
 }
 
+Circle::~Circle()
+{
+}
+
 void Circle::draw(QPainter& painter) const
 {
     const auto& points = getPoints();

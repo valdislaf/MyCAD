@@ -17,8 +17,8 @@ public:
     void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный
     void CrossCursorHandle(QPainter& painter);// для перекрестия курсора внутри handle 
     void DrawCircle(QPainter& painter, QPoint localPos);    
-    const bool isDrawEnabled() const;
-    const bool isTabActive() const;
+    bool isDrawEnabled() const;
+    bool isTabActive() const;
     void drawGrid(QPainter& painter);
     void DrawLine(QPainter& painter, QPoint localPos);  
     void drawShapes(QPainter& painter);  
@@ -29,7 +29,7 @@ private slots:  // Методы, связанные с сигналами
     void onDrawCircle();
     void onDrawLine();
     void onExitThis();
-    void onTabChanged(int index);
+    void onTabChanged();
 
 private:  // Обычные методы
     void createNewWindow();

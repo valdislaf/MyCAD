@@ -21,9 +21,9 @@ public:
 
     int setDelataY(int idx, int dy);
 
-    const int getDelataX(int idx)const;
+    int getDelataX(int idx)const;
 
-    const int getDelataY(int idx)const;
+    int getDelataY(int idx)const;
 
 private:    
     QVector<TabData> tabDataList; // Список данных для каждой вкладки

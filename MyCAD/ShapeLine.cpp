@@ -20,6 +20,10 @@ Line::Line(const Line& other)
     setPoints(points);
 }
 
+Line::~Line()
+{
+}
+
 // Реализация метода  клонирования
 std::shared_ptr<Shape> Line::clone() const {
     return std::make_shared<Line>(*this);

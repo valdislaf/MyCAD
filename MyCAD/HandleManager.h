@@ -61,7 +61,7 @@ public:
 
     void captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points);
 
-    const bool getInHandle() const;
+    bool getInHandle() const;
 
     void setInHandle(bool inHandle_);
 

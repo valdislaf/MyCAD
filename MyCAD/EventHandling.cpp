@@ -50,7 +50,7 @@ void EventHandling::mouseMoveEvent(QMouseEvent* event) {
     if (isDragging) { // Если мышь перетаскивается
         QPoint delta = event->pos() - lastMousePosition; // Рассчитываем смещение
         updateGridPosition(delta); // Обновляем позицию сетки
-        lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши        
+        lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши
     }
 
     QMainWindow::mouseMoveEvent(event); // Вызов базового метода
@@ -107,7 +107,7 @@ void EventHandling::addTab(TabData tab) {
     shapeManager->addTab(tab);
 }
 
-const int EventHandling::idx() const {
+int EventHandling::idx() const {
   return  tabWidget->currentIndex();
 }
 
@@ -116,19 +116,19 @@ const std::vector<std::shared_ptr<Shape>>& EventHandling::getShapes() const
     return shapeManager->getShapes(idx());
 }
 
-const int EventHandling::setDelataX(int dx) const {
+int EventHandling::setDelataX(int dx) const {
     return  shapeManager->setDelataX(idx(), dx);
     }
 
-const int EventHandling::setDelataY(int dy) const {
+int EventHandling::setDelataY(int dy) const {
     return  shapeManager->setDelataX(idx(), dy);
 }
 
-const int EventHandling::getDelataX() const {
+int EventHandling::getDelataX() const {
     return  shapeManager->getDelataX(idx());
 }
 
-const int EventHandling::getDelataY() const {
+int EventHandling::getDelataY() const {
     return  shapeManager->getDelataY(idx());
 }
 
@@ -163,7 +163,7 @@ void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
 
 void EventHandling::handleSelection(QMouseEvent* event, bool circleFlag) {
     if (!selShapes.empty() && !isdraw && !movingStarts.empty()) {
-        for (int i = 0; i < selShapes.size(); i++) {
+        for (std::size_t i = 0; i < selShapes.size(); i++) {
             updateShapeCoordinates(i);
         }
         resetShapeColors();
@@ -211,7 +211,7 @@ void EventHandling::updateShapeCoordinates(int i) {
 
 void EventHandling::resetShapeColors() {
     if (shapesNoEmpt()) {
-        int currentIndex = tabWidget->currentIndex();
+        //int currentIndex = tabWidget->currentIndex();
         for (const auto& shape : getShapes()) {
             shape->resetColor();
         }
@@ -225,6 +225,7 @@ QPoint EventHandling::GetCurrPoint() {
 }
 
 void EventHandling::selectShapes(QMouseEvent* event) {
+    (void)event;
     if (chekTab()) {
         QPoint newpoint = GetCurrPoint();
         for (const auto& shape : shapeManager->getShapes(idx())) {
@@ -240,6 +241,7 @@ void EventHandling::selectShapes(QMouseEvent* event) {
 }
 
 void EventHandling::highlightShapes(QMouseEvent* event) {
+    (void)event;
     if (chekTab()) {
         QPoint newpoint = GetCurrPoint();
         bool isanyshapeselectedandhandled = false;
@@ -319,8 +321,8 @@ void EventHandling::updateShapePositions() {
     if (!selShapes.empty() && !movingStarts.empty()) {
         QPoint newpoint = GetCurrPoint();
         QPoint delta = newpoint - lastMousePosition;
-        for (int i = 0; i < selShapes.size(); i++) {
-            bool temp = selShapes[i]->getisSelected();
+        for (std::size_t i = 0; i < selShapes.size(); i++) {
+            //bool temp = selShapes[i]->getisSelected();
             if (selShapes[i]->getisSelected()) {
                 selShapes[i]->setMoveSelected(true);
                 if (movingMiddles[i]) {
@@ -346,7 +348,7 @@ void EventHandling::updateGridPosition(const QPoint& delta)
 {
     // Проверка, что индекс корректный и вкладки существуют
     if (chekTab()) {
-        int currentIndex = tabWidget->currentIndex();
+     //   int currentIndex = tabWidget->currentIndex();
         // Обновляем значения смещения сетки на основе переданного delta
         shapeManager->setDelataX(idx(), delta.x());
         shapeManager->setDelataY(idx(), delta.y());
@@ -375,7 +377,7 @@ void EventHandling::updateGridPosition(const QPoint& delta)
     }
 }
 
-const bool EventHandling::chekTab() const {
+bool EventHandling::chekTab() const {
     bool result = false;
     if (tabWidget != nullptr) {
         int currentIndex = tabWidget->currentIndex();
@@ -399,7 +401,7 @@ void EventHandling::movingPush(HandleType handle, bool isselected)
     }
 }
 
-const bool EventHandling::shapesNoEmpt()const
+bool EventHandling::shapesNoEmpt()const
 {
     bool result = false;
     if (chekTab()) {
@@ -438,7 +440,7 @@ void EventHandling::clearSelection()
 
     // Проверяем, что currentIndex находится в допустимых пределах
     if (shapesNoEmpt()) {
-        int currentIndex = tabWidget->currentIndex();
+      //  int currentIndex = tabWidget->currentIndex();
         // Снимаем выделение со всех фигур
         for (const auto& shape : getShapes()) {
             shape->setSelected(false);

@@ -8,6 +8,7 @@ class Line : public Shape {
 public:
     Line(const QPoint& startPoint, const QPoint& endPoint);
     Line(const Line& other);
+    ~Line();
     void draw(QPainter& painter) const override;
     void move(const QPoint& delta) override;
     void moveStart(const QPoint& delta) override;

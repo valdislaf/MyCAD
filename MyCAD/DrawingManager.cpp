@@ -1,7 +1,6 @@
 ﻿#include "DrawingManager.h"
 #include <cmath>
 
-
 DrawingManager::DrawingManager() {}
 
 void DrawingManager::drawGrid(QPainter& painter, QWidget* currentTab, const QPoint& delta, int gridSize) {
@@ -70,6 +69,7 @@ void DrawingManager::drawTemporaryShapes(
         }
     }
 }
+
 // Метод для рисования линии к текущей точке
 void DrawingManager::drawLineToCurrentPoint(QPainter& painter, const std::shared_ptr<Shape>& shape, const QPoint& newpoint) {
   

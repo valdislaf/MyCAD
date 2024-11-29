@@ -32,7 +32,7 @@ MyCAD::~MyCAD()
 }
 
 
-void MyCAD::onTabChanged(int index)
+void MyCAD::onTabChanged()
 {
     clearSelection();
 }
@@ -173,12 +173,12 @@ void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0) {
 }
 
 // Вспомогательная функция для проверки активности вкладки и флага isdraw
-const bool MyCAD::isDrawEnabled() const {
+bool MyCAD::isDrawEnabled() const {
     return isdraw && isTabActive() && !isDragging;
 }
 
 // Вспомогательная функция для проверки активности текущей вкладки
-const bool MyCAD::isTabActive() const {
+bool MyCAD::isTabActive() const {
     return tabWidget && chekTab() && tabWidget->currentWidget();
 }
 

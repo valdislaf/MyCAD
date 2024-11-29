@@ -9,6 +9,7 @@ class Circle : public Shape {
 public:
     Circle(const QPoint& startPoint, const int radius);
     Circle(const Circle& other);
+    ~Circle();
     void draw(QPainter& painter) const override;
     void move(const QPoint& delta) override;
     void moveStart(const QPoint& delta) override;

@@ -13,7 +13,7 @@ void Grid::draw(QPainter& painter)
     int widgetHeight = currentTab->height();
 
 
-    int xmax = 0; int ymax = 0;
+    //int xmax = 0; //int ymax = 0;
     // Создаем QPen для основных линий сетки
     QColor mainGridColor(38, 44, 55);  // Цвет основной сетки
     QPen mainGridPen(mainGridColor, 2, Qt::DotLine);
@@ -31,7 +31,7 @@ void Grid::draw(QPainter& painter)
             painter.setPen(mainGridPen);
         }
         painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
-        xmax = x;
+       // xmax = x;
     }
 
     // Рисуем вертикальные линии сетки влево от начала координат
@@ -43,7 +43,7 @@ void Grid::draw(QPainter& painter)
             painter.setPen(mainGridPen);
         }
         painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
-        xmax = x;
+       // xmax = x;
     }
 
     // Рисуем горизонтальные линии сетки вверх от начала координат

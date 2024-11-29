@@ -37,10 +37,10 @@ public:
     ~EventHandling();
     QPoint GetHandlePoint();
 protected:
-    const bool chekTab() const;
+    bool chekTab() const;
     bool event(QEvent* e) override;
     bool isDragging = false;
-    const bool shapesNoEmpt()const;
+    bool shapesNoEmpt()const;
     QPoint GetCurrPoint();
     QPoint lastMousePosition;
     QTabWidget* tabWidget;
@@ -49,12 +49,12 @@ protected:
     void handleDrawing(QMouseEvent* event, bool& circleFlag);
     void handleHoverMoveEvent();
     void addTab(TabData tab);
-    const int idx() const;
+    int idx() const;
     const std::vector<std::shared_ptr<Shape>>& getShapes() const;
-    const int setDelataX(int dx)const;
-    const int setDelataY(int dy)const;
-    const int getDelataX()const;
-    const int getDelataY()const;
+    int setDelataX(int dx)const;
+    int setDelataY(int dy)const;
+    int getDelataX()const;
+    int getDelataY()const;
     void handleSelection(QMouseEvent* event, bool circleFlag);
     void highlightShapes(QMouseEvent* event);
     void highlightShapesUnderCursor();

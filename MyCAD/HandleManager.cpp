@@ -1,5 +1,4 @@
-﻿#pragma once
-#include "HandleManager.h"
+﻿#include "HandleManager.h"
 #include <QPoint>
 #include <QTabWidget>
 #include <QWidget>
@@ -58,7 +57,7 @@ void HandleManager::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoi
     }
 }
 
-const bool HandleManager::getInHandle() const {
+bool HandleManager::getInHandle() const {
     return inHandle;
 }
 

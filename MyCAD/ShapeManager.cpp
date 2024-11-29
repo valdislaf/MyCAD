@@ -6,20 +6,21 @@ void ShapeManager::addTab(TabData tab) {
 
 void ShapeManager::addShape(std::shared_ptr<Shape> shape, int idx) {
     if (idx >= tabDataList.size()) {
-        tabDataList.resize(idx + 1);  // Изменяем размер до нужного индекса
+        tabDataList.resize(idx + 1);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     }
     tabDataList[idx].shapes.push_back(std::move(shape));
 }
 
 const std::vector<std::shared_ptr<Shape>>& ShapeManager::getShapes(int idx) {
+    static const std::vector<std::shared_ptr<Shape>> emptyVector;
     if (!tabDataList.isEmpty()) {
         if (idx >= tabDataList.size()) {
-            tabDataList.resize(idx + 1);  // Изменяем размер до нужного индекса
+            tabDataList.resize(idx + 1);  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
         return tabDataList.at(idx).shapes;
     }
     else {
-        return std::vector<std::shared_ptr<Shape>>();
+        return emptyVector;  // РІРѕР·РІСЂР°С‰Р°РµРј СЃСЃС‹Р»РєСѓ РЅР° СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РїСѓСЃС‚РѕР№ РІРµРєС‚РѕСЂ
     }
 }
 
@@ -45,7 +46,7 @@ int ShapeManager::setDelataY(int idx, int dy) {
     }
 }
 
-const int ShapeManager::getDelataX(int idx) const {
+int ShapeManager::getDelataX(int idx) const {
     if (!tabDataList.isEmpty()) {
         return  tabDataList[idx].delataX;
     }
@@ -54,7 +55,7 @@ const int ShapeManager::getDelataX(int idx) const {
     }
 }
 
-const int ShapeManager::getDelataY(int idx) const {
+int ShapeManager::getDelataY(int idx) const {
     if (!tabDataList.isEmpty()) {
         return  tabDataList[idx].delataY;
     }

@@ -111,18 +111,22 @@ void Shape::setisBottom(bool isSelected)
 
 void Shape::move(const QPoint& delta)
 {
+    (void)delta;
 }
 
 void Shape::moveStart(const QPoint& delta)
 {
+    (void)delta;
 }
 
 void Shape::moveEnd(const QPoint& delta)
 {
+    (void)delta;
 }
 
 void Shape::moveRadius(const int radius)
 {
+    (void)radius;
 }
 
 void Shape::setSelected(bool selected)
@@ -257,10 +261,12 @@ void Shape::setHandleState(HandleType handleType)
 
 void Shape::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
 {
+    (void)startPoint; (void)endPoint; (void)isSelected;
 }
 
 void Shape::setCentre(const QPoint& startPoint, const int radius, bool isSelected)
 {
+    (void)startPoint; (void)radius; (void)isSelected;
 }
 
 QPoint Shape::getstartPoint() const
