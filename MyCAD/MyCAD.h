@@ -1,87 +1,41 @@
 #pragma once
-
-#include <memory>
-#include <vector>
-#include <QtWidgets/QMainWindow>
-
-#include "Shape.h"
 #include "DrawingWidget.h"
+#include "EventHandling.h"
+#include "DrawingManager.h"
 
-struct TabData {
-    int delataX = 0;
-    int delataY = 0;
-    std::vector<std::shared_ptr<Shape>> shapes;  // Список фигур для этой вкладки
-};
-
-extern bool isdraw;
-extern bool ondrawline;
-extern bool ondrawcircle;
-extern bool updrawcircle;
-extern QPoint clickpoint;
 extern int heightwindow_prev;
-extern std::vector<bool> movingWholeLines;
-extern std::vector<bool>  movingEnds;
-extern std::vector<bool>  movingStarts;
-extern std::vector<bool> movingLefts;
-extern std::vector<bool> movingTops;
-extern std::vector<bool> movingRights;
-extern std::vector<bool> movingBottoms;
-
-extern std::vector<std::shared_ptr<Shape>>selShapes;
-extern std::vector<std::shared_ptr<Shape>>tmpShapes;
-
-class MyCAD : public QMainWindow
+extern bool disableCursor;
+class MyCAD : public EventHandling
 {
     Q_OBJECT
 
 public:
     MyCAD(QWidget* parent = nullptr);
     ~MyCAD();
-
-protected:
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    bool event(QEvent* e)override;
-    void keyPressEvent(QKeyEvent* event) override;
-
-private:
-    QVector<TabData> tabDataList; // Список данных для каждой вкладки
+   
+    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный  
+    void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный
+    void CrossCursorHandle(QPainter& painter);// для перекрестия курсора внутри handle 
+    void DrawCircle(QPainter& painter, QPoint localPos);    
+    bool isDrawEnabled() const;
+    bool isTabActive() const;
+    void drawGrid(QPainter& painter);
+    void DrawLine(QPainter& painter, QPoint localPos);  
+    void drawShapes(QPainter& painter);  
+    void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
 
 private slots:  // Методы, связанные с сигналами
-    void onExitThis();
     void onCloseThisTab();
-    void onDrawLine();
     void onDrawCircle();
-    void onTabChanged(int index);
-    void movingPush(HandleType handle, bool isselected);
+    void onDrawLine();
+    void onExitThis();
+    void onTabChanged();
 
 private:  // Обычные методы
     void createNewWindow();
-    void captureCursorforHandle(QWidget* currentTab, const QRect& handleRect, const QPoint& cursorPos);
-    void updateMenusBasedOnTabWidgetVisibility();
-    void initialTabWidget();
     void setupTabWidgetStyle();
-    void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
-    void addShape(std::unique_ptr<Shape>&& shape);  // Метод для добавления фигуры
-    void clearvectors();
-    void clearSelection();
-
-private:
-    bool isDragging = false;  // Флаг для отслеживания состояния перетаскивания
-    QPoint lastMousePosition; // Последняя позиция мыши
+    void updateMenusBasedOnTabWidgetVisibility();
     QPoint offset;            // Смещение от начальной позиции
-    QTabWidget* tabWidget;
     QMenuBar* menuBar;
-
-public:
-    void drawShapes(QPainter& painter);          // Метод для рисования всех фигур    
-    void drawGrid(QPainter& painter);
-    void DrawLine(QPainter& painter, QPoint localPos);
-    void DrawCircle(QPainter& painter, QPoint localPos);
-    QPen DashPen(QColor Color, qreal dashLength, qreal gapLength);
-    QCursor createCustomCrossCursor();
-    QCursor createCustomCrossCursorIn();
-    void CrossCursorIn(QPainter& painter); // для перекрестия курсора активный 
-    void CrossCursorOut(QPainter& painter); // для перекрестия курсора неактивный 
+    DrawingManager* drawingManager;
 };

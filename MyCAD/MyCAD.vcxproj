@@ -36,7 +36,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.7.0_msvc2019_64</QtInstall>
+    <QtInstall>msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -63,10 +63,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
@@ -92,14 +97,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CrossCursor.cpp" />
     <ClCompile Include="DrawingWidget.cpp" />
+    <ClCompile Include="EventHandling.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HandleManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MenuInit.cpp" />
     <ClCompile Include="MenuMain.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <QtRcc Include="MyCAD.qrc" />
-    <QtUic Include="MyCAD.ui" />
+    <ClCompile Include="ShapeCircle.cpp" />
+    <ClCompile Include="ShapeLine.cpp" />
+    <ClCompile Include="ShapeManager.cpp" />
+    <ClCompile Include="DrawingManager.cpp" />
     <QtMoc Include="MyCAD.h" />
     <ClCompile Include="MyCAD.cpp" />
     <ClCompile Include="main.cpp" />
@@ -115,8 +125,15 @@
     <QtMoc Include="MenuMain.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CrossCursor.h" />
+    <ClInclude Include="ShapeManager.h" />
+    <ClInclude Include="DrawingManager.h" />
+    <QtMoc Include="EventHandling.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HandleManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <QtMoc Include="ShapeCircle.h" />
+    <QtMoc Include="ShapeLine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

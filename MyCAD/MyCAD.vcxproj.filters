@@ -23,18 +23,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="MyCAD.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <QtUic Include="MyCAD.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtMoc Include="MyCAD.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClCompile Include="MyCAD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <QtMoc Include="ShapeCircle.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ShapeLine.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="EventHandling.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,7 +58,22 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CrossCursor.cpp">
+    <ClCompile Include="HandleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeCircle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawingManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +95,13 @@
     <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CrossCursor.h">
+    <ClInclude Include="HandleManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawingManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

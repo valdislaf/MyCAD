@@ -1,654 +1,309 @@
 #include "Shape.h"
 #include <QDebug>
+#include <QTabWidget>
+#include <QWidget>
 
-// Реализация конструктора для класса Line
-Line::Line(const QPoint& startPoint, const QPoint& endPoint)
-    : startPoint(startPoint), endPoint(endPoint) {}
-
-Line::Line(const Line& other)
-    : startPoint(other.startPoint), endPoint(other.endPoint) {}
-
-Line::~Line()
+const ShapePoints& Shape::getPoints() const
 {
+    return points;
 }
 
-
-// Реализация метода  клонирования
-std::shared_ptr<Shape> Line::clone() const  {
-    return std::make_shared<Line>(*this);
-}
-
-void Line::setCoords(const QPoint& startPoint_, const QPoint& endPoint_, bool isSelected_) 
+void Shape::setPoints(const ShapePoints& newPoints)
 {
-    startPoint = startPoint_; endPoint = endPoint_; isSelected = isSelected_;
+    points = newPoints;
 }
 
-void Line::setCentre(const QPoint& startPoint, const int radius, bool isSelected)
+void Shape::setHandleSize(int size)
 {
+    handleManager = new HandleManager(size);
 }
 
-QPoint Line::getstartPoint() const
+HandleManager* Shape::getHandle() const
 {
-    return startPoint;
+    return handleManager;
 }
 
-QPoint Line::getendPoint() const
+Shape::~Shape()
 {
-    return endPoint;
+    delete handleManager;
 }
 
-QPoint Line::getmiddlePoint() 
+Colors Shape::getColors() const
 {
-    middlePoint = (startPoint + endPoint) / 2;
-    return middlePoint;
+    return colors;
 }
 
-QPoint Line::getleftPoint() const
+void Shape::setColorsStart(QColor color)
 {
-    return QPoint();
+	colors.ColorStartPoint = color;
+
 }
 
-QPoint Line::gettopPoint() const
+void Shape::setColorEnd(QColor color)
 {
-    return QPoint();
+	colors.ColorEndPoint = color;
 }
 
-QPoint Line::getrightPoint() const
+void Shape::setColorMiddle(QColor color)
 {
-    return QPoint();
+	colors.ColorMiddlePoint = color;
 }
 
-QPoint Line::getbottomPoint() const
+void Shape::setColorsLeft(QColor color)
 {
-    return QPoint();
+	colors.ColorLeftPoint = color;
 }
 
-int Line::getradius() const
+void Shape::setColorsTop(QColor color)
 {
-    return 0;
+	colors.ColorTopPoint = color;
 }
 
-bool Line::getisSelected() const
+void Shape::setColorsRight(QColor color)
 {
-    return isSelected;
+	colors.ColorRightPoint = color;
 }
 
-void Line::resetColor()
+void Shape::setColorsBottom(QColor color)
 {
-    ColorStartPoint = QColor(0, 127, 255);
-    ColorEndPoint = QColor(0, 127, 255);
-    ColorMiddlePoint = QColor(0, 127, 255);
-     isStart = false;  // Флаг выделения
-     isEnd = false;  // Флаг выделения
-     isMiddle = false;  // Флаг выделения
+	colors.ColorBottomPoint = color;
 }
 
-bool Line::getisStart() const
+Selected Shape::getSelected()  const
 {
-    return isStart;
+    return selected;
 }
 
-bool Line::getisEnd() const
+void Shape::setisStart(bool isSelected)
 {
-    return isEnd;
+    selected.isStart = isSelected;
 }
 
-bool Line::getisMiddle() const
+void Shape::setisMiddle(bool isSelected)
 {
-    return isMiddle;
+    selected.isMiddle = isSelected;
 }
 
-bool Line::getisLeft() const
+void Shape::setisEnd(bool isSelected)
 {
-    return false;
+    selected.isEnd = isSelected;
 }
 
-bool Line::getisRight() const
+void Shape::setisLeft(bool isSelected)
 {
-    return false;
+    selected.isLeft = isSelected;
 }
 
-bool Line::getisTop() const
+void Shape::setisTop(bool isSelected)
 {
-    return false;
+    selected.isTop = isSelected;
 }
 
-bool Line::getisBottom() const
+void Shape::setisRight(bool isSelected)
 {
-    return false;
+    selected.isRight= isSelected;
 }
 
-Type Line::name() const
+void Shape::setisBottom(bool isSelected)
 {
-    return Type::line;
+    selected.isBottom = isSelected;
 }
 
-void Line::setisover(bool iscursorhovershape_) 
+void Shape::move(const QPoint& delta)
 {
-     iscursorhovershape = iscursorhovershape_;
+    (void)delta;
 }
 
-bool Line::getisover() const
+void Shape::moveStart(const QPoint& delta)
 {
-    return iscursorhovershape;
+    (void)delta;
 }
 
-
-// Реализация метода рисования отрезка
-void Line::draw(QPainter& painter) const {
-    QPen pen = painter.pen();
-
-    // Если линия выделена, изменяем цвет
-    if (isSelected && !moveSelected) {
-        QColor highlightedColor(90, 150, 255, 169);
-        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
-        painter.setPen(highlightedPen);
-        painter.drawLine(startPoint, endPoint);
-        // возвращаем Pen
-        painter.setPen(pen);
-        // Рисуем квадраты на концах и в середине, если линия выделена
-        painter.setBrush(ColorStartPoint);
-        painter.drawRect(getStartHandle());
-        painter.setBrush(ColorEndPoint);
-        painter.drawRect(getEndHandle());
-        painter.setBrush(ColorMiddlePoint);
-        painter.drawRect(getMiddleHandle());
-        // Отключаем заливку
-        painter.setBrush(Qt::NoBrush);
-    }
-
-     if (iscursorhovershape) {
-        QColor highlightedColor(250, 250, 250, 120);
-        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
-        painter.setPen(highlightedPen);
-        painter.drawLine(startPoint, endPoint);
-
-        // возвращаем Pen
-        painter.setPen(pen);
-    }
-    
-    painter.setPen(pen);
-    painter.drawLine(startPoint, endPoint); 
-   
-    
-}
-
-// Реализация метода перемещения отрезка
-void Line::move(const QPoint& delta) {
-    startPoint += delta;
-    endPoint += delta;
-}
-
-void Line::moveStart(const QPoint& delta)
+void Shape::moveEnd(const QPoint& delta)
 {
-    startPoint += delta;
+    (void)delta;
 }
 
-void Line::moveEnd(const QPoint& delta)
+void Shape::moveRadius(const int radius)
 {
-    endPoint += delta;
+    (void)radius;
 }
 
-void Line::moveRadius(const int radius)
-{
-}
-
-// Метод установки состояния выделения
-void Line::setSelected(bool selected) {
-    isSelected = selected;
-}
-
-void Line::setMoveSelected(bool selected)
-{
-    moveSelected = selected;
-}
-
-// Реализация метода проверки попадания точки в отрезок
-bool Line::contains(const QPoint& point)  {
-    // Основная логика проверки принадлежности точки линии
-    QPoint v1 = point - startPoint;
-    QPoint v2 = endPoint - startPoint;
-
-    double lengthSquared = v2.x() * v2.x() + v2.y() * v2.y();
-    double dotProduct = v1.x() * v2.x() + v1.y() * v2.y();
-
-    double projection = dotProduct / lengthSquared;
-
-    if (projection < 0 || projection > 1) {
-        return false;
-    }
-
-    QPoint closestPoint = startPoint + projection * v2;
-
-    return (point - closestPoint).manhattanLength() < 5; // Допускаем небольшое расстояние для попадания
-}
-
-// Возвращает область квадрата в начале линии
-QRect Line::getStartHandle() const {
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
-}
-
-// Возвращает область квадрата в конце линии
-QRect Line::getEndHandle() const {
-    return QRect(endPoint.x() - handleSize / 2, endPoint.y() - handleSize / 2, handleSize, handleSize);
-}
-
-// Возвращает область квадрата в середине линии
-QRect Line::getMiddleHandle() const {
-    QPoint middlePoint = (startPoint + endPoint) / 2;
-    return QRect(middlePoint.x() - handleSize / 2, middlePoint.y() - handleSize / 2, handleSize, handleSize);
-}
-
-QRect Line::getLeftHandle() const
-{
-    return QRect();
-}
-
-QRect Line::getToptHandle() const
-{
-    return QRect();
-}
-
-QRect Line::getRighttHandle() const
-{
-    return QRect();
-}
-
-QRect Line::getBottomtHandle() const
-{
-    return QRect();
-}
-
-bool Line::isHandleSelected(HandleType handle) const {
-    switch (handle) {
-    case HandleType::StartHandle: return getisStart();
-    case HandleType::EndHandle: return getisEnd();
-    case HandleType::MiddleHandle: return getisMiddle();
-    case HandleType::LeftHandle: return getisLeft();
-    case HandleType::RightHandle: return getisRight();
-    case HandleType::TopHandle: return getisTop();
-    case HandleType::BottomHandle: return getisBottom();
-    default: return false;
-    }
-}
-
-
-
-
-HandleType Line::getHandleAt(const QPoint& point) {
-
-    // Сбрасываем цвета
-    ColorStartPoint = QColor(0, 127, 255);
-    ColorEndPoint = QColor(0, 127, 255);
-    ColorMiddlePoint = QColor(0, 127, 255);
-
-    // Проверка каждого хендла
-    if (getStartHandle().contains(point)) {
-        if (isSelected) {
-            ColorStartPoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::StartHandle);
-        return HandleType::StartHandle;
-    }
-
-    if (getEndHandle().contains(point)) {
-        if (isSelected) {
-            ColorEndPoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::EndHandle);
-        return HandleType::EndHandle;
-    }
-
-    if (getMiddleHandle().contains(point)) {
-        if (isSelected) {
-            ColorMiddlePoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::MiddleHandle);
-        return HandleType::MiddleHandle;
-    }
-
-    // Если ни один хендл не выбран
-    setHandleState(HandleType::None);
-    return HandleType::None;
-}
-
-// Функция для установки состояния хендлов
-void Line::setHandleState(HandleType handleType) {
-    isStart = (handleType == HandleType::StartHandle);
-    isEnd = (handleType == HandleType::EndHandle);
-    isMiddle = (handleType == HandleType::MiddleHandle);
-}
-
-
-Circle::Circle(const QPoint& startPoint, const int radius)
-    : startPoint(startPoint), radius(radius) {}
-
-Circle::Circle(const Circle& other)
-    : startPoint(other.startPoint), radius(other.radius) {
-}
-
-Circle::~Circle()
-{
-}
-
-void Circle::draw(QPainter& painter) const
-{
-    QPen pen = painter.pen();
-    // Если линия выделена, изменяем цвет
-    if (isSelected && !moveSelected) {
-        QColor highlightedColor(90, 150, 255, 169);
-        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
-        painter.setPen(highlightedPen);
-        painter.drawEllipse(startPoint, radius, radius);
-        // возвращаем Pen
-        painter.setPen(pen);
-        // Рисуем квадраты на сверху снизу спарва и слева и по центру, если  выделено
-        painter.setBrush(ColorStartPoint);
-        painter.drawRect(getStartHandle());
-
-        painter.setBrush(ColorLeftPoint);
-        painter.drawRect(getLeftHandle());
-
-        painter.setBrush(ColorTopPoint);
-        painter.drawRect(getToptHandle());
-
-        painter.setBrush(ColorRightPoint);
-        painter.drawRect(getRighttHandle());
-
-        painter.setBrush(ColorBottomPoint);
-        painter.drawRect(getBottomtHandle());
-
-        // Отключаем заливку
-        painter.setBrush(Qt::NoBrush);
-    }
-
-    if (iscursorhovershape) {
-        QColor highlightedColor(250, 250, 250, 120);
-        QPen highlightedPen(highlightedColor, 4, Qt::SolidLine);
-        painter.setPen(highlightedPen);
-        painter.drawEllipse(startPoint, radius, radius);
-
-        // возвращаем Pen
-        painter.setPen(pen);
-    }
-    painter.setPen(pen);
-    painter.drawEllipse(startPoint, radius, radius);
-
-   
-}
-
-void Circle::move(const QPoint& delta)
-{    
-    startPoint += delta;
-}
-
-void Circle::moveStart(const QPoint& delta)
-{
-    startPoint += delta;
-}
-
-void Circle::moveEnd(const QPoint& delta)
-{
-
-}
-
-void Circle::moveRadius(const int radius_)
-{
-    radius = radius_;
-}
-
-bool Circle::contains(const QPoint& point) 
-{
-    // Вычисляем расстояние от точки до центра
-    double distanceSquared = pow(point.x() - startPoint.x(), 2) + pow(point.y() - startPoint.y(), 2);
-    double radiusSquared = radius * radius;
-    //float  result = fabs(distanceSquared - radiusSquared) ;
-    // Проверяем условие на нахождение точки на окружности с учетом погрешности
-    return fabs(distanceSquared - radiusSquared) < 1000;
-}
-
-void Circle::setSelected(bool selected)
+void Shape::setSelected(bool selected)
 {
     isSelected = selected;
 }
 
-void Circle::setMoveSelected(bool selected)
-{
-    moveSelected = selected;
-}
-
-HandleType Circle::getHandleAt(const QPoint& point)
-{
-    
-    ColorStartPoint = QColor(0, 127, 255);
-    ColorLeftPoint = QColor(0, 127, 255);
-     ColorTopPoint = QColor(0, 127, 255);
-     ColorRightPoint = QColor(0, 127, 255);
-     ColorBottomPoint = QColor(0, 127, 255);
-
-    if (getStartHandle().contains(point)) {
-       if( isSelected)
-       {
-          ColorStartPoint = QColor(165, 0, 0);
-       }
-       setHandleState(HandleType::StartHandle);
-        return HandleType::StartHandle;
-    }
-
-    if (getLeftHandle().contains(point)) {
-        if (isSelected)
-        {
-            ColorLeftPoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::LeftHandle);
-        return HandleType::LeftHandle;
-    }
-
-    if (getToptHandle().contains(point)) {
-        if (isSelected)
-        {
-            ColorTopPoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::TopHandle);
-        return HandleType::TopHandle;
-    }
-
-    if (getRighttHandle().contains(point)) {
-        if (isSelected)
-        {
-            ColorRightPoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::RightHandle);
-        return HandleType::RightHandle;
-    }
-
-    if (getBottomtHandle().contains(point)) {
-        if (isSelected)
-        {
-            ColorBottomPoint = QColor(165, 0, 0);
-        }
-        setHandleState(HandleType::BottomHandle);
-        return HandleType::BottomHandle;
-    }
-    // Если ни один хендл не выбран
-    setHandleState(HandleType::None);
-    return HandleType::None;
-}
-// Функция для установки состояния хендлов
-void Circle::setHandleState(HandleType handleType) {
-    isStart = (handleType == HandleType::StartHandle);
-    isLeft = (handleType == HandleType::LeftHandle);
-    isTop = (handleType == HandleType::TopHandle);
-    isRight = (handleType == HandleType::RightHandle);
-    isBottom = (handleType == HandleType::BottomHandle);
-}
-
-//
-std::shared_ptr<Shape> Circle::clone() const
-{    
-    return std::make_shared<Circle>(*this);
-}
-
-void Circle::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
-{
-    
-}
-
-void Circle::setCentre(const QPoint& startPoint_, const int radius_, bool isSelected_)
-{
-    startPoint = startPoint_;  radius = radius_; isSelected = isSelected_;
-}
-
-QPoint Circle::getstartPoint() const
-{
-    return startPoint;
-}
-
-QPoint Circle::getendPoint() const
-{
-    return QPoint();
-}
-
-QPoint Circle::getmiddlePoint() 
-{
-    return QPoint();
-}
-
-QPoint Circle::getleftPoint() const
-{
-    return leftPoint;
-}
-
-QPoint Circle::gettopPoint() const
-{
-    return topPoint;
-}
-
-QPoint Circle::getrightPoint() const
-{
-    return rightPoint;
-}
-
-QPoint Circle::getbottomPoint() const
-{
-    return bottomPoint;
-}
-
-int Circle::getradius() const
-{
-    return radius;
-}
-
-bool Circle::getisSelected() const
+bool Shape::getisSelected() const
 {
     return isSelected;
 }
 
-void Circle::resetColor()
+void Shape::setMoveSelected(bool selected)
 {
-     ColorStartPoint = QColor(0, 127, 255);
-     ColorLeftPoint = QColor(0, 127, 255);
-     ColorTopPoint = QColor(0, 127, 255);
-     ColorRightPoint = QColor(0, 127, 255);
-     ColorBottomPoint = QColor(0, 127, 255);
-     isStart = false;  // Флаг выделения
-     isLeft = false;  // Флаг выделения
-     isTop = false;  // Флаг выделения
-     isRight = false;  // Флаг выделения
-     isBottom = false;  // Флаг выделения
+    moveSelected = selected;
 }
 
-bool Circle::getisStart()const
+bool Shape::getisMoveSelected() const
 {
-    return isStart;
+    return moveSelected;
 }
 
-bool Circle::getisEnd()const
+void Shape::resetColor()
+{
+    colors.ColorStartPoint = QColor(0, 127, 255);
+    colors.ColorEndPoint = QColor(0, 127, 255);
+    colors.ColorMiddlePoint = QColor(0, 127, 255);
+    colors.ColorLeftPoint = QColor(0, 127, 255);
+    colors.ColorTopPoint = QColor(0, 127, 255);
+    colors.ColorRightPoint = QColor(0, 127, 255);
+    colors.ColorBottomPoint = QColor(0, 127, 255);
+
+    selected.isStart = false;  // Флаг выделения
+    selected.isEnd = false;  // Флаг выделения
+    selected.isMiddle = false;  // Флаг выделения 
+    selected.isLeft = false;  // Флаг выделения
+    selected.isTop = false;  // Флаг выделения
+    selected.isRight = false;  // Флаг выделения
+    selected.isBottom = false;  // Флаг выделения
+}
+
+bool Shape::getisStart() const
 {
     return false;
 }
 
-bool Circle::getisMiddle()const
+bool Shape::getisEnd() const
 {
     return false;
 }
 
-bool Circle::getisLeft()const
+bool Shape::getisMiddle() const
 {
-    return isLeft;
+    return false;
 }
 
-bool Circle::getisRight()const
+bool Shape::getisLeft() const
 {
-    return isRight;
+    return false;
 }
 
-bool Circle::getisTop() const
+bool Shape::getisRight() const
 {
-    return isTop;
+    return false;
 }
 
-bool Circle::getisBottom() const
+bool Shape::getisTop() const
 {
-    return isBottom;
+    return false;
 }
 
-Type Circle::name() const
+bool Shape::getisBottom() const
 {
-    return Type::circle;
+    return false;
 }
 
-void Circle::setisover(bool iscursorhovershape_)
+void Shape::setisover(bool iscursorhovershape_)
 {
     iscursorhovershape = iscursorhovershape_;
 }
 
-bool Circle::getisover() const
+bool Shape::getisover() const
 {
     return iscursorhovershape;
 }
 
-QRect Circle::getStartHandle() const
-{
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
-}
-
-QRect Circle::getEndHandle() const
+QRect Shape::getStartHandle() const
 {
     return QRect();
 }
 
-QRect Circle::getMiddleHandle() const
+QRect Shape::getEndHandle() const
 {
     return QRect();
 }
 
-QRect Circle::getLeftHandle() const {
-    // Центр окружности: centerPoint, радиус: radius
-    return QRect(startPoint.x() - radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+QRect Shape::getMiddleHandle() const
+{
+    return QRect();
 }
 
-QRect Circle::getRighttHandle() const {
-    return QRect(startPoint.x() + radius - handleSize / 2, startPoint.y() - handleSize / 2, handleSize, handleSize);
+QRect Shape::getLeftHandle() const
+{
+    return QRect();
 }
 
-QRect Circle::getToptHandle() const {
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() - radius - handleSize / 2, handleSize, handleSize);
+QRect Shape::getToptHandle() const
+{
+    return QRect();
 }
 
-QRect Circle::getBottomtHandle() const {
-    return QRect(startPoint.x() - handleSize / 2, startPoint.y() + radius - handleSize / 2, handleSize, handleSize);
+QRect Shape::getRighttHandle() const
+{
+    return QRect();
 }
 
-bool Circle::isHandleSelected(HandleType handle) const {
-    switch (handle) {
-    case HandleType::StartHandle: return getisStart();
-    case HandleType::LeftHandle: return getisLeft();
-    case HandleType::RightHandle: return getisRight();
-    case HandleType::TopHandle: return getisTop();
-    case HandleType::BottomHandle: return getisBottom();
-    default: return false;
-    }
+QRect Shape::getBottomtHandle() const
+{
+    return QRect();
 }
 
+void Shape::setHandleState(HandleType handleType)
+{
+    setisStart(handleType == HandleType::StartHandle);
+    setisEnd(handleType == HandleType::EndHandle);
+    setisMiddle(handleType == HandleType::MiddleHandle);
+    setisLeft(handleType == HandleType::LeftHandle);
+    setisTop(handleType == HandleType::TopHandle);
+    setisRight(handleType == HandleType::RightHandle);
+    setisBottom(handleType == HandleType::BottomHandle);
+}
 
+void Shape::setCoords(const QPoint& startPoint, const QPoint& endPoint, bool isSelected)
+{
+    (void)startPoint; (void)endPoint; (void)isSelected;
+}
+
+void Shape::setCentre(const QPoint& startPoint, const int radius, bool isSelected)
+{
+    (void)startPoint; (void)radius; (void)isSelected;
+}
+
+QPoint Shape::getstartPoint() const
+{
+    return QPoint();
+}
+
+QPoint Shape::getendPoint() const
+{
+    return QPoint();
+}
+
+QPoint Shape::getmiddlePoint() const
+{
+    return QPoint();
+}
+
+int Shape::getradius() const
+{
+    return 0;
+}
+
+void Shape::setcolorPoint() const
+{
+}
+
+QColor Shape::getColorPoint() const
+{
+    return QColor();
+}
+
+void Shape::captureCursorForAllHandles(QTabWidget* tabWidget, const QPoint& point, const ShapePoints& points)
+{
+    getHandle()->captureCursorForAllHandles(tabWidget, point, points);
+}
+
+bool Shape::isHandleSelected(const HandleType& handle, const QPoint& point) const {
+    const auto& points = getPoints();
+    return getHandle()->isHandleSelected(handle, point, points);
+}
