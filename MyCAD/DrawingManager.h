@@ -9,9 +9,9 @@
 
 class DrawingManager {
 public:
-    DrawingManager();
+    DrawingManager(QWidget* currentTab);
 
-    void drawGrid(QPainter& painter, QWidget* currentTab, const QPoint& delta, int gridSize = 37);
+    void drawGrid(QPainter& painter, QWidget* currentTab, const QPoint& delta, int gridSize, QPoint localPos);
     void drawLine(QPainter& painter, const QPoint& startPoint, const QPoint& endPoint, const QColor& color = QColor(255, 155, 155));
     void drawCircle(QPainter& painter, const QPoint& center, const QPoint& newpoint, const QColor& color = QColor(255, 155, 155));
     void drawCrossCursorIn(QPainter& painter, const QPoint& position);
@@ -23,4 +23,6 @@ private:
     QPen createDashPen(const QColor& color, qreal dashLength = 10, qreal gapLength = 5) const;
     void drawLineToCurrentPoint(QPainter& painter, const std::shared_ptr<Shape>& shape, const QPoint& newpoint);
     QPen getDashPenForShape(const std::shared_ptr<Shape>& shape);
+  
+    Grid grid;
 };

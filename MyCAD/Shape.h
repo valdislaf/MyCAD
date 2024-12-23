@@ -89,7 +89,7 @@ public:
     virtual Type name() const = 0;
 
     virtual void setisover(bool iscursorhovershape_); //курсор над 
-    virtual bool getisover()const ; //курсор над ?
+    virtual bool getisover()const ; //курсор над?
 
     virtual  QRect getStartHandle() const;  // Возвращает область квадрата в начале линии
     virtual  QRect getEndHandle() const;   // Возвращает область квадрата в конце линии

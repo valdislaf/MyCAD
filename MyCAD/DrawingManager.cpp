@@ -1,11 +1,22 @@
 ﻿#include "DrawingManager.h"
 #include <cmath>
 
-DrawingManager::DrawingManager() {}
+DrawingManager::DrawingManager(QWidget* currentTab): grid(currentTab, 37, 10, -10) {
+   
+}
 
-void DrawingManager::drawGrid(QPainter& painter, QWidget* currentTab, const QPoint& delta, int gridSize) {
-    Grid grid(currentTab, gridSize, delta.x(), delta.y());
-    grid.draw(painter);
+void DrawingManager::drawGrid(QPainter& painter, QWidget* currentTab, const QPoint& delta, int gridSize, QPoint localPos)
+{
+
+    if (gridSize != 0) {
+        int stop = 0;
+
+        grid.setTab(currentTab);
+        grid.setDelataX(delta.x());
+        grid.setDelataY(delta.y());
+        grid.setGridSize(gridSize);
+        grid.draw(painter);
+    }
 }
 
 void DrawingManager::drawLine(QPainter& painter, const QPoint& startPoint, const QPoint& endPoint, const QColor& color) {

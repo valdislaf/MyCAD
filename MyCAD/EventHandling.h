@@ -35,7 +35,9 @@ class EventHandling : public QMainWindow {
 public:
     EventHandling(QWidget* parent = nullptr);
     ~EventHandling();
+    void wheelEvent(QWheelEvent* event) override;
     QPoint GetHandlePoint();
+   // int gridSize =37;
 protected:
     bool chekTab() const;
     bool event(QEvent* e) override;
@@ -53,8 +55,13 @@ protected:
     const std::vector<std::shared_ptr<Shape>>& getShapes() const;
     int setDelataX(int dx)const;
     int setDelataY(int dy)const;
+    int setgridSize(int size)const;
     int getDelataX()const;
     int getDelataY()const;
+    int getgridSize()const;
+    double getScale()const;
+    void scaleUp();
+    void scaleDown();
     void handleSelection(QMouseEvent* event, bool circleFlag);
     void highlightShapes(QMouseEvent* event);
     void highlightShapesUnderCursor();

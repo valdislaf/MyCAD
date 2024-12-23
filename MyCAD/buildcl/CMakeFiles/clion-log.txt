@@ -1,0 +1,6 @@
+"C:\Program Files\JetBrains\CLion 2020.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE= -G "CodeBlocks - MinGW Makefiles" E:\CPP\MyCAD\MyCAD
+-- Using Qt6 include dir: C:/Qt/mingw_64/include/QtCore;C:/Qt/mingw_64/include
+-- Using Qt6 libraries: Qt6::Core
+-- Configuring done
+-- Generating done
+-- Build files have been written to: E:/CPP/MyCAD/MyCAD/build

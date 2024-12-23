@@ -1,7 +1,7 @@
-
 #include "MyCAD.h"
 
 int heightwindow_prev = 0;
+
 bool disableCursor = false;
 
 MyCAD::MyCAD(QWidget* parent)
@@ -9,7 +9,7 @@ MyCAD::MyCAD(QWidget* parent)
 {
     tabWidget = new QTabWidget(this);  // Инициализация tabWidget
     menuBar = new QMenuBar(this);  // Создаем QMenuBar
-    drawingManager = new DrawingManager();
+    drawingManager = new DrawingManager(tabWidget);
     setMenuBar(menuBar);
     tabWidget->hide();
     // Настройка стиля для tabWidget
@@ -80,6 +80,7 @@ void MyCAD::createNewWindow()
     TabData newTabData;
     newTabData.delataX = 10; // Устанавливаем начальные значения
     newTabData.delataY = -10;
+    newTabData.gridSize = 37;
    // tabDataList.push_back(newTabData); // Добавляем данные вкладки в список
     addTab(newTabData);
     // Переключаемся на только что созданную вкладку
@@ -88,13 +89,7 @@ void MyCAD::createNewWindow()
     // Убедитесь, что QTabWidget занимает все пространство центрального виджета
     setCentralWidget(tabWidget);
 
-    DrawingWidget* widget = dynamic_cast<DrawingWidget*>(tabWidget->widget(tabIndex));
-    if (widget) {
-        widget->MyMethod();  // Вызываем метод
-    }
-    else {
-        // qDebug() << "Ошибка приведения типа!";
-    }
+ 
 }
 
 void MyCAD::updateMenusBasedOnTabWidgetVisibility()
@@ -157,18 +152,25 @@ void MyCAD::updateGridPosition(const QPoint& delta)
     }
 }
 
+
 void MyCAD::drawGrid(QPainter& painter) {
-    if (!isTabActive()) return;  // Объединенная проверка
-    drawingManager->drawGrid(painter, tabWidget->currentWidget(), { getDelataX(), getDelataY() });
+
+    QPoint localPos = tabWidget->mapFromGlobal(QCursor::pos());
+    if (getgridSize() == 0) {
+        int stop = 0;
+    }
+    drawingManager->drawGrid(painter, tabWidget->currentWidget(), { getDelataX(), getDelataY() }, getgridSize(), localPos);
 }
 
 void MyCAD::DrawLine(QPainter& painter, QPoint localPos0) {
     if (!isDrawEnabled()) return;  // Проверка условий перенесена в отдельную функцию
+    /*localPos0.setX(localPos0.x() - 100);
+	localPos0.setY(localPos0.y() - 100);*/
     drawingManager->drawLine(painter, localPos0, GetCurrPoint());
 }
 
 void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0) {
-    if (!isDrawEnabled()) return;  
+    if (!isDrawEnabled()) return;
     drawingManager->drawCircle(painter, localPos0, GetCurrPoint());
 }
 
@@ -220,8 +222,13 @@ void MyCAD::drawShapes(QPainter& painter) {
     for (const auto& shape : getShapes()) {
 
         if (heightwindow_prev != 0) {
-            QPoint delta(0, widgetHeight - heightwindow_prev);
-            shape->move(delta);
+            if (widgetHeight != heightwindow_prev)
+            {
+                QPoint delta(0, widgetHeight - heightwindow_prev);
+                shape->move(delta);
+               // newshapepoint.setY(newshapepoint.y() + widgetHeight - heightwindow_prev);
+            }
+
         }
         shape->draw(painter);
     }

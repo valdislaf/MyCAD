@@ -7,11 +7,32 @@ Grid::Grid(QWidget* currentTab, int gridSize, int delataX, int delataY) :
     delataY(delataY)
 {}
 
+int Grid::setDelataX(int dx)
+{
+	return delataX = dx;
+}
+
+int Grid::setDelataY(int dy)
+{
+    return delataY = dy;
+}
+
+void Grid::setGridSize(int size) {
+    gridSize = size;
+}
+
+void Grid::setTab(QWidget* currTab) {
+    currentTab = currTab;
+}
+
+
 void Grid::draw(QPainter& painter)
 {
-    int widgetWidth = currentTab->width();
+  //if (gridSize < 25) { gridSize = 37; }
+   // int widgetWidth = 100;// currentTab->width();
+   // int widgetHeight = 100;// currentTab->height();
+    int widgetWidth =  currentTab->width();
     int widgetHeight = currentTab->height();
-    
     // Создаем QPen для основных линий сетки
     QColor mainGridColor(38, 44, 55);  // Цвет основной сетки
     QPen mainGridPen(mainGridColor, 2, Qt::DotLine);
@@ -19,58 +40,115 @@ void Grid::draw(QPainter& painter)
     // Создаем QPen для линий, которые отображаются каждые 5 шагов
     QColor highlightedGridColor(48, 54, 69);  // Цвет выделенной сетки
     QPen highlightedGridPen(highlightedGridColor, 2, Qt::SolidLine);
+    int otstup = 10;
+    int yl = widgetHeight + std::abs(delataY);
+    int xl = widgetWidth + std::abs(delataX);
+    int yl2 = std::abs(delataY) + widgetHeight;
 
     // Рисуем вертикальные линии сетки вправо от начала координат
-    for (int x = 0; x < widgetWidth + std::abs(delataX); x += gridSize) {
-        if ((x / gridSize) % 5 == 0) {
-            painter.setPen(highlightedGridPen);
-        }
-        else {
+    for (int x = 0; x < xl; x += gridSize) {
+        if ((x + delataX > otstup) && (x + delataX < widgetWidth- otstup)
+            ) {
             painter.setPen(mainGridPen);
-        }
-        painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
-       
-    }
+           
+            if (yl > widgetHeight- otstup) {yl = widgetHeight- otstup;}
+            if (yl < otstup) { yl = otstup; }
 
+            painter.drawLine(x + delataX, otstup, x + delataX, yl);
+           /* if (x == 5* gridSize) {
+                qDebug() << "x " << (x + delataX); 
+            }*/
+        }
+    }
+    // Рисуем вертикальные линии сетки вправо от начала координат
+    for (int x = 0; x < xl; x += gridSize * 5) {
+        if ((x + delataX > otstup) && (x + delataX < widgetWidth - otstup)
+            ) {
+            painter.setPen(highlightedGridPen);
+           
+            if (yl > widgetHeight - otstup) { yl = widgetHeight - otstup; }
+            if (yl < otstup) { yl = otstup; }
+            painter.drawLine(x + delataX, otstup, x + delataX, yl);
+        }
+    }
     // Рисуем вертикальные линии сетки влево от начала координат
     for (int x = 0; x > -std::abs(delataX); x -= gridSize) {
-        if ((x / gridSize) % 5 == 0) {
-            painter.setPen(highlightedGridPen);
-        }
-        else {
+        if ((x + delataX > otstup) && (x + delataX < widgetWidth- otstup)
+            ) {
             painter.setPen(mainGridPen);
+         
+            if (yl > widgetHeight - otstup) { yl = widgetHeight - otstup; }
+            if (yl < otstup) { yl = otstup; }
+            painter.drawLine(x + delataX, otstup, x + delataX, yl);
         }
-        painter.drawLine(x + delataX, 0, x + delataX, widgetHeight + std::abs(delataY));
-       
     }
-
+    // Рисуем вертикальные линии сетки влево от начала координат
+    for (int x = 0; x > -std::abs(delataX); x -= gridSize*5) {
+        if ((x + delataX > otstup) && (x + delataX < widgetWidth - otstup)
+            ) {
+            painter.setPen(highlightedGridPen);
+         
+            if (yl > widgetHeight - otstup) { yl = widgetHeight - otstup; }
+            if (yl < otstup) { yl = otstup; }
+            painter.drawLine(x + delataX, otstup, x + delataX, yl);
+        }
+    }
     // Рисуем горизонтальные линии сетки вверх от начала координат
     int y5 = 0;
     for (int y = widgetHeight; y > -std::abs(delataY); y -= gridSize) {
-        if ((y5 / gridSize) % 5 == 0) {
-            painter.setPen(highlightedGridPen);
-        }
-        else {
+        if ((y + delataY > otstup) && (y + delataY < widgetHeight - otstup)
+            ) {
             painter.setPen(mainGridPen);
+           
+            if (xl > widgetWidth - otstup) { xl = widgetWidth - otstup; }
+            if (xl < otstup) { xl = otstup; }
+            painter.drawLine(otstup, y + delataY,xl , y + delataY);
+            /*if (y == widgetHeight- 5 * gridSize) {
+                qDebug() << "y " << (y + delataY)- widgetHeight;
+            }*/
+            y5 += gridSize;
         }
-
-        painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
-        y5 += gridSize;
-    }    
+    }
+    // Рисуем горизонтальные линии сетки вверх от начала координат
+     y5 = 0;
+    for (int y = widgetHeight; y > -std::abs(delataY); y -= gridSize*5) {
+        if ((y + delataY > otstup) && (y + delataY < widgetHeight - otstup)
+            ) {
+            painter.setPen(highlightedGridPen);
+        
+            if (xl > widgetWidth - otstup) { xl = widgetWidth - otstup; }
+            if (xl < otstup) { xl = otstup; }
+            painter.drawLine(otstup, y + delataY, xl, y + delataY);
+            y5 += gridSize;
+        }
+    }
      // Рисуем горизонтальные линии сетки вниз от начала координат
     y5 = 0;
-    for (int y = widgetHeight; y < std::abs(delataY) + widgetHeight; y += gridSize) {
-        if ((y5 / gridSize) % 5 == 0) {
-            painter.setPen(highlightedGridPen);
-        }
-        else {
+    for (int y = widgetHeight; y < yl2; y += gridSize) {
+        if ((y + delataY > otstup) && (y + delataY < widgetHeight - otstup)
+            ) {
             painter.setPen(mainGridPen);
+          
+            if (xl > widgetWidth - otstup) { xl = widgetWidth - otstup; }
+            if (xl < otstup) { xl = otstup; }
+            painter.drawLine(otstup, y + delataY, xl, y + delataY);
+            y5 += gridSize;
         }
-
-        painter.drawLine(0, y + delataY, widgetWidth + std::abs(delataX), y + delataY);
-        y5 += gridSize;
     }
+    // Рисуем горизонтальные линии сетки вниз от начала координат
+    y5 = 0;
+    for (int y = widgetHeight; y < yl2; y += gridSize*5) {
+        if ((y + delataY > otstup) && (y + delataY < widgetHeight - otstup)
+            ) {
+            painter.setPen(highlightedGridPen);
 
+           
+            if (xl > widgetWidth - otstup) { xl = widgetWidth - otstup; }
+            if (xl < otstup) { xl = otstup; }
+            painter.drawLine(otstup, y + delataY, xl, y + delataY);
+            y5 += gridSize;
+        }
+    }
     // Рисуем оси координат
     QColor XColor(130, 0, 0);
     painter.setPen(QPen(XColor, 1));
@@ -114,5 +192,7 @@ void Grid::CoordinateAxes(QPainter& painter, QWidget* currentTab)
     painter.drawLine(-squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight + squareside + delataY);
     painter.drawLine(squareside + delataX, widgetHeight + squareside + delataY, squareside + delataX, widgetHeight - squareside + delataY);
     painter.drawLine(squareside + delataX, widgetHeight - squareside + delataY, -squareside + delataX, widgetHeight - squareside + delataY);
-
+   
+   
 }
+

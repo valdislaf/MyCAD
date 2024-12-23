@@ -16,12 +16,14 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Поиск Qt6 компонентов
-set(Qt6_DIR "C:/Qt/mingw_64/lib/cmake/Qt6")
+# Указание пути к Qt6, для Visual Studio
+set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6")
+set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/include")
+set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib")
+set(CMAKE_PREFIX_PATH "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
-
-# Установка путей для MinGW
+# Установка путей для MSVC
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}             # Текущая директория для исходников
 )

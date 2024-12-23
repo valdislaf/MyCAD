@@ -2,14 +2,14 @@
 #include <QDebug>
 #include <QMouseEvent>
 
+
 DrawingWidget::DrawingWidget(MyCAD* parent)
     : QWidget(parent), myCad(parent)
 {
     this->setCursor(Qt::BlankCursor);
 }
 
-void DrawingWidget::MyMethod() {
-}
+
 
 void DrawingWidget::leaveEvent(QEvent* event)
 {
@@ -57,7 +57,7 @@ void DrawingWidget::mouseMoveEvent(QMouseEvent* event)
 
 
 void DrawingWidget::paintEvent(QPaintEvent* event) {
-    (void)event; // Явно указываем, что параметр игнорируется
+    //(void)event; // Явно указываем, что параметр игнорируется
     QPainter painter(this);
     if (!painter.isActive()) {
         return;
@@ -80,9 +80,18 @@ void DrawingWidget::paintEvent(QPaintEvent* event) {
                 myCad->CrossCursorHandle(painter);
             }
         }
-        if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
+        if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {			
+    
+            int widgetHeight = this->window()->rect().height();
+            int offsetY = 0;
+            if (widgetHeight_prev != 0 && widgetHeight_prev != widgetHeight) 
+            {
+				offsetY = widgetHeight - widgetHeight_prev;
+            }
+			clickpoint.setY(clickpoint.y() + offsetY);
             if (currentDrawMode == DrawMode::Line) { myCad->DrawLine(painter, clickpoint); }
             else  if (currentDrawMode == DrawMode::Circle) { myCad->DrawCircle(painter, clickpoint); }
+            widgetHeight_prev = widgetHeight;
         }
     }
 

@@ -5,17 +5,17 @@ void ShapeManager::addTab(TabData tab) {
 }
 
 void ShapeManager::addShape(std::shared_ptr<Shape> shape, int idx) {
-    if (idx >= tabDataList.size()) {
-        tabDataList.resize(idx + 1);  // �������� ������ �� ������� �������
+    if (idx < tabDataList.size()) {
+        tabDataList[idx].shapes.push_back(std::move(shape));
     }
-    tabDataList[idx].shapes.push_back(std::move(shape));
 }
 
 const std::vector<std::shared_ptr<Shape>>& ShapeManager::getShapes(int idx) {
     static const std::vector<std::shared_ptr<Shape>> emptyVector;
     if (!tabDataList.isEmpty()) {
         if (idx >= tabDataList.size()) {
-            tabDataList.resize(idx + 1);  // �������� ������ �� ������� �������
+            return emptyVector;
+           // tabDataList.resize(idx + 1);  
         }
         return tabDataList.at(idx).shapes;
     }
@@ -46,6 +46,16 @@ int ShapeManager::setDelataY(int idx, int dy) {
     }
 }
 
+int ShapeManager::setgridSize(int idx, int size)
+{
+    if (!tabDataList.isEmpty()) {
+        return  tabDataList[idx].gridSize = size;
+    }
+    else {
+        return 37;
+    }
+}
+
 int ShapeManager::getDelataX(int idx) const {
     if (!tabDataList.isEmpty()) {
         return  tabDataList[idx].delataX;
@@ -61,6 +71,41 @@ int ShapeManager::getDelataY(int idx) const {
     }
     else {
         return INT_MIN;
+    }
+}
+
+int ShapeManager::getgridSize(int idx) const
+{
+    if (!tabDataList.isEmpty()) {
+        return  tabDataList[idx].gridSize;
+    }
+    else {
+        return 37;
+    }
+}
+
+double ShapeManager::getScale(int idx) const
+{
+    if (!tabDataList.isEmpty()) {
+        return  tabDataList[idx].scale;
+    }
+    else {
+        return 1.0;
+    }
+}
+
+void ShapeManager::scaleUp(int idx)
+{
+    if (!tabDataList.isEmpty()) {
+          tabDataList[idx].scale /= 41.0 / 37.0;
+    }
+   
+}
+
+void ShapeManager::scaleDown(int idx)
+{
+    if (!tabDataList.isEmpty()) {
+        tabDataList[idx].scale *= 41.0 / 37.0;
     }
 }
 

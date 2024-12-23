@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8,00"
+	Name="MyCAD"
+	ProjectGUID="{29E035FD-56CA-380B-87C0-7104BF6AFE42}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="x64" />
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="release\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="release\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=".,.,C:\Qt\6.8.0\msvc2022_64\include,C:\Qt\6.8.0\msvc2022_64\include\QtWidgets,C:\Qt\6.8.0\msvc2022_64\include\QtGui,C:\Qt\6.8.0\msvc2022_64\include\QtCore,release,/include,/mnt/c/Qt/mingw_64/include,C:\Qt\6.8.0\msvc2022_64\mkspecs\win32-msvc"
+				AdditionalOptions="-w34100 -w34189"
+				AssemblerListingLocation="release\"
+				DebugInformationFormat="0"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="release\"
+				Optimization ="2"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,_UNICODE,WIN32,_ENABLE_EXTENDED_ALIGNED_STORAGE,WIN64,QT_DISABLE_DEPRECATED_UP_TO=0x060000,NDEBUG,QT_NO_DEBUG,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB"
+				ProgramDataBaseFileName=""
+				RuntimeLibrary="2"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				WarningLevel="3" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="C:\Qt\6.8.0\msvc2022_64\lib\Qt6Widgets.lib C:\Qt\6.8.0\msvc2022_64\lib\Qt6Gui.lib C:\Qt\6.8.0\msvc2022_64\lib\Qt6Core.lib C:\Qt\6.8.0\msvc2022_64\lib\Qt6EntryPoint.lib shell32.lib"
+				AdditionalLibraryDirectories="\mnt\c\Qt\mingw_64\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				DataExecutionPrevention="true"
+				EnableCOMDATFolding="2"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OptimizeReferences="2"
+				OutputFile="$(OutDir)\MyCAD.exe"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
+				SubSystem="2"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,_UNICODE,WIN32,_ENABLE_EXTENDED_ALIGNED_STORAGE,WIN64,QT_DISABLE_DEPRECATED_UP_TO=0x060000,NDEBUG,QT_NO_DEBUG,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB" />
+			<DeploymentTool
+				RemoteDirectory="%CSIDL_PROGRAM_FILES%\MyCAD"
+				RegisterOutput="0"
+				AdditionalFiles="Qt6Widgets.dll|C:\Qt\6.8.0\msvc2022_64\bin|%CSIDL_PROGRAM_FILES%\MyCAD|0;Qt6Gui.dll|C:\Qt\6.8.0\msvc2022_64\bin|%CSIDL_PROGRAM_FILES%\MyCAD|0;qwindows.dll|C:\Qt\6.8.0\msvc2022_64\plugins\platforms|%CSIDL_PROGRAM_FILES%\MyCAD\platforms|0;Qt6Core.dll|C:\Qt\6.8.0\msvc2022_64\bin|%CSIDL_PROGRAM_FILES%\MyCAD|0;" />
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="debug\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="debug\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=".,.,C:\Qt\6.8.0\msvc2022_64\include,C:\Qt\6.8.0\msvc2022_64\include\QtWidgets,C:\Qt\6.8.0\msvc2022_64\include\QtGui,C:\Qt\6.8.0\msvc2022_64\include\QtCore,debug,/include,/mnt/c/Qt/mingw_64/include,C:\Qt\6.8.0\msvc2022_64\mkspecs\win32-msvc"
+				AdditionalOptions="-w34100 -w34189"
+				AssemblerListingLocation="debug\"
+				DebugInformationFormat="3"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="debug\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,_UNICODE,WIN32,_ENABLE_EXTENDED_ALIGNED_STORAGE,WIN64,QT_DISABLE_DEPRECATED_UP_TO=0x060000,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB"
+				ProgramDataBaseFileName=""
+				RuntimeLibrary="3"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				WarningLevel="3" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="C:\Qt\6.8.0\msvc2022_64\lib\Qt6Widgetsd.lib C:\Qt\6.8.0\msvc2022_64\lib\Qt6Guid.lib C:\Qt\6.8.0\msvc2022_64\lib\Qt6Cored.lib C:\Qt\6.8.0\msvc2022_64\lib\Qt6EntryPointd.lib shell32.lib"
+				AdditionalLibraryDirectories="\mnt\c\Qt\mingw_64\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				DataExecutionPrevention="true"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\MyCAD.exe"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
+				SubSystem="2"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,_UNICODE,WIN32,_ENABLE_EXTENDED_ALIGNED_STORAGE,WIN64,QT_DISABLE_DEPRECATED_UP_TO=0x060000,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB,_DEBUG" />
+			<DeploymentTool
+				RemoteDirectory="%CSIDL_PROGRAM_FILES%\MyCAD"
+				RegisterOutput="0"
+				AdditionalFiles="Qt6Widgetsd.dll|C:\Qt\6.8.0\msvc2022_64\bin|%CSIDL_PROGRAM_FILES%\MyCAD|0;Qt6Guid.dll|C:\Qt\6.8.0\msvc2022_64\bin|%CSIDL_PROGRAM_FILES%\MyCAD|0;qwindowsd.dll|C:\Qt\6.8.0\msvc2022_64\plugins\platforms|%CSIDL_PROGRAM_FILES%\MyCAD\platforms|0;Qt6Cored.dll|C:\Qt\6.8.0\msvc2022_64\bin|%CSIDL_PROGRAM_FILES%\MyCAD|0;" />
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="DrawingManager.cpp" />
+			<File
+				RelativePath="DrawingWidget.cpp" />
+			<File
+				RelativePath="EventHandling.cpp" />
+			<File
+				RelativePath="Grid.cpp" />
+			<File
+				RelativePath="HandleManager.cpp" />
+			<File
+				RelativePath="MenuInit.cpp" />
+			<File
+				RelativePath="MenuMain.cpp" />
+			<File
+				RelativePath="MyCAD.cpp" />
+			<File
+				RelativePath="Shape.cpp" />
+			<File
+				RelativePath="ShapeCircle.cpp" />
+			<File
+				RelativePath="ShapeLine.cpp" />
+			<File
+				RelativePath="ShapeManager.cpp" />
+			<File
+				RelativePath="main.cpp" />
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="DrawingManager.h" />
+			<File
+				RelativePath="DrawingWidget.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="DrawingWidget.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed DrawingWidget.h -o release\moc_DrawingWidget.cpp"
+						Description="MOC DrawingWidget.h"
+						Outputs="release\moc_DrawingWidget.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="DrawingWidget.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed DrawingWidget.h -o debug\moc_DrawingWidget.cpp"
+						Description="MOC DrawingWidget.h"
+						Outputs="debug\moc_DrawingWidget.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="EventHandling.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="EventHandling.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed EventHandling.h -o release\moc_EventHandling.cpp"
+						Description="MOC EventHandling.h"
+						Outputs="release\moc_EventHandling.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="EventHandling.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed EventHandling.h -o debug\moc_EventHandling.cpp"
+						Description="MOC EventHandling.h"
+						Outputs="debug\moc_EventHandling.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Grid.h" />
+			<File
+				RelativePath="HandleManager.h" />
+			<File
+				RelativePath="MenuInit.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="MenuInit.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed MenuInit.h -o release\moc_MenuInit.cpp"
+						Description="MOC MenuInit.h"
+						Outputs="release\moc_MenuInit.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="MenuInit.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed MenuInit.h -o debug\moc_MenuInit.cpp"
+						Description="MOC MenuInit.h"
+						Outputs="debug\moc_MenuInit.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="MenuMain.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="MenuMain.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed MenuMain.h -o release\moc_MenuMain.cpp"
+						Description="MOC MenuMain.h"
+						Outputs="release\moc_MenuMain.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="MenuMain.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed MenuMain.h -o debug\moc_MenuMain.cpp"
+						Description="MOC MenuMain.h"
+						Outputs="debug\moc_MenuMain.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="MyCAD.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="MyCAD.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed MyCAD.h -o release\moc_MyCAD.cpp"
+						Description="MOC MyCAD.h"
+						Outputs="release\moc_MyCAD.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="MyCAD.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed MyCAD.h -o debug\moc_MyCAD.cpp"
+						Description="MOC MyCAD.h"
+						Outputs="debug\moc_MyCAD.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Shape.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="Shape.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed Shape.h -o release\moc_Shape.cpp"
+						Description="MOC Shape.h"
+						Outputs="release\moc_Shape.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="Shape.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed Shape.h -o debug\moc_Shape.cpp"
+						Description="MOC Shape.h"
+						Outputs="debug\moc_Shape.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ShapeCircle.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="ShapeCircle.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed ShapeCircle.h -o release\moc_ShapeCircle.cpp"
+						Description="MOC ShapeCircle.h"
+						Outputs="release\moc_ShapeCircle.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="ShapeCircle.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed ShapeCircle.h -o debug\moc_ShapeCircle.cpp"
+						Description="MOC ShapeCircle.h"
+						Outputs="debug\moc_ShapeCircle.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ShapeLine.h">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="ShapeLine.h;release\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/release/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed ShapeLine.h -o release\moc_ShapeLine.cpp"
+						Description="MOC ShapeLine.h"
+						Outputs="release\moc_ShapeLine.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="ShapeLine.h;debug\moc_predefs.h;C:\Qt\6.8.0\msvc2022_64\bin\moc.exe"
+						CommandLine="C:\Qt\6.8.0\msvc2022_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_DISABLE_DEPRECATED_UP_TO=0x060000 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include E:/CPP/MyCAD/MyCAD/debug/moc_predefs.h -IC:/Qt/6.8.0/msvc2022_64/mkspecs/win32-msvc -IE:/CPP/MyCAD/MyCAD -IE:/CPP/MyCAD/MyCAD -IC:/Qt/6.8.0/msvc2022_64/include -IC:/Qt/6.8.0/msvc2022_64/include/QtWidgets -IC:/Qt/6.8.0/msvc2022_64/include/QtGui -IC:/Qt/6.8.0/msvc2022_64/include/QtCore -IC:/msys64/mingw64/include/c++/14.2.0 -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32 -IC:/msys64/mingw64/include/c++/14.2.0/backward -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed ShapeLine.h -o debug\moc_ShapeLine.cpp"
+						Description="MOC ShapeLine.h"
+						Outputs="debug\moc_ShapeLine.cpp"
+						Path="C:\Qt\6.8.0\msvc2022_64\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ShapeManager.h" />
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="debug\moc_DrawingWidget.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_DrawingWidget.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_EventHandling.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_EventHandling.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_MenuInit.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_MenuInit.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_MenuMain.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_MenuMain.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_MyCAD.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_MyCAD.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_Shape.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_Shape.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_ShapeCircle.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_ShapeCircle.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_ShapeLine.cpp">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_ShapeLine.cpp">
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_predefs.h.cbt">
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true" />
+				<FileConfiguration
+					Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\6.8.0\msvc2022_64\mkspecs\features\data\dummy.cpp"
+						CommandLine="cl -BxC:\Qt\6.8.0\msvc2022_64\bin\qmake.exe -nologo -Zc:wchar_t -Zi -MDd -W3 -w34100 -w34189 -E C:\Qt\6.8.0\msvc2022_64\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h"
+						Description="Generate moc_predefs.h"
+						Outputs="debug\moc_predefs.h"
+						Path="." />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="release\moc_predefs.h.cbt">
+				<FileConfiguration
+					Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\6.8.0\msvc2022_64\mkspecs\features\data\dummy.cpp"
+						CommandLine="cl -BxC:\Qt\6.8.0\msvc2022_64\bin\qmake.exe -nologo -Zc:wchar_t -O2 -MD -W3 -w34100 -w34189 -E C:\Qt\6.8.0\msvc2022_64\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h"
+						Description="Generate moc_predefs.h"
+						Outputs="release\moc_predefs.h"
+						Path="." />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true" />
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

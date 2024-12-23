@@ -11,7 +11,7 @@ class DrawingWidget : public QWidget
 
 public:
     explicit DrawingWidget(MyCAD* parent = nullptr);
-    void MyMethod();
+    
     bool isMiddlON = false;
 
 protected:
@@ -25,4 +25,5 @@ protected:
 
 private:
     MyCAD* myCad;  // Указатель на родительский объект MyCAD
+	int widgetHeight_prev = 0;
 };

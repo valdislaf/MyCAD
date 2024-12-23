@@ -1,0 +1,4 @@
+E:/CPP/MyCAD/MyCAD/build/CMakeFiles/rebuild_cache.dir
+E:/CPP/MyCAD/MyCAD/build/CMakeFiles/MyCAD.dir
+E:/CPP/MyCAD/MyCAD/build/CMakeFiles/edit_cache.dir
+E:/CPP/MyCAD/MyCAD/build/CMakeFiles/MyCAD_autogen.dir

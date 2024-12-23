@@ -4,6 +4,7 @@
 #include "DrawingManager.h"
 
 extern int heightwindow_prev;
+
 extern bool disableCursor;
 class MyCAD : public EventHandling
 {
@@ -24,6 +25,8 @@ public:
     void drawShapes(QPainter& painter);  
     void updateGridPosition(const QPoint& delta); // Метод для обновления позиции сетки
 
+    
+
 private slots:  // Методы, связанные с сигналами
     void onCloseThisTab();
     void onDrawCircle();
@@ -38,4 +41,5 @@ private:  // Обычные методы
     QPoint offset;            // Смещение от начальной позиции
     QMenuBar* menuBar;
     DrawingManager* drawingManager;
+   
 };

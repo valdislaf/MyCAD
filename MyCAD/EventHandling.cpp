@@ -24,8 +24,13 @@ EventHandling::~EventHandling() {
     delete shapeManager;
 }
 
+
+
 void EventHandling::mousePressEvent(QMouseEvent* event) {
+
     bool circleFlag = false; // Флаг для отслеживания рисования круга
+ //   newpointY_prev = INT_MIN;
+	//newshapepoint = clickpoint;
     if (currentDrawMode != DrawMode::None) {
         isdraw = true; // Устанавливаем флаг рисования
     }
@@ -41,6 +46,7 @@ void EventHandling::mousePressEvent(QMouseEvent* event) {
         isDragging = true; // Устанавливаем флаг перетаскивания
         lastMousePosition = event->pos(); // Сохраняем последнюю позицию мыши
     }
+
     QMainWindow::mousePressEvent(event); // Вызов базового метода
 }
 
@@ -48,13 +54,122 @@ void EventHandling::mouseMoveEvent(QMouseEvent* event) {
     update();
 
     if (isDragging) { // Если мышь перетаскивается
-        QPoint delta = event->pos() - lastMousePosition; // Рассчитываем смещение
-        updateGridPosition(delta); // Обновляем позицию сетки
-        lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши
+        //QPoint delta = event->pos() - lastMousePosition; // Рассчитываем смещение
+        //updateGridPosition(delta); // Обновляем позицию сетки
+        //lastMousePosition = event->pos(); // Обновляем последнюю позицию мыши
     }
 
     QMainWindow::mouseMoveEvent(event); // Вызов базового метода
 }
+
+
+void EventHandling::wheelEvent(QWheelEvent* event)
+{
+    //// QPoint localPos = tabWidget->mapFromGlobal(QCursor::pos());
+    // //QPoint localPos = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+
+    //int step = 4;
+
+    ///*
+    // int setDelataX1 = (localPos.x() - getDelataX()) / (getgridSize() / step);
+    // int setDelataX2 = (getDelataX() - localPos.x()) / (getgridSize() / step);
+    // int setDelataY1 = (-localPos.y() - getDelataY()) / (getgridSize() / step);
+    // int setDelataY2 = (getDelataY() + localPos.y()) / (getgridSize() / step);
+
+    //*/
+    //if (getgridSize() < 13) {
+    //    setgridSize(37);
+
+    //}
+    //auto a1 = getgridSize();
+    //auto a2 = getScale();
+
+    //if (getgridSize() > 37 && getScale() < 1.0) {
+    //    setgridSize(13);
+    //}
+
+    //qDebug() << "getScale() " << getScale();
+
+    //if (event->angleDelta().y() < 0) {
+    //    scaleUp();
+    //    qDebug() << "Wheel down ";// << setgridSize1 << " " << setDelataX1 << " " << setDelataY1 << " lX:" << localPos.x() << " ly:" << localPos.y() << " dx:" << getDelataX() << " dy:" << getDelataY();
+    //    // Увеличиваем масштаб (уменьшаем шаг сетки)
+    //   // int setgridSize1 = std::max(step, getgridSize() - step);
+    //    int grdx = getDelataX();
+    //    QPoint localPos = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+    //    int grdy = getDelataY();
+    //    int curx = localPos.x();
+    //    int cury = localPos.y() - tabWidget->currentWidget()->height();
+    //    // int setgridSize1 = getgridSize() - step;
+    //    int setgridSize1 = getScale() * 37;
+    //    setgridSize(setgridSize1);
+    //    float znamX = std::max(1.0f, float((getgridSize() - step) / step) - 1.0f);
+    //    //  qDebug() << "znam " << znamX;
+    //    int dx = (curx - grdx) / float(setgridSize1 / step) - 1.0f;
+    //    int dy = (cury - grdy) / float(setgridSize1 / step) + 1.0f;
+    //    if (std::abs(dx) < 1) {
+    //        dx = 1; dy = 1;
+    //    }
+    //    // qDebug() << "dx " << dx;
+    //    setDelataX(dx);
+
+    //    if (std::abs(dx) < 1) {
+    //        dx = 1; dy = 1;
+    //    }
+    //    //   qDebug() << "dy " << dy;
+    //    setDelataY(dy);
+    //    //    qDebug() << "curx " << curx << " cury " << cury;
+    //     //   qDebug() << "curx - grdx " << curx - grdx << " cury - grdy " << cury - grdy;
+
+    //     /*  setDelataX(setDelataX1);
+    //        setDelataY(setDelataY1);*/
+    //}
+    //else {
+    //    scaleDown();
+    //    qDebug() << "Wheel up ";// << setgridSize2 << " " << setDelataX2 << " " << setDelataY2 << " lX:" << localPos.x() << " ly:" << localPos.y() << " dx:" << getDelataX() << " dy:" << getDelataY();
+    //    // Уменьшаем масштаб (увеличиваем шаг сетки)
+    //  //  int setgridSize2 = std::min(1000, getgridSize() + step);
+    //    QPoint localPos = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+    //    int grdx = getDelataX();
+    //    int grdy = getDelataY();
+    //    int curx = localPos.x();
+    //    int cury = localPos.y() - tabWidget->currentWidget()->height();
+    //    //int setgridSize2 =  getgridSize() + step;
+    //    int setgridSize2 = getScale() * 37;
+    //    setgridSize(setgridSize2);
+    //    int dx = (grdx - curx) / float(setgridSize2 / step) - 1.0f;
+    //    int dy = (grdy - cury) / float(setgridSize2 / step) + 1.0f;
+    //    if (std::abs(dx) < 1) {
+    //        dx = 1; dy = 1;
+    //    }
+    //    // qDebug() << "dx " << dx;
+    //    setDelataX(dx);
+
+    //    if (std::abs(dx) < 1) {
+    //        dx = 1; dy = 1;
+    //    }
+    //    //  qDebug() << "dy " << dy;
+    //    setDelataY(dy);
+
+    //    //  qDebug() << "curx " << curx << " cury " << cury;
+    //    //  qDebug() << "curx - grdx " << curx - grdx << " cury - grdy " << cury - grdy;
+
+
+    //       /*  setDelataX(setDelataX2);
+    //      setDelataY(setDelataY2);*/
+    //}
+
+    ///*   qDebug() << "x " << grdx << " y " << grdy;
+    //   qDebug() << "cx " << curx << " cy " << cury;*/
+    //qDebug() << "gridSize " << getgridSize();
+
+
+
+    update();
+
+    QMainWindow::wheelEvent(event); // Вызов базового метода
+}
+
 
 void EventHandling::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::MiddleButton) { // Проверяем, что отпущена средняя кнопка мыши
@@ -121,7 +236,12 @@ int EventHandling::setDelataX(int dx) const {
     }
 
 int EventHandling::setDelataY(int dy) const {
-    return  shapeManager->setDelataX(idx(), dy);
+    return  shapeManager->setDelataY(idx(), dy);
+}
+
+int EventHandling::setgridSize(int size) const
+{
+    return  shapeManager->setgridSize(idx(), size);
 }
 
 int EventHandling::getDelataX() const {
@@ -132,6 +252,24 @@ int EventHandling::getDelataY() const {
     return  shapeManager->getDelataY(idx());
 }
 
+int EventHandling::getgridSize() const
+{
+    return shapeManager->getgridSize(idx());
+}
+
+double EventHandling::getScale() const
+{
+    return   shapeManager->getScale(idx());
+}
+
+void EventHandling::scaleUp()
+{
+    shapeManager->scaleUp(idx());
+}
+void EventHandling::scaleDown()
+{
+    shapeManager->scaleDown(idx());
+}
 void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
     if (tabWidget->rect().contains(event->pos())) {
         if (chekTab()) {
