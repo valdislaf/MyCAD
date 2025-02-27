@@ -30,8 +30,6 @@ jobs:
         run: |
           # Убедитесь, что путь к Scripts добавлен в PATH
           $env:PATH += ";C:\hostedtoolcache\windows\Python\3.11.2\x64\Scripts"
-          # Проверим доступность aqt через команду
-          aqt --version
           # Установим Qt
           aqt install-qt windows desktop 6.8.0 win64_msvc2022_64
 
