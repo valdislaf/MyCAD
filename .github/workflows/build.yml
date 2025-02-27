@@ -28,6 +28,9 @@ jobs:
           architecture: x64
           target: 'win64-msvc2022'
 
+      - name: Set Qt6_DIR environment variable
+        run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
+
       - name: Check Qt6_DIR
         run: echo "Qt6_DIR is set to: ${{ env.Qt6_DIR }}"
 
