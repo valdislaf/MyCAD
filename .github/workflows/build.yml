@@ -21,15 +21,30 @@ jobs:
         with:
           python-version: '3.13.2'
 
+      # Устанавливаем путь для Qt6
       - name: Set Qt path
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
 
+      # Проверяем, что путь установлен правильно
       - name: Check Qt6_DIR
-        run: echo "Qt6_DIR is set to: $env:Qt6_DIR"
+        run: |
+          echo "Qt6_DIR is: $env:Qt6_DIR"
+          if (Test-Path $env:Qt6_DIR) {
+            echo "Qt path exists"
+          } else {
+            echo "Qt path does not exist"
+            exit 1
+          }
 
+      # Конфигурируем CMake с использованием пути к Qt6
       - name: Configure CMake
         run: |
-          cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
+          cmake -G "Visual Studio 17 2022" \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" \
+                -B ${{ github.workspace }}/build \
+                -S ${{ github.workspace }}/MyCAD
 
+      # Строим проект
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config Release
