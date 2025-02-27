@@ -31,7 +31,7 @@ jobs:
           # Убедитесь, что путь к Scripts добавлен в PATH
           $env:PATH += ";C:\hostedtoolcache\windows\Python\3.11.2\x64\Scripts"
           # Установим Qt
-          aqt install-qt windows desktop 6.8.0 win64_msvc2022_64
+          aqt install-qt windows desktop 6.0.0 win64_msvc2022_64
 
       - name: Configure CMake
         run: cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
