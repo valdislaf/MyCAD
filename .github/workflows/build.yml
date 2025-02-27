@@ -21,18 +21,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+      - name: Set up conda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          conda-version: '4.12.0'
-          auto-activate-base: false
+          conda-version: 23.1.0  # Указание версии Miniconda, если нужно
+          python-version: 3.12
+
+      - name: Install conda-build
+        run: |
+          conda install conda-build
 
       - name: Install Qt via conda
         run: |
           conda install -c conda-forge qt=6.8.0
 
       - name: Configure CMake
-        run: cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(conda info --base)/envs/your-env-name" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
+        run: |
+          cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(conda info --base)/envs/your-env-name" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config Release
