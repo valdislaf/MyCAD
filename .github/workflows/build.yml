@@ -25,11 +25,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install aqt
+          # Проверим, что aqt установлен и доступен в PATH
+          aqt --version
 
       - name: Install Qt
         run: |
-          # Убедитесь, что пакет aqt доступен в PATH
+          # Убедитесь, что путь к Scripts добавлен в PATH
           $env:PATH += ";C:\hostedtoolcache\windows\Python\3.11.2\x64\Scripts"
+          # Проверим доступность aqt через команду
+          aqt --version
+          # Установим Qt
           aqt install-qt windows desktop 6.8.0 win64_msvc2022_64
 
       - name: Configure CMake
