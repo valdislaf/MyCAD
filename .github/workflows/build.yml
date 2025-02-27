@@ -23,13 +23,14 @@ jobs:
 
       # Устанавливаем путь для Qt6 через set-env
       - name: Set Qt path
-        run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
+        run: |
+          echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
+          echo "Qt6_DIR is set to: $env:Qt6_DIR"
 
-      # Проверяем, что путь установлен правильно
-      - name: Check Qt6_DIR
+      # Проверяем путь и переменные окружения
+      - name: Check Qt path and environment variables
         run: |
           echo "Qt6_DIR is: $env:Qt6_DIR"
-          # Отладочный вывод всех переменных окружения
           echo "All environment variables:"
           Get-ChildItem Env:
           if ($env:Qt6_DIR) {
@@ -44,7 +45,7 @@ jobs:
         run: |
           cmake -G "Visual Studio 17 2022" \
                 -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" \
+                -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" \
                 -B ${{ github.workspace }}/build \
                 -S ${{ github.workspace }}/MyCAD
 
