@@ -1,5 +1,5 @@
 # Минимальная версия CMake
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.19)  # Рекомендуется версия CMake 3.19 или выше
 
 # Название проекта
 project(MyCAD LANGUAGES CXX)
@@ -17,16 +17,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # Поиск Qt6 компонентов
-set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
-
-
-# Установка путей для MinGW
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}             # Текущая директория для исходников
-)
-message(STATUS "Using Qt6 include dir: ${Qt6Core_INCLUDE_DIRS}")
-message(STATUS "Using Qt6 libraries: ${Qt6Core_LIBRARIES}")
 
 # Перечень заголовочных файлов
 set(HEADERS
