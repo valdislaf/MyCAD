@@ -27,6 +27,9 @@ jobs:
           version: '6.8.0'
           arch: 'win64_msvc2019_64'
 
+      - name: Set Qt6_DIR
+        run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
+
       - name: Configure CMake
         run: cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -B build
 
