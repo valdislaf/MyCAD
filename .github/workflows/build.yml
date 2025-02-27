@@ -19,14 +19,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13.2'
+          python-version: '3.11'
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.8.0'
-          target: 'desktop'  # Используется параметр target для desktop
-          arch: 'x64'  # Правильная архитектура для x64
+      - name: Install aqt
+        run: |
+          python -m pip install aqt
+          python -m aqt install qt6 windows desktop --version 6.8.0 --arch x64
+
+      - name: List available Qt versions and architectures
+        run: python -m aqt list-qt windows desktop --arch x64 --version 6.8.0
 
       - name: Set Qt6_DIR environment variable
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
