@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.13.2'
 
-      # Устанавливаем путь для Qt6
+      # Устанавливаем путь для Qt6 через set-env
       - name: Set Qt path
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
 
@@ -29,7 +29,7 @@ jobs:
       - name: Check Qt6_DIR
         run: |
           echo "Qt6_DIR is: $env:Qt6_DIR"
-          # Добавляем для отладки: выводим все переменные окружения
+          # Отладочный вывод всех переменных окружения
           echo "All environment variables:"
           Get-ChildItem Env:
           if ($env:Qt6_DIR) {
