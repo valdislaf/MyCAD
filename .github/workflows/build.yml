@@ -27,11 +27,7 @@ jobs:
 
       - name: Install Qt
         run: |
-          python -m aqt install qt6 windows desktop --version 6.8.0 --arch x64
-
-      - name: List available Qt versions and architectures
-        run: |
-          python -m aqt list-qt windows desktop --arch x64 --version 6.8.0
+          python -m aqt install qt6 --version 6.8.0 --platform win64 --arch x64
 
       - name: Set Qt6_DIR environment variable
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
