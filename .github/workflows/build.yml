@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: Set Qt path
-        run: echo "Qt6_DIR=C:\\Qt\\6.8.0\\msvc2022_64\\lib\\cmake\\Qt6" >> $GITHUB_ENV
+        run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
 
       - name: Configure CMake
         run: |
