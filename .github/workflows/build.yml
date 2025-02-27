@@ -31,9 +31,6 @@ jobs:
       - name: Set Qt6_DIR environment variable
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
 
-      - name: Check Qt6_DIR
-        run: echo "Qt6_DIR is set to: ${{ env.Qt6_DIR }}"
-
       - name: Configure CMake
         run: cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
 
