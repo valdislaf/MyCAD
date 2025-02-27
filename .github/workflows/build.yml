@@ -21,6 +21,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Check Qt6_DIR
+        run: echo "Qt6_DIR is set to: ${{ env.Qt6_DIR }}"
+
       - name: Set Qt path
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
 
