@@ -21,10 +21,14 @@ jobs:
         with:
           python-version: '3.13.2'
 
+      - name: Install Qt using Chocolatey
+        run: |
+          choco install qt --version=6.8.0 --package-parameters="/x64/msvc2022"
+
       - name: Set Qt path
         run: echo "Qt6_DIR=C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" >> $GITHUB_ENV
 
-      - name: Check Qt directory exists
+      - name: Check Qt directory
         run: dir "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6"
 
       - name: Check environment variables
