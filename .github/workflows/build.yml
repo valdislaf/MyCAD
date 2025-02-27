@@ -18,17 +18,13 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'  # Убедитесь, что версия Python указана, если нужно
 
-      - name: Set up conda
-        uses: conda-incubator/setup-miniconda@v3
-
-      - name: Install conda-build
+      - name: Download Qt 6.8.0
         run: |
-          conda install conda-build
-
-      - name: Install Qt via conda
-        run: |
-          conda install -c conda-forge qt=6.8.0
+          Invoke-WebRequest -Uri "https://download.qt.io/official_releases/qt/6.8/6.8.0/qt-opensource-windows-x86_64-6.8.0.exe" -OutFile "qt-installer.exe"
+          Start-Process -FilePath "qt-installer.exe" -ArgumentList "/S" -Wait
 
       - name: Configure CMake
         run: |
