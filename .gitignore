@@ -367,3 +367,6 @@ FodyWeavers.xsd
 /MyCAD/qt-online-installer-windows-x64-4.8.1.exe
 /MyCAD/qt-online-installer-windows-x64-4.8.1.exe.1
 /MyCAD/qt-vsaddin-msvc2019-2.5.2-rev.01.vsix
+/MyCAD/ShapeLine.o
+/MyCAD/DrawingWidget.o
+/MyCAD/DrawingManager.o
