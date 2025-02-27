@@ -18,12 +18,8 @@ set(CMAKE_AUTOUIC ON)
 message(STATUS "Qt6_DIR is set to: ${Qt6_DIR}")
 
 # Поиск Qt6 компонентов
-set(CMAKE_PREFIX_PATH "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6/Qt6Config.cmake" ${CMAKE_PREFIX_PATH})
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
-
-set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6")
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
-
 
 # Перечень заголовочных файлов
 set(HEADERS
