@@ -13,14 +13,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-	- name: Set up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: '3.11'
-
-
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
       - name: Set up Qt
         uses: jurplel/install-qt-action@v3
@@ -33,4 +32,3 @@ jobs:
 
       - name: Build
         run: cmake --build build --config Release
-
