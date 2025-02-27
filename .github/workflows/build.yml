@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11.2'
 
       - name: Install aqt
-        run: pip install aqt
+        run: python -m aqt.cli
 
       - name: Install Qt
         run: python -m aqt install-qt windows desktop 6.8.0 win64_msvc2022_64
