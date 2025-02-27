@@ -29,10 +29,13 @@ jobs:
       - name: Check Qt6_DIR
         run: |
           echo "Qt6_DIR is: $env:Qt6_DIR"
-          if (Test-Path $env:Qt6_DIR) {
-            echo "Qt path exists"
+          # Добавляем для отладки: выводим все переменные окружения
+          echo "All environment variables:"
+          Get-ChildItem Env:
+          if ($env:Qt6_DIR) {
+            echo "Qt path is set to: $env:Qt6_DIR"
           } else {
-            echo "Qt path does not exist"
+            echo "Qt path is not set!"
             exit 1
           }
 
