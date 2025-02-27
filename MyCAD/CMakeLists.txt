@@ -15,9 +15,12 @@ add_definitions(-DQT_DISABLE_DEPRECATED_UP_TO=0x060000)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+message(STATUS "Qt6_DIR is set to: ${Qt6_DIR}")
 
 # Поиск Qt6 компонентов
+set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+
 
 # Перечень заголовочных файлов
 set(HEADERS
