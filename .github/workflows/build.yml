@@ -65,3 +65,4 @@ jobs:
           files: ${{ github.workspace }}/xtest  # Загружаем файл
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
