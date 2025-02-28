@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    tags:
+      - "v*"  # Запуск при пуше тега
+
   pull_request:
     branches:
       - master
@@ -28,10 +31,7 @@ jobs:
         run: python -m pip install --upgrade aqtinstall
 
       - name: Check available Qt versions
-        run: aqt list-qt windows desktop  # Вывод всех версий
-
-      - name: Check available Qt modules
-        run: aqt list-qt windows desktop --modules 6.8.0 win64_msvc2022_64  # Проверка модулей
+        run: aqt list-qt windows desktop
 
       - name: Install Qt 6.8.0
         uses: jurplel/install-qt-action@v3
@@ -51,9 +51,13 @@ jobs:
       - name: Create xtest file (для отладки)
         run: echo "Test file content" > ${{ github.workspace }}/xtest
 
+      - name: Debug files
+        run: ls -la ${{ github.workspace }}
+
       - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')  # Только если запущено на теге
         id: create_release
-        uses: softprops/action-gh-release@v1  # Используем актуальный экшен
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
@@ -63,9 +67,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/xtest  # Загружаем файл
+          files: ${{ github.workspace }}/xtest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
