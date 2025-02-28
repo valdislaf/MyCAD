@@ -55,20 +55,20 @@ jobs:
         run: echo "Test file content" > ${{ github.workspace }}/xtest
 
       - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')  # Только для тегов
         id: create_release
-        uses: softprops/action-gh-release@v1  # Используем актуальный экшен
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+          name: Release ${{ github.ref_name }}  # Правильное имя
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
+        if: startsWith(github.ref, 'refs/tags/')  # Только для тегов
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/xtest  # Загружаем файл
+          files: build/Release/MyCAD.exe  # Замените на нужный файл
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
