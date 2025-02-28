@@ -45,11 +45,9 @@ jobs:
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config Release
 
-      - name: List files in build directory
-        run: dir ${{ github.workspace }}/build/Release
-
-      - name: Upload Release Build as Artifact
-        uses: actions/upload-artifact@v2
+      - name: Create Release and Upload Build
+        uses: softprops/action-gh-release@v1
         with:
-          name: MyCAD-Release
-          path: ${{ github.workspace }}/build/Release/MyCAD.exe
+          files: ${{ github.workspace }}/build/Release/MyCAD.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
