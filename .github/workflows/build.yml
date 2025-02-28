@@ -9,7 +9,7 @@ on:
       - master
 
 permissions:
-  contents: write  # Даем доступ к созданию релиза
+  contents: write  # Даем доступ к созданию релиза  и "Workflow permissions" -> Read and write permissions 
 
 jobs:
   build:
@@ -54,10 +54,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}  # Используем только имя тега
+          release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
+
 
       - name: Upload Release Asset
         id: upload-release-asset
