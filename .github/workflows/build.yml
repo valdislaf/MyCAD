@@ -2,8 +2,11 @@ name: Build MyCAD on Windows
 
 on:
   push:
-    tags:
-      - "v*"  # Запускать только при пуше тегов вида v1.0.0
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 permissions:
   contents: write  # Даем доступ к созданию релиза  и "Workflow permissions" -> Read and write permissions 
