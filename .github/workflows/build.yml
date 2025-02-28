@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-        
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -22,12 +22,19 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install latest aqtinstall
+        run: python -m pip install --upgrade aqtinstall
+
+      - name: Check available Qt versions
+        run: aqt list-qt windows desktop --arch win64_msvc2022_64
+
       - name: Install Qt 6
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.8.0'
+          version: '6.7.1'  # Если 6.8.0 появится в списке, можно сменить
           target: 'desktop'
-          arch: 'win64_msvc2019_64' # Или 'win64_msvc2022_64', если используешь MSVC 2022
+          arch: 'win64_msvc2022_64'
+          modules: 'qtbase'  # Устанавливаем только базовый пакет
           cache: true
 
       - name: Configure CMake
