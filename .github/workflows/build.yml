@@ -26,15 +26,15 @@ jobs:
         run: python -m pip install --upgrade aqtinstall
 
       - name: Check available Qt versions
-        run: aqt list-qt windows desktop --arch win64_msvc2022_64
+        run: aqt list-qt windows desktop  # Выводим список доступных версий
 
       - name: Install Qt 6
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.7.1'  # Если 6.8.0 появится в списке, можно сменить
+          version: '6.7.1'  # Если 6.8.0 есть в списке, можно заменить
           target: 'desktop'
           arch: 'win64_msvc2022_64'
-          modules: 'qtbase'  # Устанавливаем только базовый пакет
+          modules: 'qtbase'
           cache: true
 
       - name: Configure CMake
