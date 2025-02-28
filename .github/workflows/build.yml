@@ -72,3 +72,16 @@ jobs:
           files: build/Release/MyCAD.exe  # Замените на нужный файл
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+# Проблема в том, что тег v1.0.0 уже существует, но не был изменен.
+
+# 1. Удаление старого тега
+#Сначала удаляем локальный и удаленный тег:
+
+# git tag -d v1.0.0  # Удаляем локальный тег
+# git push origin --delete v1.0.0  # Удаляем тег из удаленного репо
+# 2. Создание нового тега
+
+# git tag -a v1.0.0 -m "Release version 1.0.0"
+# git push origin v1.0.0
