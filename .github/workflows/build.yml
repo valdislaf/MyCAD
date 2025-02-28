@@ -45,8 +45,17 @@ jobs:
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config Release
 
+      - name: Check if file exists
+        run: |
+          if [ -f "${{ github.workspace }}/build/Release/MyCAD.exe" ]; then
+            echo "File exists"
+          else
+            echo "File does not exist"
+            exit 1
+          fi
+
       - name: Upload Release Build as Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: MyCAD-Release
           path: ${{ github.workspace }}/build/Release/MyCAD.exe
