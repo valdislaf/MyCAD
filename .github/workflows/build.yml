@@ -1,4 +1,4 @@
-name: Build MyCAD on Windows
+name: Build Release MyCAD on Windows
 
 on:
   push:
