@@ -31,7 +31,7 @@ jobs:
         run: aqt list-qt windows desktop --modules 6.8.0 win64_msvc2022_64  # Проверка модулей
 
       - name: Install Qt 6.8.0
-        uses: jurplel/install-qt-action@v4
+        uses: jurplel/install-qt-action@v3
         with:
           version: '6.8.0'
           target: 'desktop'
