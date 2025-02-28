@@ -1,5 +1,5 @@
 # Минимальная версия CMake
-cmake_minimum_required(VERSION 3.19)  # Рекомендуется версия CMake 3.19 или выше
+cmake_minimum_required(VERSION 3.19)
 
 # Название проекта
 project(MyCAD LANGUAGES CXX)
@@ -16,8 +16,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Указание пути к Qt6, если не указан в окружении
-set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" CACHE PATH "Path to Qt6 config files")
+# Указание пути к Qt6 в зависимости от операционной системы
+if(WIN32)
+    set(Qt6_DIR "C:/Qt/6.8.0/msvc2022_64/lib/cmake/Qt6" CACHE PATH "Path to Qt6 config files")
+elseif(UNIX AND NOT APPLE)
+    # Для Linux/Ubuntu
+    set(Qt6_DIR "/opt/qt6/lib/cmake/Qt6" CACHE PATH "Path to Qt6 config files")
+elseif(APPLE)
+    # Для macOS
+    set(Qt6_DIR "/usr/local/opt/qt/lib/cmake/Qt6" CACHE PATH "Path to Qt6 config files")
+endif()
 
 # Вывод текущего пути к Qt6
 message(STATUS "Qt6_DIR is set to: ${Qt6_DIR}")
@@ -57,6 +65,9 @@ set(SOURCES
     ShapeLine.cpp
     ShapeManager.cpp
 )
+
+# Установка суффикса для отладочной сборки
+set(CMAKE_DEBUG_POSTFIX "_d")
 
 # Создание исполняемого файла
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
