@@ -13,7 +13,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -26,15 +25,17 @@ jobs:
         run: python -m pip install --upgrade aqtinstall
 
       - name: Check available Qt versions
-        run: aqt list-qt windows desktop  # Выводим список доступных версий
+        run: aqt list-qt windows desktop  # Вывод всех версий
 
-      - name: Install Qt 6
+      - name: Check available Qt modules
+        run: aqt list-qt windows desktop --modules 6.8.0 win64_msvc2022_64  # Проверка модулей
+
+      - name: Install Qt 6.8.0
         uses: jurplel/install-qt-action@v3
         with:
-          version: '6.7.1'  # Если 6.8.0 есть в списке, можно заменить
+          version: '6.8.0'
           target: 'desktop'
           arch: 'win64_msvc2022_64'
-          modules: 'qtbase'
           cache: true
 
       - name: Configure CMake
