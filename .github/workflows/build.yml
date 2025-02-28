@@ -115,10 +115,10 @@ jobs:
       - name: Install Qt 6.8.0
         run: |
           sudo apt-get update
-          sudo apt-get install -y qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+          sudo apt-get install -y qt6-base-dev qt6-qmake
       - name: Configure CMake (Release)
         run: |
-          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/opt/qt6" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
+          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/opt/qt6/lib/cmake/Qt6" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
       - name: Build (Release)
         run: cmake --build ${{ github.workspace }}/build --config Release
       - name: Create Release
@@ -153,10 +153,10 @@ jobs:
       - name: Install Qt 6.8.0
         run: |
           sudo apt-get update
-          sudo apt-get install -y qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+          sudo apt-get install -y qt6-base-dev qt6-qmake
       - name: Configure CMake (Debug)
         run: |
-          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="/opt/qt6" -B ${{ github.workspace }}/build_debug -S ${{ github.workspace }}/MyCAD
+          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="/opt/qt6/lib/cmake/Qt6" -B ${{ github.workspace }}/build_debug -S ${{ github.workspace }}/MyCAD
       - name: Build (Debug)
         run: cmake --build ${{ github.workspace }}/build_debug --config Debug
       - name: Create Debug Release
