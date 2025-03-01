@@ -93,14 +93,14 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rename Debug Executables
+        run: |
+          move D:/a/MyCAD/MyCAD/build/Debug/MyCAD.exe D:/a/MyCAD/MyCAD/build/Debug/MyCAD_d.exe
       - name: Upload Debug Asset
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          enerate_release_notes: true
-          files: D:/a/MyCAD/MyCAD/build/Debug/MyCAD.exe#MyCAD_d.exe
+          files: D:/a/MyCAD/MyCAD/build/Debug/MyCAD_d.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -172,6 +172,9 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rename Debug Executables
+        run: |
+          move  ${{ github.workspace }}/build/MyCAD ${{ github.workspace }}/build/MyCAD_d
       - name: Upload Debug Asset
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
@@ -179,7 +182,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           enerate_release_notes: true
-          files:  ${{ github.workspace }}/build/MyCAD#MyCAD_d.exe
+          files:  ${{ github.workspace }}/build/MyCAD_d
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
