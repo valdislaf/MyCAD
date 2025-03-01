@@ -185,7 +185,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
+# git status
+# git add --all
+# git status
+# git commit -m "Complete build.yml version 1.0.31"
+# git push origin master
+# git tag -a v1.0.31 -m "Release version 1.0.31"
+# git push origin v1.0.31
 
 # Проблема в том, что тег v1.0.0 уже существует, но не был изменен.
 
