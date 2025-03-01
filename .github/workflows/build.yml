@@ -54,7 +54,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: D:\a\MyCAD\MyCAD\build\Release\MyCAD.exe
+          files: D:/a/MyCAD/MyCAD/build/Release/MyCAD.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -97,7 +97,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: D:\a\MyCAD\MyCAD\build_debug\Debug\MyCAD.exe
+          files: D:/a/MyCAD/MyCAD/build_debug/Debug/MyCAD.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
