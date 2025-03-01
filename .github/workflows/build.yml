@@ -97,7 +97,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: D:/a/MyCAD/MyCAD/build/Debug/MyCAD.exe
+          files: D:/a/MyCAD/MyCAD/build/Debug/MyCAD.exe#MyCAD_d.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -156,9 +156,9 @@ jobs:
           sudo apt-get install qt6-base-dev
       - name: Configure CMake (Debug)
         run: |
-          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="/opt/qt6/lib/cmake/Qt6" -B ${{ github.workspace }}/build_debug -S ${{ github.workspace }}/MyCAD
+          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="/opt/qt6/lib/cmake/Qt6" -B ${{ github.workspace }}/build -S ${{ github.workspace }}/MyCAD
       - name: Build (Debug)
-        run: cmake --build ${{ github.workspace }}/build_debug --config Debug
+        run: cmake --build ${{ github.workspace }}/build --config Debug
       - name: Create Debug
         if: startsWith(github.ref, 'refs/tags/')
         id: create_debug
@@ -173,7 +173,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files:  ${{ github.workspace }}/build_debug/MyCAD
+          files:  ${{ github.workspace }}/build/MyCAD#MyCAD_d.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
