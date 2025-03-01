@@ -97,6 +97,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          enerate_release_notes: true
           files: D:/a/MyCAD/MyCAD/build/Debug/MyCAD.exe#MyCAD_d.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -173,6 +176,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          enerate_release_notes: true
           files:  ${{ github.workspace }}/build/MyCAD#MyCAD_d.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
