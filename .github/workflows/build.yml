@@ -54,7 +54,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/Release/MyCAD.exe
+          files: ${{ github.workspace }}/build/MyCAD.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -83,19 +83,19 @@ jobs:
         run: cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="%Qt6_DIR%" -B ${{ github.workspace }}/build_debug -S ${{ github.workspace }}/MyCAD
       - name: Build (Debug)
         run: cmake --build ${{ github.workspace }}/build_debug --config Debug
-      - name: Create Debug Release
+      - name: Create Debug 
         if: startsWith(github.ref, 'refs/tags/')
-        id: create_debug_release
-        uses: softprops/action-gh-release@v1
+        id: create_debug
+        uses: softprops/action-gh-debug@v1
         with:
           tag_name: ${{ github.ref_name }}-debug
-          name: Debug Release ${{ github.ref_name }}
+          name: Debug ${{ github.ref_name }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload Debug Release Asset
+      - name: Upload Debug Asset
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-debug@v1
         with:
           files: ${{ github.workspace }}/build_debug/MyCAD.exe
         env:
@@ -159,19 +159,19 @@ jobs:
           cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="/opt/qt6/lib/cmake/Qt6" -B ${{ github.workspace }}/build_debug -S ${{ github.workspace }}/MyCAD
       - name: Build (Debug)
         run: cmake --build ${{ github.workspace }}/build_debug --config Debug
-      - name: Create Debug Release
+      - name: Create Debug
         if: startsWith(github.ref, 'refs/tags/')
-        id: create_debug_release
-        uses: softprops/action-gh-release@v1
+        id: create_debug
+        uses: softprops/action-gh-debug@v1
         with:
           tag_name: ${{ github.ref_name }}-debug
-          name: Debug Release ${{ github.ref_name }}
+          name: Debug ${{ github.ref_name }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload Debug Release Asset
+      - name: Upload Debug Asset
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-debug@v1
         with:
           files:  ${{ github.workspace }}/build_debug/MyCAD
         env:
