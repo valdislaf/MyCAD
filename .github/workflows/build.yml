@@ -100,6 +100,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref_name }}-debug
           files: D:/a/MyCAD/MyCAD/build/Debug/MyCAD_d.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -179,9 +180,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          enerate_release_notes: true
+          tag_name: ${{ github.ref_name }}-debug
           files:  ${{ github.workspace }}/build/MyCAD_d
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
