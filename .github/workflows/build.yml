@@ -174,7 +174,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Rename Debug Executables
         run: |
-          move  ${{ github.workspace }}/build/MyCAD ${{ github.workspace }}/build/MyCAD_d
+           mv ${{ github.workspace }}/build/MyCAD ${{ github.workspace }}/build/MyCAD_d
       - name: Upload Debug Asset
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
