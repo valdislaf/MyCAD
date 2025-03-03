@@ -16,11 +16,11 @@ void Grid::draw(QPainter& painter)
     //int xmax = 0; //int ymax = 0;
     // Создаем QPen для основных линий сетки
     QColor mainGridColor(38, 44, 55);  // Цвет основной сетки
-    QPen mainGridPen(mainGridColor, 2, Qt::DotLine);
+    QPen mainGridPen(mainGridColor, 1, Qt::SolidLine);
 
     // Создаем QPen для линий, которые отображаются каждые 5 шагов
-    QColor highlightedGridColor(48, 54, 69);  // Цвет выделенной сетки
-    QPen highlightedGridPen(highlightedGridColor, 2, Qt::SolidLine);
+    QColor highlightedGridColor(48, 54, 65);  // Цвет выделенной сетки
+    QPen highlightedGridPen(highlightedGridColor, 1, Qt::SolidLine);
 
     // Рисуем вертикальные линии сетки вправо от начала координат
     for (int x = 0; x < widgetWidth + std::abs(delataX); x += gridSize) {

@@ -1,12 +1,40 @@
 
 #include "MyCAD.h"
+#include <QApplication>
+#include <QStyleFactory>
+#include <QPalette>
 
 int heightwindow_prev = 0;
 bool disableCursor = false;
 
+void applyDarkTheme() {
+    // Устанавливаем Fusion-стиль (он хорошо поддерживает кастомные палитры)
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
+
+    // Создаем палитру для тёмной темы
+    QPalette darkPalette;
+    darkPalette.setColor(QPalette::Window, QColor(45, 45, 45));
+    darkPalette.setColor(QPalette::WindowText, Qt::white);
+    darkPalette.setColor(QPalette::Base, QColor(30, 30, 30));
+    darkPalette.setColor(QPalette::AlternateBase, QColor(45, 45, 45));
+    darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+    darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+    darkPalette.setColor(QPalette::Text, Qt::white);
+    darkPalette.setColor(QPalette::Button, QColor(45, 45, 45));
+    darkPalette.setColor(QPalette::ButtonText, Qt::white);
+    darkPalette.setColor(QPalette::BrightText, Qt::red);
+    darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+
+    darkPalette.setColor(QPalette::Highlight, QColor(90, 90, 90));
+    darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+
+    QApplication::setPalette(darkPalette);
+}
+
 MyCAD::MyCAD(QWidget* parent)
     : EventHandling(parent)
 {
+    applyDarkTheme();
     tabWidget = new QTabWidget(this);  // Инициализация tabWidget
     menuBar = new QMenuBar(this);  // Создаем QMenuBar
     drawingManager = new DrawingManager();
@@ -60,7 +88,7 @@ void MyCAD::onCloseThisTab()
 void MyCAD::setupTabWidgetStyle()
 {
     // Применяем стиль к tabWidget
-    tabWidget->setStyleSheet("QTabWidget { background-color: rgb(33, 40, 48); }");
+    tabWidget->setStyleSheet("QTabWidget { background-color: rgb(23, 30, 38); }");
 }
 
 void MyCAD::createNewWindow()
@@ -71,6 +99,7 @@ void MyCAD::createNewWindow()
         updateMenusBasedOnTabWidgetVisibility();
     }
     DrawingWidget* newDrawingWidget = new DrawingWidget(this);
+
     int tabIndex = tabWidget->addTab(std::move(newDrawingWidget), tr("Чертеж %1").arg(tabWidget->count() + 1));
     
     // Переключаемся на только что созданную вкладку
