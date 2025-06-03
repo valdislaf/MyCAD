@@ -121,7 +121,7 @@ int EventHandling::setDelataX(int dx) const {
     }
 
 int EventHandling::setDelataY(int dy) const {
-    return  shapeManager->setDelataX(idx(), dy);
+    return  shapeManager->setDelataY(idx(), dy);
 }
 
 int EventHandling::getDelataX() const {
