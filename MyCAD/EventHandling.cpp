@@ -58,13 +58,13 @@ void EventHandling::mouseMoveEvent(QMouseEvent* event) {
 
 void EventHandling::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::MiddleButton) { // Проверяем, что отпущена средняя кнопка мыши
-        if (chekTab()) {
+        if (checkTab()) {
             lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());           
         }
         isDragging = false; // Устанавливаем флаг перетаскивания в false
     }
 
-    if (chekTab()) {
+    if (checkTab()) {
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки активного виджета
@@ -88,7 +88,7 @@ bool EventHandling::event(QEvent* e) {
 }
 
 void EventHandling::handleHoverMoveEvent() {
-    if (chekTab()) {
+    if (checkTab()) {
        
         if (shapesNoEmpt()) {
             GetHandlePoint(); //Обработка выделения фигур и притягивания к центру handle
@@ -134,7 +134,7 @@ int EventHandling::getDelataY() const {
 
 void EventHandling::handleDrawing(QMouseEvent* event, bool& circleFlag) {
     if (tabWidget->rect().contains(event->pos())) {
-        if (chekTab()) {
+        if (checkTab()) {
 
             QPoint localPos = tabWidget->mapFromGlobal(event->globalPosition().toPoint());
             QRect tabBarRect = tabWidget->geometry();
@@ -174,7 +174,7 @@ void EventHandling::handleSelection(QMouseEvent* event, bool circleFlag) {
         selectShapes(event);
     }
 
-    if (chekTab()) {
+    if (checkTab()) {
         lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
     }
 
@@ -226,7 +226,7 @@ QPoint EventHandling::GetCurrPoint() {
 
 void EventHandling::selectShapes(QMouseEvent* event) {
     (void)event;
-    if (chekTab()) {
+    if (checkTab()) {
         QPoint newpoint = GetCurrPoint();
         for (const auto& shape : shapeManager->getShapes(idx())) {
             HandleType handle = shape->getHandleAt(newpoint);
@@ -242,7 +242,7 @@ void EventHandling::selectShapes(QMouseEvent* event) {
 
 void EventHandling::highlightShapes(QMouseEvent* event) {
     (void)event;
-    if (chekTab()) {
+    if (checkTab()) {
         QPoint newpoint = GetCurrPoint();
         bool isanyshapeselectedandhandled = false;
         if (!getShapes().empty()) {
@@ -270,7 +270,7 @@ void EventHandling::highlightShapes(QMouseEvent* event) {
 
 
 QPoint EventHandling::GetHandlePoint() {
-    if (chekTab())
+    if (checkTab())
     {
         for (const auto& shape : getShapes())
         {
@@ -290,7 +290,7 @@ QPoint EventHandling::GetHandlePoint() {
 }
 
 void EventHandling::highlightShapesUnderCursor() {
-    if (chekTab()) {
+    if (checkTab()) {
         QPoint newpoint = GetCurrPoint();
         bool isanyshapeselectedandhandled = false;
         
@@ -347,7 +347,7 @@ void EventHandling::updateShapePositions() {
 void EventHandling::updateGridPosition(const QPoint& delta)
 {
     // Проверка, что индекс корректный и вкладки существуют
-    if (chekTab()) {
+    if (checkTab()) {
      //   int currentIndex = tabWidget->currentIndex();
         // Обновляем значения смещения сетки на основе переданного delta
         shapeManager->setDelataX(idx(), delta.x());
@@ -377,7 +377,7 @@ void EventHandling::updateGridPosition(const QPoint& delta)
     }
 }
 
-bool EventHandling::chekTab() const {
+bool EventHandling::checkTab() const {
     bool result = false;
     if (tabWidget != nullptr) {
         int currentIndex = tabWidget->currentIndex();
@@ -404,7 +404,7 @@ void EventHandling::movingPush(HandleType handle, bool isselected)
 bool EventHandling::shapesNoEmpt()const
 {
     bool result = false;
-    if (chekTab()) {
+    if (checkTab()) {
        
         if (!getShapes().empty())
         {

@@ -160,7 +160,7 @@ void MyCAD::onDrawCircle()
 void MyCAD::updateGridPosition(const QPoint& delta)
 {
     // Проверка, что индекс корректный и вкладки существуют
-    if (chekTab()) {    
+    if (checkTab()) {    
         // Обновляем значения смещения сетки на основе переданного delta
         setDelataX(delta.x());
         setDelataY(delta.y());
@@ -208,7 +208,7 @@ bool MyCAD::isDrawEnabled() const {
 
 // Вспомогательная функция для проверки активности текущей вкладки
 bool MyCAD::isTabActive() const {
-    return tabWidget && chekTab() && tabWidget->currentWidget();
+    return tabWidget && checkTab() && tabWidget->currentWidget();
 }
 
 void MyCAD::CrossCursorIn(QPainter& painter)
@@ -228,7 +228,7 @@ void MyCAD::CrossCursorHandle(QPainter& painter)
 
 void MyCAD::drawShapes(QPainter& painter) {
     // Проверяем, есть ли активная вкладка
-    if (!chekTab()) {
+    if (!checkTab()) {
         return;
     }
 

@@ -37,7 +37,7 @@ public:
     ~EventHandling();
     QPoint GetHandlePoint();
 protected:
-    bool chekTab() const;
+    bool checkTab() const;
     bool event(QEvent* e) override;
     bool isDragging = false;
     bool shapesNoEmpt()const;
