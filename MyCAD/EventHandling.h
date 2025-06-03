@@ -42,6 +42,7 @@ protected:
     bool isDragging = false;
     bool shapesNoEmpt()const;
     QPoint GetCurrPoint();
+    QPoint GetWorldPoint();
     QPoint lastMousePosition;
     QTabWidget* tabWidget;
     void clearSelection();

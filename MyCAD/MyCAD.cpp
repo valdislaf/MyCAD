@@ -164,23 +164,9 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         // Обновляем значения смещения сетки на основе переданного delta
         setDelataX(delta.x());
         setDelataY(delta.y());
-        if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
-            clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
-        }
-        // Перерисовываем текущий активный виджет
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
-            currentTab->update();  // Вызов перерисовки виджета
-        }        
-        if (!selShapes.empty()) {
-            for (const auto& shape : selShapes)
-            {
-                shape->move(delta);
-            }
-        }
-        // Рисуем фигуры только для активной вкладки
-        for (const auto& shape : getShapes()) {
-            shape->move(delta);
+            currentTab->update();
         }
 
     }
@@ -193,12 +179,18 @@ void MyCAD::drawGrid(QPainter& painter) {
 
 void MyCAD::DrawLine(QPainter& painter, QPoint localPos0) {
     if (!isDrawEnabled()) return;  // Проверка условий перенесена в отдельную функцию
-    drawingManager->drawLine(painter, localPos0, GetCurrPoint());
+    painter.save();
+    painter.translate(getDelataX(), getDelataY());
+    drawingManager->drawLine(painter, localPos0, GetWorldPoint());
+    painter.restore();
 }
 
 void MyCAD::DrawCircle(QPainter& painter, QPoint localPos0) {
     if (!isDrawEnabled()) return;  
-    drawingManager->drawCircle(painter, localPos0, GetCurrPoint());
+    painter.save();
+    painter.translate(getDelataX(), getDelataY());
+    drawingManager->drawCircle(painter, localPos0, GetWorldPoint());
+    painter.restore();
 }
 
 // Вспомогательная функция для проверки активности вкладки и флага isdraw
@@ -237,12 +229,14 @@ void MyCAD::drawShapes(QPainter& painter) {
     int delataX = getDelataX();
     int delataY = getDelataY();
     QPoint delta(delataX, delataY);
+    painter.save();
+    painter.translate(delta);
     QWidget* currentTab = tabWidget->widget(currentIndex);
     int widgetHeight = currentTab->height();
 
     // Отрисовка временных выделенных фигур, если мы не перетаскиваем объекты
     if (!isDragging && !selShapes.empty()) {
-        drawingManager->drawTemporaryShapes(painter, tmpShapes, selShapes, GetCurrPoint());
+        drawingManager->drawTemporaryShapes(painter, tmpShapes, selShapes, GetWorldPoint());
     }
 
     // Основная отрисовка фигур для текущей вкладки
@@ -254,6 +248,6 @@ void MyCAD::drawShapes(QPainter& painter) {
         }
         shape->draw(painter);
     }
-
+    painter.restore();
     heightwindow_prev = widgetHeight;
 }
