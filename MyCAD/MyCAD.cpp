@@ -164,23 +164,10 @@ void MyCAD::updateGridPosition(const QPoint& delta)
         // Обновляем значения смещения сетки на основе переданного delta
         setDelataX(delta.x());
         setDelataY(delta.y());
-        if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
-            clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
-        }
         // Перерисовываем текущий активный виджет
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
-        }        
-        if (!selShapes.empty()) {
-            for (const auto& shape : selShapes)
-            {
-                shape->move(delta);
-            }
-        }
-        // Рисуем фигуры только для активной вкладки
-        for (const auto& shape : getShapes()) {
-            shape->move(delta);
         }
 
     }
@@ -213,17 +200,20 @@ bool MyCAD::isTabActive() const {
 
 void MyCAD::CrossCursorIn(QPainter& painter)
 {
-    drawingManager->drawCrossCursorIn(painter, GetCurrPoint());
+    QPoint pos = GetCurrPoint() + QPoint(getDelataX(), getDelataY());
+    drawingManager->drawCrossCursorIn(painter, pos);
 }
 
 void MyCAD::CrossCursorOut(QPainter& painter)
 {
-    drawingManager->drawCrossCursorOut(painter, GetCurrPoint());
+    QPoint pos = GetCurrPoint() + QPoint(getDelataX(), getDelataY());
+    drawingManager->drawCrossCursorOut(painter, pos);
 }
 
 void MyCAD::CrossCursorHandle(QPainter& painter)
 {
-    drawingManager->drawCrossCursorOut(painter, GetHandlePoint());
+    QPoint pos = GetHandlePoint() + QPoint(getDelataX(), getDelataY());
+    drawingManager->drawCrossCursorOut(painter, pos);
 }
 
 void MyCAD::drawShapes(QPainter& painter) {
@@ -246,14 +236,12 @@ void MyCAD::drawShapes(QPainter& painter) {
     }
 
     // Основная отрисовка фигур для текущей вкладки
+    painter.save();
+    painter.translate(delta);
     for (const auto& shape : getShapes()) {
-
-        if (heightwindow_prev != 0) {
-            QPoint delta(0, widgetHeight - heightwindow_prev);
-            shape->move(delta);
-        }
         shape->draw(painter);
     }
+    painter.restore();
 
     heightwindow_prev = widgetHeight;
 }

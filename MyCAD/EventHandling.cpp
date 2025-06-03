@@ -59,7 +59,7 @@ void EventHandling::mouseMoveEvent(QMouseEvent* event) {
 void EventHandling::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::MiddleButton) { // Проверяем, что отпущена средняя кнопка мыши
         if (checkTab()) {
-            lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());           
+            lastMousePosition = GetCurrPoint();
         }
         isDragging = false; // Устанавливаем флаг перетаскивания в false
     }
@@ -175,7 +175,7 @@ void EventHandling::handleSelection(QMouseEvent* event, bool circleFlag) {
     }
 
     if (checkTab()) {
-        lastMousePosition = tabWidget->currentWidget()->mapFromGlobal(QCursor::pos());
+        lastMousePosition = GetCurrPoint();
     }
 
     if (!isdraw && !circleFlag) {
@@ -221,7 +221,7 @@ void EventHandling::resetShapeColors() {
 QPoint EventHandling::GetCurrPoint() {
     QPoint globalPos = QCursor::pos();
     QWidget* currentTab = tabWidget->currentWidget();
-    return currentTab->mapFromGlobal(globalPos);
+    return currentTab->mapFromGlobal(globalPos) - QPoint(getDelataX(), getDelataY());
 }
 
 void EventHandling::selectShapes(QMouseEvent* event) {
@@ -353,25 +353,10 @@ void EventHandling::updateGridPosition(const QPoint& delta)
         shapeManager->setDelataX(idx(), delta.x());
         shapeManager->setDelataY(idx(), delta.y());
   
-        if (isdraw && clickpoint != QPoint(INT_MIN, INT_MIN)) {
-            clickpoint = QPoint(clickpoint.x() + delta.x(), clickpoint.y() + delta.y());
-        }
-
         // Перерисовываем текущий активный виджет
         QWidget* currentTab = tabWidget->currentWidget();
         if (currentTab) {
             currentTab->update();  // Вызов перерисовки виджета
-        }
-       
-        if (!selShapes.empty()) {
-            for (const auto& shape : selShapes)
-            {
-                shape->move(delta);
-            }
-        }
-        // Рисуем фигуры только для активной вкладки
-        for (const auto& shape : getShapes()) {
-            shape->move(delta);
         }
 
     }
